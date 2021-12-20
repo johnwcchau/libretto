@@ -17,27 +17,37 @@ export class DataFrame extends Block {
         super.addProperties("skiprows", "Rows to skip", "text");
         super.addProperties("skipfooter", "Bottom rows to skip", "number");
     }
+    droptype(dragsrc) {
+        if (dragsrc._type == "__fileblock") {
+            if (!thiz.acceptFileDrop(dragsrc.filename)) return null;
+            return "dropinto";
+        }
+        return "dropafter";
+    }
     static canHandleType(type) {
         return (type=="csv");
     }
+    acceptFileDrop(file) {
+        return (file.endsWith(".csv"));
+    }
     onFileDropped(file) {
-        const name = file.name;
-        new Promise((resolve, reject) => {
-            wsClient.send("exist", {path: name}).then((r)=> {
-                const exist = r.exist;
-                if (!exist) {
-                    return wsClient.upload(file);
-                } else {
-                    const v = confirm("File with same name already exists in server, overwrite?")
-                    if (v) return wsClient.upload(file);
-                    else resolve();
-                }
-            }).then(() => {
-                resolve();
-            })
-        }).then(() => {
-            this.filepath_or_buffer = file.name;
-            this.onEditClicked();
-        });
+        // const name = file.name;
+        // new Promise((resolve, reject) => {
+        //     wsClient.send("exist", {path: name}).then((r)=> {
+        //         const exist = r.exist;
+        //         if (!exist) {
+        //             return wsClient.upload(file);
+        //         } else {
+        //             const v = confirm("File with same name already exists in server, overwrite?")
+        //             if (v) return wsClient.upload(file);
+        //             else resolve();
+        //         }
+        //     }).then(() => {
+        //         resolve();
+        //     })
+        // }).then(() => {
+        //     this.filepath_or_buffer = file.name;
+        //     this.onEditClicked();
+        // });
     }
 }

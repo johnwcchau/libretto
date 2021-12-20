@@ -1,11 +1,13 @@
 # %%
 from contextlib import redirect_stdout, redirect_stderr
 import re
+import logging
 
 class Output:
     def __init__(self):
         self.ws = None
     def msg(self, status:int=-1000, msg:str=None, param:dict=None)->None:
+        logging.info(f'[{status}, {msg}]')        
         if self.ws:
             self.ws.send_message(status, msg, param)
     def working(self, msg:str=None)->None:

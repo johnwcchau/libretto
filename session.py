@@ -9,9 +9,8 @@ from uuid import uuid4
 
 import numpy as np
 import pandas as pd
-from numpy.lib.arraysetops import isin
 
-from inout import Output, StdRedirect
+from skll.inout import Output, StdRedirect
 
 class ndarray(np.ndarray):
     '''
@@ -42,7 +41,7 @@ class Session:
         """
         Whitelisting which function can be called by checking package name
         """
-        package_white_list = ["sklearn", "pandas", "numpy", "scipy", "keras", "pytorch"]
+        package_white_list = ["skll", "sklearn", "pandas", "numpy"]
         return func.split(".")[0] in package_white_list
 
     def __get_object(self, uuid:str)->any:
@@ -229,7 +228,7 @@ class Session:
             with StdRedirect(self._out):
                 result = getattr(globals()[module], func)(*args, **kwargs)
             self._last_result = result
-            if dest:
+            if dest and result:
                 param = {"uuid": self.__put_object(result, dest)}
             else:
                 param = None

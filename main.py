@@ -4,149 +4,61 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 from tornado.web import StaticFileHandler
-from concurrent.futures import ThreadPoolExecutor
+from skll.tpe import TPE
 
 import signal
 import sys
-import os
-import base64
 import json
 import traceback
 
 import logging
 
-from session import Session
-session:Session = None
+from skll.fileio import FileIO
+from skll.session import Session
+from skll.jsoncodec import JSONEncoder
 
-tpe = ThreadPoolExecutor(max_workers=2)
+tpe = TPE().executor
 
-def new_session():
-    global session
-    logging.info("New session created")
-    session = Session()
+# def json_decode(o):
+#     if isinstance(o, str):
+#         if o.lower() == "true":
+#             return True
+#         elif o.lower() == "false":
+#             return False
+#         else:
+#             try:
+#                 return int(o)
+#             except ValueError:
+#                 try:
+#                     return float(o)
+#                 except ValueError:
+#                     return o
+#     elif isinstance(o, dict):
+#         return {k: json_decode(v) for k, v in o.items()}
+#     elif isinstance(o, list):
+#         return [json_decode(v) for v in o]
+#     else:
+#         return o
 
-def attach_session(ws:WebSocketHandler):
-    global session
-    if session is None:
-        new_session()
-    if session._out.ws is None:
-        session._out.ws = ws
-
-def detach_session(ws:WebSocketHandler):
-    global session
-    if session is not None and session._out.ws == ws:
-        session._out.ws = None
-
-def get_session(ws:WebSocketHandler):
-    global session
-    if session is None:
-        attach_session(ws)
-    if session._out.ws != ws:
-        return None
-    return session
-
-def json_decode(o):
-    if isinstance(o, str):
-        if o.lower() == "true":
-            return True
-        elif o.lower() == "false":
-            return False
-        else:
-            try:
-                return int(o)
-            except ValueError:
-                try:
-                    return float(o)
-                except ValueError:
-                    return o
-    elif isinstance(o, dict):
-        return {k: json_decode(v) for k, v in o.items()}
-    elif isinstance(o, list):
-        return [json_decode(v) for v in o]
-    else:
-        return o
-
-def json_encode(o):
-    return o
-
-def ls(session:Session, path:str="/", **kwargs):
-    from glob import glob
-    if not path.startswith("/") or not path.startswith('\\'): path = f'/{path}'
-    if path.endswith('/') or path.endswith('\\'): path = path[:-1]
-    storage_path = os.path.abspath(r"./storage")
-    path = os.path.abspath(rf'./storage{path}')
-    if not path.startswith(storage_path):
-        session._out.invalid()
-        return
-    if not os.path.isdir(path):
-        session._out.invalid()
-        return
-    parent = os.path.abspath(rf'{path}/../')
-    if not parent.startswith(storage_path):
-        parent = None
-    results = []
-    if parent:
-        results.append(("..", True))
-    objs = glob(f'{path}/*')
-    for obj in objs:
-        results.append((obj.replace(path, "").replace("\\", "/")[1:], os.path.isdir(obj)))
-    session._out.finished(param={
-        "cd": path.replace(storage_path, "").replace("\\", "/"),
-        "objs": results,
-    })
-
-def exist(session:Session, path:str=None, **kwargs):
-    if not path:
-        session._out.invalid()
-        return
-    upload_path = os.path.abspath(r"./storage")
-    query_path = os.path.abspath(rf'./storage/{path}')
-    if not query_path.startswith(upload_path):
-        session._out.invalid()
-        return
-    session._out.finished(param={
-        "exist": os.path.exists(query_path)
-    })
-
-def put(session:Session, name:str="temp", data:str=None, flag:str=None, size:int=0, **kwargs):
-    if not flag or (not data and flag != "end"):
-        session._out.invalid()
-        return
-    if data:
-        data = data.split(';base64')[1].encode('utf-8')
-        data = base64.b64decode(data)
-    fname = f'./storage/{name}'
-    try:
-        if flag=="begin":
-            with open(fname, 'wb') as file:
-                file.write(data)
-        elif flag=="continue":
-            with open(fname, 'ab') as file:
-                file.write(data)
-        elif flag == "end":
-            if not size:
-                session._out.invalid()
-            elif os.path.getsize(fname) != size:
-                session._out.error("Upload size mismatch")
-            else:
-                session._out.finished("Upload success")
-            return
-        if size:
-            progress = os.path.getsize(fname) / size
-        else:
-            progress = 0
-    except Exception:
-        traceback.print_exc()
-        session._out.error("Server side error")
-    session._out.cont("Uploading", {"progress": progress})
+# def json_encode(o):
+#     return o
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
-    def open(self):
-        attach_session(self)
+
+    def __init__(self, application: tornado.web.Application, request, **kwargs) -> None:
+        super().__init__(application, request, **kwargs)
+        self.session:Session = None
+
+    def open(self, name="default"):
+        try:
+            self.session = Session(name)
+            self.session._attach(self)
+        except RuntimeError:
+            self.session = None
         logging.info("WS Opened")
     
     def on_close(self):
-        detach_session(self)
+        if self.session is not None: self.session._detach()
         logging.info("WS Closed")
     
     def __send_message(self, _id, msg, param=None):
@@ -155,7 +67,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         param["result"] = _id
         param["message"] = msg
-        msg = json.dumps(param, default=json_encode)
+        msg = json.dumps(param, cls=JSONEncoder)
         logging.debug(f'<<{msg}')
         self.write_message(msg)
 
@@ -164,36 +76,34 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         ioloop.add_callback(self.__send_message, status, msg, param)
 
     def on_message(self, msg):
-        session = get_session(self)
+        session = self.session
         if not session:
             self.send_message(-1, "No session")
             return
 
         try:
             if isinstance(msg, str):
-                msg = json.loads(msg, object_hook=json_decode)
+                msg = json.loads(msg) #, object_hook=json_decode)
                 if not "action" in msg:
-                    session._out.invalid()
+                    session.out.invalid()
                     return
                 logging.info(f'>> {msg["action"]}')
-                if msg["action"]=="ping":
-                    session._out.finished("OK")
-                elif msg["action"]=="ls":
-                    tpe.submit(ls, session, **msg)
-                elif msg["action"]=="exist":
-                    tpe.submit(exist, session, **msg)
-                elif msg["action"]=="put":
-                    tpe.submit(put, session, **msg)
-                elif hasattr(session, msg["action"]) and callable(getattr(session, msg["action"])) and msg["action"][0] != "_":
-                    action = msg["action"]
+                action = msg["action"]
+                if action=="ping":
+                    session.out.finished("OK")
+                elif action in ["ls", "exist", "put", "mkdir", "rm"]:
                     del msg["action"]
-                    tpe.submit(getattr(session, action), **msg)
+                    fileio = FileIO(self)
+                    tpe.submit(getattr(fileio, action), **msg)
+                elif action in ["load", "run", "result", "dump"]:
+                    del msg["action"]
+                    tpe.submit(getattr(self.session, action), **msg)
                 else:
-                    session._out.invalid("Unknown command")
-        except Exception:
+                    session.out.invalid("Unknown command")
+        except Exception as e:
             traceback.print_exc()
-            if session and session._out:
-                session._out.error('Server side error')
+            if session and session.out:
+                session.out.error(f'Error: {e}')
 
 class MyStaticFileHandler(StaticFileHandler):
     """
@@ -216,7 +126,8 @@ def make_app(debug):
         (r"/", IndexHandler),
         (r'/(favicon\.ico)', StaticFileHandler, {"path": "./client"}),
         (r"/static/(.*)", MyStaticFileHandler, {"path":"./client"}),
-        (r"/ws", WebSocketHandler),
+        (r"/storage/(.*)", MyStaticFileHandler, {"path":"./storage"}),
+        (r"/ws/(.*)", WebSocketHandler),
     ], debug=debug)
 
 def shutdown():
@@ -253,3 +164,6 @@ if __name__ == "__main__":
     tpe.submit(open_browser, args.port)
     ioloop = tornado.ioloop.IOLoop.instance()
     ioloop.start()
+
+# %%
+# %%

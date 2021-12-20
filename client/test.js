@@ -1,20 +1,99 @@
-import {Block, BlockSet, BlockSplit} from './modules/BaseBlock.mjs';
+import {Block, Parent, Split} from './modules/BaseBlock.mjs';
 import {DataFrame} from "./modules/DataFrame.mjs"
 import Log from "./modules/Log.mjs"
 import EditDialog from "./modules/EditDialog.mjs"
 import FileBrowser from "./modules/FileBrowser.mjs"
 import WsClient from "./modules/WsClient.mjs"
 
-var model = new BlockSet({
-    name: "model1",
-    blocks: [
-        new Block({name: "input", type: "input"}),
-        new BlockSplit({
+var input = {
+    "_type": "skll.block.input.Input",
+    "name": "input",
+    "disable_mask": [],
+    "next": {
+        "_type": "skll.block.splitter.XyidSplit",
+        "name": "idsplit",
+        "disable_mask": [],
+        "ycol": "SalePrice",
+        "idcol": "Id",
+        "next": {
+            "_type": "skll.block.splitter.TypeSplit",
+            "name": "typesplit",
+            "disable_mask": [],
+            "splits": [
+              [
+                "int32",
+                "int64",
+                "float64"
+              ],
+              []
+            ],            
+            "out_y": "inherit",
+            "out_id": "inherit",
+            "_children": {
+                "1": {
+                  "_type": "skll.block.splitter.ColumnWise",
+                  "_next": null,
+                  "name": "columnwise",
+                  "disable_mask": [],
+                  "_children": {
+                    "1": {
+                      "_type": "skll.block.sklwrapper.Method",
+                      "_next": null,
+                      "name": "boxcox1p",
+                      "disable_mask": [],
+                      "method": "scipy.special.boxcox1p",
+                      "xname": 0,
+                      "yname": null,
+                      "args": [
+                        null,
+                        0.15
+                      ],
+                      "kargs": {}
+                    }
+                  }
+                },
+                "2": {
+                    "_type": "skll.block.sklwrapper.SklClass",
+                    "_next": null,
+                    "name": "ordinal",
+                    "disable_mask": [],
+                    "cls": "sklearn.preprocessing.OrdinalEncoder",
+                    "trainmethod": null,
+                    "testmethod": null,
+                    "scoremethod": null,
+                    "initargs": [],
+                    "initkargs": {}
+                }
+            },
+            "next": {
+                "_type": "skll.block.sklwrapper.SklClass",
+                "_next": null,
+                "name": "randf",
+                "disable_mask": [],
+                "cls": "sklearn.ensemble.RandomForestRegressor",
+                "trainmethod": null,
+                "testmethod": null,
+                "scoremethod": null,
+                "initargs": [],
+                "initkargs": {
+                  "n_estimators": 100,
+                  "random_state": 0
+                }
+            }
+        }
+    }
+}
+
+var model = new Parent({
+    name: "root",
+    children: [
+        new DataFrame({name: "input"}),
+        new Split({
             name: "ct1", 
-            splits: [
+            children: [
                 {
                     name: "text1, text2",
-                    blocks: [
+                    children: [
                         new Block({
                             name: "OHE1",
                             type: "onehotencoder"
@@ -23,7 +102,7 @@ var model = new BlockSet({
                 },
                 {
                     name: "num1, num2, num3",
-                    blocks: [
+                    children: [
                         new Block({
                             name: "IMP1",
                             type: "imputer"
@@ -42,6 +121,44 @@ var model = new BlockSet({
         }),
     ]
 });
+
+// var model = new Parent({
+//     name: "model1",
+//     blocks: [
+//         new DataFrame({name: "input"}),
+//         new Split({
+//             name: "ct1", 
+//             children: [
+//                 {
+//                     name: "text1, text2",
+//                     blocks: [
+//                         new Block({
+//                             name: "OHE1",
+//                             type: "onehotencoder"
+//                         }),
+//                     ],
+//                 },
+//                 {
+//                     name: "num1, num2, num3",
+//                     blocks: [
+//                         new Block({
+//                             name: "IMP1",
+//                             type: "imputer"
+//                         }),
+//                         new Block({
+//                             name: "SCL1",
+//                             type: "scaler"
+//                         }),
+//                     ],
+//                 }
+//             ]
+//         }),
+//         new Block({
+//             name: "SVC1",
+//             type: "svc"
+//         }),
+//     ]
+// });
 window.model = model;
 const dropzones = () => {
     const ondragexit = (e) => {
@@ -89,15 +206,16 @@ const dropzones = () => {
     });
 }
 const init = () => {
+    $(".tabView").tabs();
     Log.panel.appendTo("body");
     Log.prompt.appendTo("body");
     EditDialog.dialog.appendTo("body");
-    FileBrowser.panel.appendTo("body");
+    FileBrowser.panel.attr("id", "filesPane").addClass("tabPanel").appendTo("#toolbox");
     
     model.render().appendTo("main");
     model.$div.addClass("mainblock");
-    dropzones();
-    const $toolbox = $("#toolbox");
+    //dropzones();
+    const $toolbox = $("#methodsPane");
     ["Input", "OneHotEncoder", "SimpleImputer", "StandardScaler", "DBSCAN", "LinearRegression", "LogisticRegression"].forEach(v => {
         $("<a href='#'>").addClass("layertools").data("type", v).html(v).appendTo($toolbox);
     });
@@ -115,11 +233,11 @@ const init = () => {
     });
     $("#trash").on("mouseover", () => {
         const oldtgt = $(document).data("droptarget");
-        if (oldtgt) oldtgt.$div.removeClass("droptarget");
+        if (oldtgt) oldtgt.$div.removeClass("dropafter dropinto");
         $(document).data("droptarget", "trash");
-        $("#trash").addClass("droptarget");
+        $("#trash").addClass("dropinto");
     }).on("mouseout", () => {
-        $("#trash").removeClass("droptarget");
+        $("#trash").removeClass("dropinto");
         if ($(document).data("droptarget") == "trash") {
             $(document).data("droptarget", false);
         }

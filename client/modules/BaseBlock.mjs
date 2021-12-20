@@ -1,26 +1,35 @@
-import EditDialog from './EditDialog.mjs'
+import EditDialog from './EditDialog.mjs';
+import UUID from './UUID.mjs';
+
+export let blockTypes = {};
 
 export class Block {
-    constructor(kwargs) {
-        this._name = (kwargs && kwargs.name) ? kwargs.name : "Block";
-        this._type = (kwargs && kwargs.type) ? kwargs.type : "Block";
-        this._properties = {
-            "_name": {
-                desc: "Name",
-                type: "text",
-                enabled: true,
-            },
-            "_type": {
-                desc: "Constructor",
-                type: "text",
-                enabled: false,
-            },
-            "_uuid": {
-                desc: "Remote object UUID",
-                type: "text",
-                enabled: false,
-            }
-        };
+    applycls(args, cls) {
+        if (!cls) return;
+        if (cls.childof) {
+            this.applycls(args, blockTypes[cls.childof]);
+        }
+        if (cls.properties) {
+            cls.properties.forEach((v, i) => {
+                this._properties[i] = v;
+                if (args[i]) {
+                    this[i] = args[i];
+                } else if (v.default) {
+                    this[i] = v.default;
+                }
+            })
+        }
+    }
+    constructor(args) {
+        this._properties = {};
+        this._type = (args && args._type) ? args._type : "skll.block.Block";
+        const cls = blockTypes[this._type];
+        if (cls) {
+            this.applycls(args, cls);
+        }
+        if (!this.name) {
+            this.name = UUID();
+        }
     }
     canMove = true;
     canEdit = true;
@@ -42,9 +51,9 @@ export class Block {
         });
         result += props.join(", ") + ")";
         return result;
-    };
+    }
     addProperties(name, desc=null, type="text", enabled=true) {
-        if (this._properties.indexOf(name) != -1) {
+        if (this._properties[name]) {
             throw Error(`Property ${name} already exists`);
         }
         if (!desc) desc = name;
@@ -63,7 +72,6 @@ export class Block {
     onEditApplied() {
         this.render();
     }
-    onFileDropped(file) { }
     createEditBtn() {
         return $("<a href='#'>")
             .addClass("editbtn")
@@ -73,13 +81,13 @@ export class Block {
     render() {
         if (!this.$div) {
             this.$div = $("<div>").addClass("block");
-            $("<span>").addClass("title").html(this._name).appendTo(this.$div);
+            $("<span>").addClass("title").html(this.name).appendTo(this.$div);
             $("<span>").addClass("desc").html(this.desc).appendTo(this.$div);
             if (this.canEdit)
                 this.createEditBtn().appendTo(this.$div);
             this.registerEvents();
         } else {
-            this.$div.children("span.title").html(this._name);
+            this.$div.children("span.title").html(this.name);
             if (this.desc)
                 this.$div.children("span.desc").html(this.desc);
             if (this.canEdit && (this.$div.children("a.editbtn").length == 0)) 
@@ -90,27 +98,12 @@ export class Block {
         return this.$div;
     }
     tojson() {
-        return {
-            _name: this._name,
-            _type: this._type,
-        }
+
     }
     remove(obj) {}
     append(obj, at) {}
-    detach() {
-        this.$div.detach();
-        this.$div.removeClass("newobj");
-        if (this.parent) this.parent.remove(this);
-    }
-    attach(obj) {
-        this.parent.append(obj, this);
-        this.$div.after(obj.$div);
-    }
-    static performdragndrop(src, target) {
-        src.detach();
-        if (target != "trash")
-            target.attach(src);
-    }
+    prepend(obj, at) {}
+
     begindrag() {
         this.dragging = this.$div.clone().addClass("dragbox").appendTo($("body"))
         this.$div.addClass("dragsource");
@@ -119,6 +112,30 @@ export class Block {
             .on('mouseup', Block.onmouseup);
         $("#trash").addClass("visible");
     }
+    afterdrag() {
+        this.$div.detach();
+        this.$div.removeClass("newobj");
+        if (this.parent) this.parent.remove(this);
+    }
+    droptype(dragsrc, loc) {
+        if (dragsrc._type == "__fileblock") return null;
+        if (loc.y < 0.5)
+            return "dropbefore";
+        return "dropafter";
+    }
+    ondrop(src, droptype) {
+        switch (droptype) {
+            case "dropbefore":
+                this.parent.prepend(src, this);
+                this.$div.before(src.$div);
+                break;
+            case "dropafter":
+                this.parent.append(src, this);
+                this.$div.after(src.$div);
+                break;
+        }
+    }
+
     static dragTimer = null;
     static onmousedown(e) {
         let thiz = e.data.thiz;
@@ -138,11 +155,6 @@ export class Block {
             thiz.begindrag();
         }, 100);
     }
-    static setfiledrop(file) {
-        let thiz = $(document).data("dragsource");
-        if (!thiz) return;
-        thiz._filedrop = file;
-    }
     static onmouseup(e) {
         let thiz = $(document).data("dragsource");
         if (!thiz) return;
@@ -151,11 +163,14 @@ export class Block {
         $("#trash").removeClass("visible");
         let target = $(document).data("droptarget");
         if (target) {
-            if (target != "trash")
-                target.$div.removeClass("droptarget");
-            else
-                $("#trash").removeClass("droptarget");
-            Block.performdragndrop(thiz, target);
+            if (target != "trash") {
+                const droptype = thiz.droptype;
+                target.$div.removeClass(droptype);
+                thiz.afterdrag();
+                target.ondrop(thiz, droptype);
+            } else
+                $("#trash").removeClass("dropinto");
+            //Block.performdragndrop(thiz, target);
         } else if (thiz.$div.hasClass("newobj")) {
             $(".newobj").remove();
         }
@@ -171,11 +186,6 @@ export class Block {
             "dragsource": false,
             "droptarget": false
         }).off('mousemove').off('mouseup');
-        if (thiz._filedrop) {
-            let file = thiz._filedrop;
-            thiz._filedrop = null;
-            thiz.onFileDropped(file);
-        }
     }
     static onmousemove(e) {
         let thiz = $(document).data("dragsource");
@@ -186,19 +196,29 @@ export class Block {
         })
     }
     static onmouseover(e) {
-        if (!$(document).data("dragsource")) return;
+        const dragsrc = $(document).data("dragsource");
+        const thiz = e.data.thiz;
+        if (!dragsrc) return;
         e.preventDefault();
         e.stopPropagation();
-        let thiz = e.data.thiz;
         let oldtgt = $(document).data("droptarget");
         if (oldtgt) {
-            if (oldtgt != "trash")
-                oldtgt.$div.removeClass("droptarget");
-            else
-                $("#trash").removeClass("droptarget");
+            if (oldtgt != "trash") {
+                olddroptype = oldtgt.droptype;
+                oldtgt.$div.removeClass(olddroptype);
+                oldtgt.droptype = null;
+            } else
+                $("#trash").removeClass("dropinto");
         }
+
+        let droptype = thiz.droptype(dragsrc, {
+            x: e.originalEvent.offsetX / thiz.$div.width(), 
+            y: e.originalEvent.offsetY / thiz.$div.height(),
+        });
+        if (!droptype) return;
         $(document).data("droptarget", thiz);
-        thiz.$div.addClass("droptarget");
+        thiz.$div.addClass(droptype);
+        thiz.droptype = droptype;
     }
     static onmouseout(e) {
         if (!$(document).data("dragsource")) return;
@@ -208,7 +228,7 @@ export class Block {
         if ($(document).data("droptarget") == thiz) {
             $(document).data("droptarget", false);
         }
-        thiz.$div.removeClass("droptarget");
+        thiz.$div.removeClass("dropafter dropinto");
     }
     registerEvents() {
         this.$div.on("mousedown", {"thiz": this}, Block.onmousedown)
@@ -217,39 +237,56 @@ export class Block {
             .on("dragover", {"thiz": this}, Block.onmouseover);
     }
 }
-export class BlockSet extends Block {
-    constructor(kwargs) {
-        super(kwargs);
-        if (!this.type) this.type = "blockset";
-        this.blocks = kwargs.blocks;
-        this.blocks.forEach(v => {
-            v.parent = this;
-        })
+/**
+ * Non-exporting class for splits to hold block group
+ */
+export class BlockHolder extends Block {
+    constructor(singlar) {
+        this._blocks = [];
         this.canMove = false;
+        this.singlar = singlar;
     }
     get desc() {
         return "";
     }
+    droptype(dragsrc, loc) {
+        if (this.singlar && this._blocks.length > 0)
+            return null;
+        return super.droptype(dragsrc, loc);
+    }
     remove(obj) {
-        let idx = this.blocks.indexOf(obj);
-        if (idx != -1) this.blocks.splice(idx, 1);
+        let idx = this._blocks.indexOf(obj);
+        if (idx != -1) this._blocks.splice(idx, 1);
         obj.parent = null;
     }
+    prepend(obj, at) {
+        if (this.singlar && this._blocks.length > 0)
+            return;
+        if (at === null) at = 0;
+        if (typeof(at) == "object") {
+            at = this._blocks.indexOf(at) - 1;
+            if (at < 0) at = 0;
+        }
+        this._blocks.splice(at, 0, obj);
+        obj.parent = this;
+    }
     append(obj, at) {
+        if (this.singlar && this._blocks.length > 0)
+            return;
         if (at === null) at = -1;
         if (typeof(at) == "object") {
-            at = this.blocks.indexOf(at);
+            at = this._blocks.indexOf(at);
         }
         if (at == -1) {
-            this.blocks.push(obj);
+            this._blocks.push(obj);
         } else {
-            this.blocks.splice(at+1, 0, obj);
+            this._blocks.splice(at+1, 0, obj);
         }
         obj.parent = this;
     }
-    attach(obj) {
+    ondrop(src, droptype) {
         obj.parent = this;
-        this.blocks.unshift(obj);
+        this._blocks.unshift(src);
         let tgt = this.$div.find(".block:first");
         if (tgt.length) 
             tgt.before(obj.$div);
@@ -259,34 +296,107 @@ export class BlockSet extends Block {
     render() {
         this.$div = super.render().addClass("blockset");
         this.$div.children(".block").remove();
-        this.blocks.forEach(v => {
+        this._blocks.forEach(v => {
+            v.render().appendTo(this.$div);
+        });
+        return this.$div;
+    }
+    tojson() {
+
+    }
+}
+export class Parent extends Block {
+    constructor(args) {
+        if (!args._type) args._type = "skll.block.Parent";
+        super(args);
+        this._blocks = [];
+        // this.blocks = kwargs.children;
+        // this.blocks.forEach(v => {
+        //     v.parent = this;
+        // })
+        // this.canMove = false;
+    }
+    get desc() {
+        return "";
+    }
+    remove(obj) {
+        let idx = this._blocks.indexOf(obj);
+        if (idx != -1) this._blocks.splice(idx, 1);
+        obj.parent = null;
+    }
+    append(obj, at) {
+        if (at === null) at = -1;
+        if (typeof(at) == "object") {
+            at = this._blocks.indexOf(at);
+        }
+        if (at == -1) {
+            this._blocks.push(obj);
+        } else {
+            this._blocks.splice(at+1, 0, obj);
+        }
+        obj.parent = this;
+    }
+    attach(obj) {
+        obj.parent = this;
+        this._blocks.unshift(obj);
+        let tgt = this.$div.find(".block:first");
+        if (tgt.length) 
+            tgt.before(obj.$div);
+        else    // no block inside me
+            this.$div.append(obj.$div);
+    }
+    render() {
+        this.$div = super.render().addClass("blockset");
+        this.$div.children(".block").remove();
+        this._blocks.forEach(v => {
             v.render().appendTo(this.$div);
         });
         return this.$div;
     }
     tojson() {
         var result = [];
-        this.blocks.forEach(v => {
+        this._blocks.forEach(v => {
             result.push(v.tojson());
         });
         return {
-            name: this._name,
+            name: this.name,
             type: this._type,
             layers: result
         };
     }
 }
-export class BlockSplit extends Block {
+/**
+ * Hacking block for file drag and drop
+ */
+export class FileBlock extends Block {
     constructor(kwargs) {
+        kwargs.type = "__fileblock";
+        kwargs.name = "File";
         super(kwargs);
-        this.type = "blocksplit";
-        this.splits = kwargs.splits;
-        this.splits.forEach(v => {
-            v.blockset = new BlockSet({blocks: v.blocks});
-            v.blockset.parent = this;
-            v.blockset.canEdit = false;
-            v.blockset.name = v.name;
-        })
+        this.filename = kwargs.filename;
+    }
+    get desc() {
+        return this.filename;
+    }
+    begindrag() {
+        super.begindrag();
+        $(".dragbox").addClass("fileblock");
+    }
+}
+export class Split extends Block {
+    constructor(args) {
+        if (!args._type) args._type = "skll.block.Split";
+        super(args);
+        if (!this.splits) this.splits = [];
+        this._child = [];
+        for (let i = 0; i < this.splits.length; i++) this._child.push(new Parent());
+        // this.splits = kwargs.children;
+        // this.splits.forEach(v => {
+        //     v.blockset = new Parent({blocks: v.blocks});
+        //     v.blockset.parent = this;
+        //     v.blockset.canEdit = false;
+        //     v.blockset.name = v.name;
+        // })
     }
     render() {
         this.$div = super.render();
@@ -306,9 +416,47 @@ export class BlockSplit extends Block {
             })
         });
         return {
-            name: this._name,
+            name: this.name,
             type: this._type,
             splits: result
         };
     }
 }
+
+blockTypes = {
+    "skll.block.baseblock.Block": {
+        cls: Block,
+        properties: {
+            "name": {
+                desc: "Name",
+                type: "text",
+                enabled: true,
+            },
+            "_type": {
+                desc: "Underlying SK-ll type",
+                type: "text",
+                enabled: true,
+            },
+            "disable_mask": {
+                desc: "Disable this block when",
+                type: "mc(preview,train,test,run)",
+                enabled: true,
+            }
+        },
+    },
+    "skll.block.baseblock.Split": {
+        cls: Split,
+        childof: "skll.block.baseblock.Block",
+        properties: {
+            "splits": {
+                desc: "Splits",
+                type: "list(text)",
+                enabled: true,
+            }
+        }
+    },
+    "skll.block.baseblock.Parent": {
+        cls: Parent,
+        childof: "skll.block.baseblock.Block",
+    }
+};

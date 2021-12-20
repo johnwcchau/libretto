@@ -30,11 +30,34 @@ class EditDialog {
         const $row = $("<li>").addClass("editrow");
         this.createLabel(`edit_${name}`, name).appendTo($row);
         this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
-        $(`<input type="checkbox" name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
-            .addClass("editnum")
+        $(`<input type="checkbox" name="edit_${name}" id="edit_${name}">`)
+            .addClass("editchk")
             .data("id", name)
             .prop("checked", layer[name])
+            .prop("disabled", !prop.enabled)
             .appendTo($row);
+        return $row;
+    }
+    createMCRow(layer, name, prop) {
+        const $row = $("<li>").addClass("editrow");
+        this.createLabel(`edit_${name}`, name).appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        const $fields = $(`<span>`).addClass("editmcs").appendTo($row);
+        var choices = prop.type.split('(', 2);
+        if (choices.length > 1) {
+            choices = choices[1];
+            choices = choices.substring(0, choices.length - 1).split(",");
+            choices.forEach((v, i)=>{
+                $(`<input type="checkbox" name="edit_${name}[${v}]" id="edit_${name}_${v}">`)
+                .addClass("editchk")
+                .data("id", name)
+                .data("val", v)
+                .prop("checked", layer[name].indexOf(v) != -1)
+                .prop("disabled", !prop.enabled)
+                .appendTo($fields);
+                this.createLabel(`edit_${name}[${v}]`, v).appendTo($fields);
+            });
+        }
         return $row;
     }
     createToolbar() {
@@ -51,12 +74,15 @@ class EditDialog {
         const $root = $("<ul>").addClass("editgroup").appendTo($dialog);
         Object.keys(layer._properties).forEach(name => {
             const v = layer._properties[name];
-            switch(v.type) {
+            switch(v.type.split("(")[0]) {
                 case "number":
                     this.createNumberRow(layer, name, v).appendTo($root);
                     break;
                 case "boolean":
                     this.createBooleanRow(layer, name, v).appendTo($root);
+                    break;
+                case "mc":
+                    this.createMCRow(layer, name, v).appendTo($root);
                     break;
                 case "string":
                 default:

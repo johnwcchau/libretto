@@ -2,26 +2,32 @@ import Log from "./Log.mjs"
 
 class WsClient {
 
-    async send(action, param) {
-        if (this.working) {
-            Log.log("err", "Work is in progress");
+    #start() {
+        if (this._current) {
             return;
         }
         if (this.ws.readyState != WebSocket.OPEN) {
-            Log.log("err", "Not connected");
             return;
         }
-        this.working = true;
+        this._current = this._workqueue.shift();
+        if (!this._current) {
+            return;
+        }
+        let param = this._current.param;
+        const action = this._current.action;
+        const res = this._current.res;
+        const rej = this._current.rej;
         const self = this;
-        return new Promise((res, rej) => {
-            this.ws.onmessage = (e) => {
+
+        this.ws.onmessage = (e) => {
+            function _(res, rej) {
                 let msg;
                 try {
                     msg = JSON.parse(e.data);
                 } catch (e) {
                     Log.log("err", "Invalid response from remote");
                     rej({});
-                    return;
+                    return true;
                 }
                 let progress = msg["progress"];
                 var pval = false;
@@ -33,7 +39,7 @@ class WsClient {
                     if (msg["message"]) 
                         Log.log("err", "Remote: " + msg["message"]);
                     rej(msg);
-                    self.working = false;
+                    return true;
                 } else if ((result == 0)||(result==4)) { //completed | continue
                     if (result == 0) Log.hideDialog();
                     if (msg["message"]) {
@@ -42,40 +48,62 @@ class WsClient {
                             Log.dialog(msg["message"], progress);
                     }
                     res(msg);
-                    self.working = false;
+                    return true;
                 } else if (result == 1) { 
                     //1:info, 4:Logger
                     Log.dialog(msg["message"]);
                     Log.log("stream1", "Remote: " + msg["message"]);
+                    return false;
                 } else if ((result == 2)||(result == 3)) { 
                     //2: stdout, 3: stderr
                     stream = "stream" + result;
                     lastline = Log.write(stream, msg["message"]);
                     if (lastline != "") Log.dialog(oldmsg, pval);
+                    return false;
                 }
             }
-            if (!param) {
-                param = {};
+            if (_(res, rej)) {
+                this._current = null;
+                setTimeout(() => {
+                    self.#start();
+                }, 1);
             }
-            param["action"] = action;
-            param = JSON.stringify(param);
-            this.ws.send(param);
-        });
+        }
+        if (!param) {
+            param = {};
+        }
+        param["action"] = action;
+        param = JSON.stringify(param);
+        this.ws.send(param);
+        
     }
-    async upload(file) {
+    async send(action, param) {
+        const promise = new Promise((res, rej) => {
+            this._workqueue.push({
+                action: action,
+                param: param,
+                res: res,
+                rej: rej
+            })
+        });
+        this.#start();
+        return promise;
+    }
+    async upload(file, fullname) {
         const reader = new FileReader();
         let uploaded=0;
         let nextChunk=0;
         const chunkSize=512*1024;
         let finalResolve = null;
         let finalReject = null;
-
+        if (!fullname) fullname = file.name;
+        
         reader.onload = (e) => {
             const param = {
                 "data": e.target.result,
                 "flag": uploaded===0?"begin":"continue",
                 "size": file.size,
-                "name": file.name,
+                "name": fullname,
             }
             uploaded += nextChunk;
             this.send('put', param).then(r => {
@@ -94,7 +122,7 @@ class WsClient {
                 const param = {
                     "size": file.size,
                     "flag": "end",
-                    "name": file.name,
+                    "name": fullname,
                 }
                 this.send('put', param).then(r => {
                     finalResolve(r);
@@ -115,13 +143,14 @@ class WsClient {
         if (WsClient.instance) {
             return WsClient.instance;
         }
-        this.working = false;
-        this.ws = new WebSocket('ws://' + location.host + '/ws');
+        this._workqueue = [];
+        this._current = null;
+        this.ws = new WebSocket('ws://' + location.host + '/ws/default');
         this.ws.onopen = function() {
             Log.log("msg", 'Connected.');
             setTimeout(() => {
-                self.send("ping");
-            }, 100);
+                self.#start()
+            }, 1);
         };
         this.ws.onerror = function() {
             Log.log("err", "Websocket error occured.");
@@ -130,6 +159,7 @@ class WsClient {
             Log.log("err", 'Connection closed with code ' + e.code);
             Log.dialog("Connection closed, please refresh browser to reconnect.")
         };
+        this.send("ping");
         //this.ws.onmessage = this.#onwsmessage;
         WsClient.instance = this;
     }

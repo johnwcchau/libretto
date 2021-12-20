@@ -27,16 +27,20 @@
     opacity: 0.5;
     position: absolute;
     z-index: 1000;
+    min-width: 35%;
 }
-.block.droptarget {
+.block.dropinto {
+    background: linear-gradient(to bottom, #ddf, #aad);
+}
+.block.dropafter {
     margin-bottom: 2em;
     border-bottom: 5px dashed #ccf;
 }
-.block.blockset.droptarget {
+.block.blockset.dropafter {
     margin-bottom: unset;
     border-bottom: 1px solid #ddd;
 }
-.block.blockset.droptarget > .title {
+.block.blockset.dropafter > .title {
     margin-bottom: 2em;
     border-bottom: 5px dashed #ccf;
 }
@@ -71,7 +75,7 @@
     display: block;
     opacity: 0.8;
 }
-#trash.visible.droptarget {
+#trash.dropinto {
     background: #f88;
 }
 
@@ -83,23 +87,86 @@
     width: 25em;
     background: linear-gradient(to top, #fed, #fff8f0);
 }
-
-#toolbox a {
+.tabView .ui-tabs-nav {
+    background: unset !important;
+    border: none;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+}
+.tabView .ui-tabs-panel {
+    background: #fff;
+    padding: 0.5em !important;
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+.tabView li.ui-tabs-tab {
+    background: #a98;
+    flex: 1;
     justify-content: center;
+    border: none;
+}
+.tabView li.ui-tabs-tab:hover {
+    background: #dcb;
+}
+.tabView li.ui-tabs-tab a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    border: none !important;
+    width: 100%;
+}
+.tabView li.ui-tabs-tab a > img {
+    padding-right: 0.5em;
+}
+.tabView li.ui-tabs-tab a:hover {
+    background: unset !important;
+}
+.tabView li.ui-tabs-tab.ui-tabs-active {
+    background: #fff;
+    border: none;
+}
+.tabView li.ui-tabs-tab.ui-tabs-active a {
     color: #000;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    padding: 0.5em;
+}
+.tabPanel {
+    height: 100%;
+}
+.list-view {
+    background: #fff;
+    padding-top: 1em;
+    border-radius: 0.5em;
+    height: 100%;
+}
+.file-dragged-into .list-view {
+    background: linear-gradient(to bottom, #eff, #dff);
+    border: solid 2px #cee;
+}
+.list-view a {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    color: #000;
+    padding: 0 0.5em 0.1em 1em;
     text-decoration: none;
     transition: color 0.1s, background 0.1s, border 0.1s;
 }
-#toolbox a:hover {
+.list-view a:hover {
     background: #ddd;
 }
-#toolbox a:active {
+.list-view a:active {
     background: #999;
+}
+#filesPane .fileobj_parentdir::before {
+    content: url("/static/img/folder_open_black_24dp.svg");
+    padding-right: 0.5em;
+}
+#filesPane .fileobj_dir::before {
+    content: url("/static/img/folder_black_24dp.svg");
+    padding-right: 0.5em;
+}
+#filesPane .fileobj_file::before {
+    content: url("/static/img/text_snippet_black_24dp.svg");
+    padding-right: 0.5em;
 }
 .toolbar {
     display: flex;
@@ -132,7 +199,37 @@
     background: #999;
     color: #fff;
 }
-
+.context-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 0.5em;
+    border: solid 1px #ddd;
+    border-radius: 0.5em;
+}
+.context-menu-item {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    min-width: 13em;
+    padding: 0.2em;
+    color: #000;
+    transition: background 0.1s;
+}
+.context-menu-item:hover {
+    background: #ddd;
+}
+.context-menu-item:active {
+    background: #999;
+}
+.context-menu-item-icon {
+    padding-right: 0.5em;
+}
+.toolbar a:active {
+    background: #999;
+}
 main {
     position: fixed;
     left: 25em;
