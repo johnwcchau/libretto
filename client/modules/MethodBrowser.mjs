@@ -1,36 +1,38 @@
-import MethodRegistry from "./MethodRegistry.mjs";
+import { BlockTypes } from "./BaseBlock.mjs";
+
+const blockTypes = new BlockTypes();
 
 class MethodBrowser {
     static _dragTimer = null;
 
     refresh() {
-        WsClient.send("ls", {path: this._cd}).then(r => {
-            MethodRegistry.forEach(v => {
-                const a = $('<a href="#">').html(v[0]);
-                if (v[0] == "..") a.addClass("fileobj_parentdir");
-                if (v[1]) a.addClass("fileobj_dir");
-                else a.addClass("fileobj_file");
-                a.appendTo(this._filelist);
-            });
-            $(".fileobj_file").on("mousedown", (e) => {
-                if (e.originalEvent.button != 0) return;
-                e.preventDefault();
-                e.stopPropagation();
-                MethodBrowser._dragTimer = setTimeout(()=>{
-                    const layer = new FileBlock({
-                        filename: `${this._cd}/${$(e.delegateTarget).html()}`
-                    });
-                    layer.render();
-                    layer.$div.addClass("newobj").appendTo($("body"));
-                    layer.begindrag();
-                }, 100);
-            }).on("mouseup", (e) => {
-                if (MethodBrowser._dragTimer) {
-                    clearTimeout(MethodBrowser._dragTimer);
-                    MethodBrowser._dragTimer = null;
-                    $(e.delegateTarget).click();
-                }
-            });
+        this._methodlist.html("");
+        Object.entries(blockTypes.cls).forEach(([i, v]) => {
+            if (v.hidden) return;
+            const a = $('<a href="#">').addClass("methodobj").data("type", [i, v]);
+            $('<span class="method_name">').html(i).appendTo(a);
+            $('<span class="method_desc">').html(v.desc ? v.desc : "No description").appendTo(a);
+            a.appendTo(this._methodlist);
+        });
+        this._methodlist.find(".methodobj").on("mousedown", (e) => {
+            if (e.originalEvent.button != 0) return;
+            e.preventDefault();
+            e.stopPropagation();
+            MethodBrowser._dragTimer = setTimeout(()=>{
+                const $a = $(e.delegateTarget);
+                const [name, type] = $a.data("type");
+                if (!type) return;
+                const layer = new type["cls"]({_type: name});
+                layer.render();
+                layer.$div.addClass("newobj").appendTo($("body"));
+                layer.begindrag();
+            }, 100);
+        }).on("mouseup", (e) => {
+            if (MethodBrowser._dragTimer) {
+                clearTimeout(MethodBrowser._dragTimer);
+                MethodBrowser._dragTimer = null;
+                $(e.delegateTarget).click();
+            }
         });
     }
 

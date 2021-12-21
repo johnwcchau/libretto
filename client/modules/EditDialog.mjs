@@ -2,6 +2,18 @@ class EditDialog {
     createLabel(for_id, desc) {
         return $(`<label class="editlabel" for="${for_id}">`).html(desc);
     }
+    createJsonRow(layer, name, prop) {
+        const $row = $("<li>").addClass("editrow");
+        this.createLabel(`edit_${name}`, name).appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        $(`<textarea name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
+            .addClass("edittextarea")
+            .data("id", name)
+            .val(JSON.stringify(layer[name], null, 2))
+            .prop("disabled", !prop.enabled)
+            .appendTo($row);
+        return $row;
+    }
     createTextRow(layer, name, prop) {
         const $row = $("<li>").addClass("editrow");
         this.createLabel(`edit_${name}`, name).appendTo($row);
@@ -49,10 +61,10 @@ class EditDialog {
             choices = choices.substring(0, choices.length - 1).split(",");
             choices.forEach((v, i)=>{
                 $(`<input type="checkbox" name="edit_${name}[${v}]" id="edit_${name}_${v}">`)
-                .addClass("editchk")
+                .addClass(`editchk editchk_${name}`)
                 .data("id", name)
                 .data("val", v)
-                .prop("checked", layer[name].indexOf(v) != -1)
+                .prop("checked", layer[name] && (layer[name].indexOf(v) != -1))
                 .prop("disabled", !prop.enabled)
                 .appendTo($fields);
                 this.createLabel(`edit_${name}[${v}]`, v).appendTo($fields);
@@ -67,13 +79,56 @@ class EditDialog {
         const $dialog = this._dialog.html("").data("layer", layer);
         const $toolbar = this.createToolbar().appendTo($dialog);
         $("<a href='#'>").addClass("editapply").html("Apply").on("click", {thiz: layer}, (e)=> {
+            let res = true;
+            Object.entries(layer._properties).forEach(([name, v]) => {
+                if (!v.enabled) return;
+                switch(v.type.split("(")[0]) {
+                    case "list":
+                    case "dict":
+                        try {
+                            const t = $(`#edit_${name}`).removeClass("invalid-val").val();
+                            const val = JSON.parse(t == "" ? null : t);
+                            layer[name] = val;
+                        } catch (e) {
+                            console.log(e);
+                            $(`#edit_${name}`).addClass("invalid-val");
+                            res = false;
+                            return;
+                        }
+                        break;
+                    case "boolean":
+                        layer[name] = $(`#edit_${name}`).prop("checked");
+                        break;
+                    case "mc":
+                        let r = [];
+                        $(`.editchk_${name}`).each((i, v) => {
+                            if ($(v).prop("checked")) r.push($(v).data("val"));
+                        })
+                        layer[name] = r;
+                        break;
+                    case "number":
+                        try {
+                            layer[name] = parseFloat($(`#edit_${name}`).removeClass("invalid-val").val());
+                        } catch (e) {
+                            console.log(e);
+                            $(`#edit_${name}`).addClass("invalid-val");
+                            res = false;
+                            return;
+                        }
+                    case "string":
+                    default:
+                        layer[name] = $(`#edit_${name}`).val();
+                        break;
+                }
+            });
+            if (!res) return;
             $.modal.close();
             e.data.thiz.onEditApplied();
+            
         }).appendTo($toolbar);
         $("<h2>").html(layer._type).appendTo($dialog);
         const $root = $("<ul>").addClass("editgroup").appendTo($dialog);
-        Object.keys(layer._properties).forEach(name => {
-            const v = layer._properties[name];
+        Object.entries(layer._properties).forEach(([name, v]) => {
             switch(v.type.split("(")[0]) {
                 case "number":
                     this.createNumberRow(layer, name, v).appendTo($root);
@@ -83,6 +138,10 @@ class EditDialog {
                     break;
                 case "mc":
                     this.createMCRow(layer, name, v).appendTo($root);
+                    break;
+                case "list":
+                case "dict":
+                    this.createJsonRow(layer, name, v).appendTo($root);
                     break;
                 case "string":
                 default:

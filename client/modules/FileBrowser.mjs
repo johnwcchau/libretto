@@ -1,5 +1,5 @@
 import WsClient from './WsClient.mjs';
-import {FileBlock} from './BaseBlock.mjs';
+import {File} from './BaseBlock.mjs';
 import ContextMenu from './ContextMenu.mjs';
 
 class FileBrowser {
@@ -43,7 +43,7 @@ class FileBrowser {
                 e.preventDefault();
                 e.stopPropagation();
                 FileBrowser._dragTimer = setTimeout(()=>{
-                    const layer = new FileBlock({
+                    const layer = new File({
                         filename: `${this._cd}/${$(e.delegateTarget).html()}`
                     });
                     layer.render();

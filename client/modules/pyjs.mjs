@@ -1,12 +1,42 @@
-import { Parent, Split, Block, blockTypes } from "./BaseBlock.mjs";
+import { Parent, Split, Block, BlockTypes } from "./BaseBlock.mjs";
 
-blockTypes = Object.assign(blockTypes, {
+new BlockTypes().add({
+    "skll.block.baseblock.Split": {
+        cls: Split,
+        childof: "skll.block.baseblock.Block",
+        properties: {
+            // "splits": {
+            //     desc: "Splits",
+            //     type: "list(text)",
+            //     enabled: true,
+            // },
+        },
+        defaults: {
+            "singlar": false,
+        },
+        child_types: [".parent"]
+    },
+    "skll.block.baseblock.Parent": {
+        cls: Parent,
+        hidden: true,
+        childof: "skll.block.baseblock.Block",
+        properties: {
+        },
+        defaults: {
+            "singlar": false,
+        }
+    },
     "skll.block.baseblock.Loop": {
         cls: Parent,
+        hidden: true,
         childof: "skll.block.baseblock.Block",
+        defaults: {
+            "singlar": true,
+        }
     },
     "skll.block.input.Input": {
         cls: Block,
+        desc: "Data input",
         childof: "skll.block.baseblock.Block",
         properties: {
             "url": {
@@ -18,6 +48,7 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.imputer.ConstantImputer": {
         cls: Block,
+        desc: "Data imputation with any constant",
         childof: "skll.block.baseblock.Block",
         properties: {
             "value": {
@@ -29,6 +60,7 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.imputer.MethodImputer": {
         cls: Block,
+        desc: "Data imputation with python method, with optionally group-by column",
         childof: "skll.block.baseblock.Block",
         properties: {
             "method": {
@@ -45,10 +77,12 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.splitter.ColumnWise": {
         cls: Parent,
+        desc: "Transformation for each column",
         childof: "skll.block.baseblock.Parent",
     },
     "skll.block.splitter.TypeSplit": {
         cls: Split,
+        desc: "Column splitting by data-type",
         childof: "skll.block.baseblock.Split",
         properties: {
             "convert_types": {
@@ -60,10 +94,12 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.splitter.RunModeSplit": {
         cls: Block,
+        desc: "Dataset splitting by run mode",
         childof: "skll.block.sklwrapper.SklSplitter",
     },
     "skll.block.splitter.XyidSplit": {
         cls: Block,
+        desc: "Specifying column for Y and/or Id",
         childof: "skll.block.baseblock.Block",
         properties: {
             "ycol": {
@@ -80,6 +116,7 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.sklwrapper.SklClass": {
         cls: Block,
+        desc: "Sklearn transformer or estimator class",
         childof: "skll.block.baseblock.Block",
         properties: {
             "cls": {
@@ -121,6 +158,7 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.sklwrapper.SklPipeline": {
         cls: Block,
+        desc: "SKlearn Pipeline",
         childof: "skll.block.sklwrapper.SklClass",
         properties: {
             "cls": {
@@ -133,6 +171,7 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.sklwrapper.Method": {
         cls: Block,
+        desc: "Any python method applying 1-to-1 transformations",
         childof: "skll.block.baseblock.Block",
         properties: {
             "method": {
@@ -164,10 +203,12 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.sklwrapper.SklScoringMethod": {
         cls: Block,
+        desc: "Sklearn method outputing a scalar scores",
         childof: "skll.block.sklwrapper.Method",
     },
     "skll.block.sklwrapper.SklSplitter": {
         cls: Parent,
+        desc: "Scoring splitters e.g. Kfold",
         childof: "skll.block.baseblock.Loop",
         properties: {
             "cls": {
@@ -189,6 +230,7 @@ blockTypes = Object.assign(blockTypes, {
     },
     "skll.block.sklwrapper.SklWrappingClass": {
         cls: Split,
+        desc: "Ensemble estimators or Hyper-parameter search class",
         childof: "skll.block.sklwrapper.SklClass",
         properties: {
             "estname": {
@@ -201,7 +243,11 @@ blockTypes = Object.assign(blockTypes, {
                 type: "boolean",
                 enabled: true,
             },
-        }
+        },
+        child_types: [
+            "skll.block.sklwrapper.SklClass",
+            "skll.block.sklwrapper.SklPipeline",
+        ]
     },
 });
 

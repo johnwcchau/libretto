@@ -1,9 +1,11 @@
-import {Block, Parent, Split} from './modules/BaseBlock.mjs';
-import {DataFrame} from "./modules/DataFrame.mjs"
-import Log from "./modules/Log.mjs"
-import EditDialog from "./modules/EditDialog.mjs"
-import FileBrowser from "./modules/FileBrowser.mjs"
-import WsClient from "./modules/WsClient.mjs"
+import {Block, Parent, Split, Trash, Root} from './modules/BaseBlock.mjs';
+import {} from "./modules/pyjs.mjs";
+import {DataFrame} from "./modules/DataFrame.mjs";
+import Log from "./modules/Log.mjs";
+import EditDialog from "./modules/EditDialog.mjs";
+import FileBrowser from "./modules/FileBrowser.mjs";
+import MethodBrowser from "./modules/MethodBrowser.mjs"
+import WsClient from "./modules/WsClient.mjs";
 
 var input = {
     "_type": "skll.block.input.Input",
@@ -84,24 +86,26 @@ var input = {
     }
 }
 
-var model = new Parent({
+var model = new Root({
     name: "root",
     children: [
         new DataFrame({name: "input"}),
         new Split({
             name: "ct1", 
+            splits: [
+                ["text1, text2"],
+                ["num1, num2, num3"],
+            ],
             children: [
-                {
-                    name: "text1, text2",
+                new Parent({
                     children: [
                         new Block({
                             name: "OHE1",
                             type: "onehotencoder"
                         }),
                     ],
-                },
-                {
-                    name: "num1, num2, num3",
+                }),
+                new Parent({
                     children: [
                         new Block({
                             name: "IMP1",
@@ -112,7 +116,7 @@ var model = new Parent({
                             type: "scaler"
                         }),
                     ],
-                }
+                })
             ]
         }),
         new Block({
@@ -122,49 +126,12 @@ var model = new Parent({
     ]
 });
 
-// var model = new Parent({
-//     name: "model1",
-//     blocks: [
-//         new DataFrame({name: "input"}),
-//         new Split({
-//             name: "ct1", 
-//             children: [
-//                 {
-//                     name: "text1, text2",
-//                     blocks: [
-//                         new Block({
-//                             name: "OHE1",
-//                             type: "onehotencoder"
-//                         }),
-//                     ],
-//                 },
-//                 {
-//                     name: "num1, num2, num3",
-//                     blocks: [
-//                         new Block({
-//                             name: "IMP1",
-//                             type: "imputer"
-//                         }),
-//                         new Block({
-//                             name: "SCL1",
-//                             type: "scaler"
-//                         }),
-//                     ],
-//                 }
-//             ]
-//         }),
-//         new Block({
-//             name: "SVC1",
-//             type: "svc"
-//         }),
-//     ]
-// });
 window.model = model;
 const dropzones = () => {
     const ondragexit = (e) => {
         if (e.target != e.currentTarget) return;
         $(".newobj").remove();
-        $(".mainblock").off("dragleave").off("dragend").off("drop");
+        $(".rootblock").off("dragleave").off("dragend").off("drop");
         $(document).data("droptarget", false);
         $(".droptarget").removeClass("droptarget");
     }
@@ -174,7 +141,7 @@ const dropzones = () => {
         });
     });
 
-    document.querySelectorAll(".mainblock").forEach((inputElement) => {
+    document.querySelectorAll(".rootblock").forEach((inputElement) => {
         inputElement.addEventListener("dragover", (e) => {
             if (!e.dataTransfer) return;
             if (e.dataTransfer.items[0].kind != "file") return;
@@ -190,7 +157,7 @@ const dropzones = () => {
         inputElement.addEventListener("drop", (e) => {
             e.preventDefault();
             $("main").off("dragleave").off("dragend");
-            $(".mainblock").off("drop");
+            $(".rootblock").off("drop");
             if (e.dataTransfer && e.dataTransfer.files.length) {
                 const file = e.dataTransfer.files[0];
                 const ext = file.name.split(".").pop();
@@ -211,37 +178,32 @@ const init = () => {
     Log.prompt.appendTo("body");
     EditDialog.dialog.appendTo("body");
     FileBrowser.panel.attr("id", "filesPane").addClass("tabPanel").appendTo("#toolbox");
+    MethodBrowser.panel.attr("id", "methodsPane").addClass("tabPanel").appendTo("#toolbox");
+    setTimeout(()=>{
+        $("#tb_methods").click();
+        $("#tb_files").click();
+    }, 1);
     
+    new Trash().render().appendTo("body");
+
     model.render().appendTo("main");
-    model.$div.addClass("mainblock");
     //dropzones();
-    const $toolbox = $("#methodsPane");
-    ["Input", "OneHotEncoder", "SimpleImputer", "StandardScaler", "DBSCAN", "LinearRegression", "LogisticRegression"].forEach(v => {
-        $("<a href='#'>").addClass("layertools").data("type", v).html(v).appendTo($toolbox);
-    });
-    $(".layertools").on("mousedown", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const type = $(e.delegateTarget).data("type");
-        const layer = new Block({
-            name: type,
-            type: type
-        });
-        layer.render();
-        layer.$div.addClass("newobj").appendTo($("body"));
-        layer.begindrag();
-    });
-    $("#trash").on("mouseover", () => {
-        const oldtgt = $(document).data("droptarget");
-        if (oldtgt) oldtgt.$div.removeClass("dropafter dropinto");
-        $(document).data("droptarget", "trash");
-        $("#trash").addClass("dropinto");
-    }).on("mouseout", () => {
-        $("#trash").removeClass("dropinto");
-        if ($(document).data("droptarget") == "trash") {
-            $(document).data("droptarget", false);
-        }
-    })
+    // const $toolbox = $("#methodsPane");
+    // ["Input", "OneHotEncoder", "SimpleImputer", "StandardScaler", "DBSCAN", "LinearRegression", "LogisticRegression"].forEach(v => {
+    //     $("<a href='#'>").addClass("layertools").data("type", v).html(v).appendTo($toolbox);
+    // });
+    // $(".layertools").on("mousedown", (e) => {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     const type = $(e.delegateTarget).data("type");
+    //     const layer = new Block({
+    //         name: type,
+    //         type: type
+    //     });
+    //     layer.render();
+    //     layer.$div.addClass("newobj").appendTo($("body"));
+    //     layer.begindrag();
+    // });
 }
 
 $(document).ready(() => {

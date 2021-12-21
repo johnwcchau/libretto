@@ -19,6 +19,8 @@
 }
 .block.blockset {
     background: none;
+    min-height: 4em;
+    justify-content: start;
 }
 .block.dragsource {
     display: none;
@@ -60,7 +62,44 @@
     color: #888;
     font-size: 0.8em;
 }
-#trash {
+/* .rootblock {
+    height: 100%;
+} */
+.droppos {
+    position:absolute;
+    display: block;
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background: #cef;
+    opacity: 0.5;
+}
+.droppos-left {
+    left: 1em;
+    top: 0;
+    height: 100%;
+}
+.droppos-right {
+    right: 1em;
+    top: 0;
+    height: 100%;
+}
+.droppos-before {
+    top: 0;
+    left: calc(50% - 2em);
+    width: 4em;
+}
+.droppos-after {
+    bottom: 0;
+    left: calc(50% - 2em);
+    width: 4em;
+}
+.droppos-into {
+    bottom: calc(50% - 0.5em);
+    left: calc(50% - 2em);
+    width: 4em;
+}
+.trash {
     display: none;
     opacity: 0;
     position: absolute;
@@ -71,11 +110,11 @@
     height: 6em;
     left: calc((100% - 6em) / 2);
 }
-#trash.visible {
+.trash.visible {
     display: block;
     opacity: 0.8;
 }
-#trash.dropinto {
+.trash.dropinto {
     background: #f88;
 }
 
@@ -167,6 +206,20 @@
 #filesPane .fileobj_file::before {
     content: url("/static/img/text_snippet_black_24dp.svg");
     padding-right: 0.5em;
+}
+#methodsPane .methodobj {
+    flex-direction: column;
+    align-items: start;
+    padding: 0.3em 0 0.3em 0;
+}
+#methodsPane .methodobj .methodname {
+    font-weight: bolder;
+    color: #888;
+}
+#methodsPane .methodobj .method_desc {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #888;
 }
 .toolbar {
     display: flex;
@@ -268,7 +321,10 @@ main {
     font-family: monospace, monospace;
     font-size: 1em;
 }
-
+input.invalid-val,
+textarea.invalid-val {
+    color: red;
+}
 .logPanel {
     width: 100%;
     padding: 1em;
