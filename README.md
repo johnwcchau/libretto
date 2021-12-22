@@ -1,0 +1,2 @@
+# SK-ll #
+A web GUI for Scikit-learn, which can be extended to Keras/pytorch/any other machine learning packages. The goal of this project is to create a coding-free environment with easy to use toolset for "everyday" machine learning.
