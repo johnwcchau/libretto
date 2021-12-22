@@ -1,0 +1,7 @@
+#toolbar {
+    display: flex;
+    flex-direction: row;
+}
+#toolbar li {
+    list-style: none;
+}

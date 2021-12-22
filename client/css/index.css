@@ -1,0 +1,234 @@
+
+#toolbox {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 25em;
+    background: linear-gradient(to top, #fed, #fff8f0);
+}
+.tabView .ui-tabs-nav {
+    background: unset !important;
+    border: none;
+    display: flex;
+    flex-direction: row;
+}
+.tabView .ui-tabs-panel {
+    background: #fff;
+    padding: 0.5em !important;
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+.tabView li.ui-tabs-tab {
+    background: #a98;
+    flex: 1;
+    justify-content: center;
+    border: none;
+}
+.tabView li.ui-tabs-tab:hover {
+    background: #dcb;
+}
+.tabView li.ui-tabs-tab a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    border: none !important;
+    width: 100%;
+}
+.tabView li.ui-tabs-tab a > img {
+    padding-right: 0.5em;
+}
+.tabView li.ui-tabs-tab a:hover {
+    background: unset !important;
+}
+.tabView li.ui-tabs-tab.ui-tabs-active {
+    background: #fff;
+    border: none;
+}
+.tabView li.ui-tabs-tab.ui-tabs-active a {
+    color: #000;
+}
+.tabPanel {
+    height: 100%;
+}
+.list-view {
+    background: #fff;
+    padding-top: 1em;
+    border-radius: 0.5em;
+    height: 100%;
+}
+.file-dragged-into .list-view {
+    background: linear-gradient(to bottom, #eff, #dff);
+    border: solid 2px #cee;
+}
+.list-view a {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    color: #000;
+    padding: 0 0.5em 0.1em 1em;
+    text-decoration: none;
+    transition: color 0.1s, background 0.1s, border 0.1s;
+}
+.list-view a:hover {
+    background: #ddd;
+}
+.list-view a:active {
+    background: #999;
+}
+#filesPane .fileobj_parentdir::before {
+    content: url("/static/img/folder_open_black_24dp.svg");
+    padding-right: 0.5em;
+}
+#filesPane .fileobj_dir::before {
+    content: url("/static/img/folder_black_24dp.svg");
+    padding-right: 0.5em;
+}
+#filesPane .fileobj_file::before {
+    content: url("/static/img/text_snippet_black_24dp.svg");
+    padding-right: 0.5em;
+}
+#methodsPane .methodobj {
+    flex-direction: column;
+    align-items: start;
+    padding: 0.3em 0 0.3em 0;
+}
+#methodsPane .methodobj .methodname {
+    font-weight: bolder;
+    color: #888;
+}
+#methodsPane .methodobj .method_desc {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #888;
+}
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em;
+    gap: 0.2em;
+    margin-bottom:0.5em;
+    border-bottom: 1px solid #888;
+}
+
+.toolbar a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #000;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 0.5em;
+    text-decoration: none;
+    transition: color 0.1s, background 0.1s, border 0.1s;
+}
+.toolbar a:hover {
+    background: #ddd;
+}
+.toolbar a:active {
+    background: #999;
+}
+
+.toolbar a.selected {
+    background: #999;
+    color: #fff;
+}
+.context-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 0.5em;
+    border: solid 1px #ddd;
+    border-radius: 0.5em;
+}
+.context-menu-item {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    min-width: 13em;
+    padding: 0.2em;
+    color: #000;
+    transition: background 0.1s;
+}
+.context-menu-item:hover {
+    background: #ddd;
+}
+.context-menu-item:active {
+    background: #999;
+}
+.context-menu-item-icon {
+    padding-right: 0.5em;
+}
+.toolbar a:active {
+    background: #999;
+}
+main {
+    position: fixed;
+    left: 25em;
+    width: calc(100% - 25em);
+    height: calc(100% - 12em);
+    overflow: auto;
+}
+
+.modal {
+    z-index: 100;
+    width: auto;
+    max-width: 100vw;
+}
+.modal section {
+    display: flex;
+    flex-direction: column;
+}
+.modal ul {
+    display: inline-table;
+}
+.modal > ul {
+    padding-left: 0;
+}
+.modal li {
+    display: table-row;
+    list-style: none;
+    margin: 0;
+}
+.modal li>label {
+    display: table-cell;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding-right: 0.5em;
+}
+.modal li>input, 
+.modal li>select {
+    font-family: monospace, monospace;
+    font-size: 1em;
+}
+input.invalid-val,
+textarea.invalid-val {
+    color: red;
+}
+.logPanel {
+    width: 100%;
+    padding: 1em;
+    overflow-y: scroll;
+    font-family: monospace, monospace;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    height: 10%;
+    z-index: 101;
+}
+.logPanel .err,
+.logPanel .stream3 {
+    color: #f33;
+}
+.logPanel .stream0 {
+    color: #8f8;
+}
+.logPanel > .logPanel_clear_button {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    padding: 0.5em;
+}

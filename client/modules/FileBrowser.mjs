@@ -1,6 +1,7 @@
 import WsClient from './WsClient.mjs';
 import {File} from './BaseBlock.mjs';
 import ContextMenu from './ContextMenu.mjs';
+import Session from './session.mjs';
 
 class FileBrowser {
     static _dragTimer = null;
@@ -26,7 +27,7 @@ class FileBrowser {
                         title: "Delete",
                         icon: "/static/img/delete_forever_black_24dp.svg",
                         click: () => {
-                            const name = $(obj).html();
+                            const name = $(e.delegateTarget).html();
                             if (confirm(`Delete ${name}?`)) {
                                 WsClient.send("rm", {
                                     path: `${this._cd}/${name}`,
@@ -57,22 +58,23 @@ class FileBrowser {
                     $(e.delegateTarget).click();
                 }
             }).click((e)=> {
-                window.open(`/storage${this._cd}/${$(e.delegateTarget).html()}`, "_blank");
+                const name = $(e.delegateTarget).html();
+                window.open(`/storage${this._cd}/${name}`, "_blank");
             }).on("contextmenu", (e) => {
                 e.preventDefault();
-                ContextMenu.make([
+                const name = $(e.delegateTarget).html();
+                let contexts = [
                     {
                         title: "Open in new tab",
                         icon: "/static/img/open_in_new_black_24dp.svg",
                         click: () => {
-                            $(obj).click();
+                            $(e.delegateTarget).click();
                         }
                     },
                     {
                         title: "Delete",
                         icon: "/static/img/delete_forever_black_24dp.svg",
                         click: () => {
-                            const name = $(obj).html();
                             if (confirm(`Delete ${name}?`)) {
                                 WsClient.send("rm", {
                                     path: `${this._cd}/${name}`,
@@ -82,7 +84,17 @@ class FileBrowser {
                             }
                         }
                     },
-                ]).showAt(e);
+                ];
+                if (name.split(".").pop() == "json") {
+                    contexts.unshift({
+                        title: "Load as receipe",
+                        icon: "/static/img/open_in_browser_black_24dp.svg",
+                        click: () => {
+                            Session.loadRemote(`/storage${this._cd}/${name}`);
+                        }
+                    })
+                }
+                ContextMenu.make(contexts).showAt(e);
             });
         });
     }

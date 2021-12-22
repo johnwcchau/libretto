@@ -251,19 +251,25 @@ new BlockTypes().add({
     },
 });
 
-function pytojs(py, root) {
-    next = py;
+export default function pyimport(py) {
+    let next = py;
+    let root = [];
+    const blockTypes = new BlockTypes();
     while (next) {
-        type = next._type;
-        cls = blockTypes[type];
+        const type = next._type;
+        const cls = blockTypes.get(type).cls;
         if (!cls) throw `Unknown type for ${next._type}`;
-        obj = cls(next, cls);
-        root.append(obj);
         if (next._children) {
-            next._children.forEach((v, i) => {
-                obj.setchild(i, pytojs(v));
+            let children = [];
+            Object.entries(next._children).forEach(([i, v]) => {
+                children[i-1] = pyimport(v); //python-side starts from 1
             });
+            next["children"] = children;
+            delete next._children;
         }
+        const obj = new cls(next);
+        root.push(obj);
         next = next._next;
     }
+    return root;
 }

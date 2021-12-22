@@ -37,9 +37,9 @@ export class Block {
         if (cls.properties) {
             Object.entries(cls.properties).forEach(([i, v]) => {
                 this._properties[i] = v;
-                if (args[i]) {
+                if (args[i] !== undefined) {
                     this[i] = args[i];
-                } else if (v.default) {
+                } else if (v.default !== undefined) {
                     this[i] = v.default;
                 }
             })
@@ -64,12 +64,12 @@ export class Block {
     canMove = true;
     canEdit = true;
     get desc() {
-        let result = this._type + "(";
+        let result = this._type + " (";
         let props = [];
         Object.keys(this._properties).forEach(name => {
             const v = this._properties[name];
             if (name.startsWith("_")) return;
-            if (this[name]) {
+            if (this[name] !== undefined && this[name] !== null) {
                 if (v.type == "text")
                     props.push(`${name}="${this[name]}"`);
                 else if (v.type == "number") {
@@ -209,7 +209,6 @@ export class Block {
         }, 100);
     }
     static onmouseup(e) {
-        Log.log("debug", "mouseup");
         $(".droppos").remove();
         let thiz = $(document).data("dragsource");
         if (!thiz) return;
@@ -252,7 +251,6 @@ export class Block {
     }
     becomeDropTarget(src) {
         const droptypes = this.allowdroptypes(src);
-        Log.log("debug", droptypes.length);
         if (!droptypes || (droptypes.length == 0)) return;
         if (droptypes.indexOf("dropleft") != -1) {
             $("<a>").addClass("droppos droppos-left")
@@ -315,7 +313,6 @@ export class Block {
         $(".droppos").remove();
     }
     static onmouseover(e) {
-        Log.log("mover");
         const dragsrc = $(document).data("dragsource");
         const thiz = e.data.thiz;
         if (!dragsrc) return;
@@ -323,7 +320,6 @@ export class Block {
         e.stopPropagation();
         let oldtgt = $(document).data("droptarget");
         if (oldtgt == thiz) return;
-        Log.log("mover2");
         if (oldtgt) {
             oldtgt.resetDropTarget();
             $(document).data("droptarget", false);
@@ -390,7 +386,8 @@ export class Parent extends Block {
     constructor(kwargs) {
         if (!kwargs._type) kwargs._type = Parent.TYPE;
         super(kwargs);
-        this._blocks = kwargs.children || [];
+        //Children is 2D array although only 1 column to unify with Split
+        this._blocks = kwargs.children ? kwargs.children[0] : [];
         this.singlar = kwargs.singlar || false;
         this._blocks.forEach(v => {
             v.parent = this;
@@ -410,7 +407,7 @@ export class Parent extends Block {
         return types;
     }
     childdroptypes(dragsrc) {
-        if (this.singlar) return [];
+        if (this.singlar && (dragsrc != this._blocks[0])) return [];
         if (!this.childtypematch(dragsrc)) return [];
         return ["dropbefore", "dropafter"];
     }
@@ -445,7 +442,6 @@ export class Parent extends Block {
         obj.parent = this;
     }
     ondrop(src, droptype) {
-        Log.log("debug", droptype);
         switch (droptype) {
             case "dropleft":
                 this.parent.prepend(src, this);
@@ -469,10 +465,14 @@ export class Parent extends Block {
         }
     }
     render() {
-        this.$div = super.render().addClass("blockset");
+        this.$div = super.render().addClass("block-set");
         this.$div.children(".block").remove();
         this._blocks.forEach(v => {
-            v.render().appendTo(this.$div);
+            try {
+                v.render().appendTo(this.$div);
+            } catch (e) {
+                console.log(e);
+            }
         });
         return this.$div;
     }
@@ -483,12 +483,12 @@ export class Parent extends Block {
             next._next = v.export();
             next = next._next;
         });
-        if (this._type != Parent.TYPE) {
+        if (this._isinternal) {
+            return root._next;
+        } else {
             const thiz = super.export();
             thiz["_children"] = {"1": root._next}
             return thiz;
-        } else {
-            return root._next;
         }
     }
 }
@@ -504,6 +504,19 @@ export class Root extends Parent {
         super.render();
         this.$div.addClass("rootblock");
         return this.$div;
+    }
+}
+class SplitGroup extends Parent {
+    constructor(kwargs) {
+        if (!kwargs._type) kwargs["_type"] = ".splitgroup";
+        super(kwargs);
+        if (!this._splits) this._splits = [];
+    }
+
+    render() {
+        const res = super.render();
+        this.$div.children("span.title").html(JSON.stringify(this._splits).replaceAll(",", ", "));
+        return res;
     }
 }
 /**
@@ -533,7 +546,7 @@ export class Split extends Block {
         this.children = [];
         const splits = args.splits || [];
         for (let i = 0; i < splits.length; i++) {
-            const child = (args.children && args.children[i]) ? args.children[i] : new Parent();
+            const child = new SplitGroup({_type: ".splitgroup", children: [args.children[i]]});
             child._splits = splits[i];
             child.parent = this;
             this.children.push(child);
@@ -604,16 +617,16 @@ export class Split extends Block {
         }
     }
     render() {
-        this.$div = super.render();
+        this.$div = super.render().addClass("split-block");
         this.$div.children(".splitblock").remove();
-        this.$splitdiv = $("<div>").addClass("block splitblock").appendTo(this.$div);
+        this.$splitdiv = $("<div>").addClass("block splits-container").appendTo(this.$div);
         this.children.forEach(v => {
             v.render().appendTo(this.$splitdiv);
         });
-        this.$addbtn = $("<div>").addClass("block splitaddblock")
+        this.$addbtn = $("<div>").addClass("block split-add-block")
             .on("click", {thiz: this}, (e)=>{
                 const thiz = e.data.thiz;
-                const newgroup = new Parent({});
+                const newgroup = new SplitGroup({});
                 thiz.children.push(newgroup);
                 this.$addbtn.before(newgroup.render());
                 thiz.adjustAddButton();
@@ -666,5 +679,23 @@ blockTypes.add({
         hidden: true,
         desc: "Internal type that has no effect",
         childof: "skll.block.baseblock.Block",
+        defaults: {
+            "_isinternal": true,
+        }
+    },
+    ".splitgroup": {
+        cls: SplitGroup,
+        hidden: true,
+        desc: "Internal type that has no effect",
+        properties: {
+            "_splits": {
+                desc: "Split specification",
+                type: "list(text)",
+                enabled: true,
+            },
+        },
+        defaults: {
+            "_isinternal": true,
+        }
     },
 });

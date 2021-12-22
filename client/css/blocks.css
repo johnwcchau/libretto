@@ -1,0 +1,128 @@
+.block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin: 0.2em;
+    min-height: 2em;
+    justify-content: center;
+    flex: 1;
+    align-items: stretch;
+    background: linear-gradient(to bottom, #fff, #ddd);
+    border-radius: 0.5em;
+}
+.block.split-block {
+    overflow: auto;
+}
+.block.splits-container {
+    flex-direction: row;
+    background: none;
+    border: none;
+}
+.block.split-add-block{
+    flex: 5em 0 0;
+}
+.block.split-add-block::before {
+    content: url("/static/img/add_black_24dp.svg");
+}
+.block.block-set {
+    background: none;
+    min-height: 4em;
+    justify-content: start;
+}
+.block.dragsource {
+    display: none;
+}
+.block.dragbox {
+    opacity: 0.5;
+    position: absolute;
+    z-index: 1000;
+    min-width: 35%;
+}
+.block.dropinto {
+    background: linear-gradient(to bottom, #ddf, #aad);
+}
+.block.dropafter {
+    margin-bottom: 2em;
+    border-bottom: 5px dashed #ccf;
+}
+.block.block-set.dropafter {
+    margin-bottom: unset;
+    border-bottom: 1px solid #ddd;
+}
+.block.block-set.dropafter > .title {
+    margin-bottom: 2em;
+    border-bottom: 5px dashed #ccf;
+}
+.block>.editbtn {
+    position: absolute;
+    top: 0.1em;
+    right: 0.1em;
+    text-decoration: none;
+    text-shadow: 0 0 #ccc;
+    color: transparent;
+}
+.block .title {
+    font-weight: bold;
+}
+.block .desc {
+    font-style: italic;
+    color: #888;
+    font-size: 0.8em;
+}
+/* .rootblock {
+    height: 100%;
+} */
+.droppos {
+    position:absolute;
+    display: block;
+    width: 1em;
+    height: 1em;
+    border-radius: 0.5em;
+    background: #cef;
+    opacity: 0.5;
+}
+.droppos-left {
+    left: 1em;
+    top: 0;
+    height: 100%;
+}
+.droppos-right {
+    right: 1em;
+    top: 0;
+    height: 100%;
+}
+.droppos-before {
+    top: 0;
+    left: calc(50% - 2em);
+    width: 4em;
+}
+.droppos-after {
+    bottom: 0;
+    left: calc(50% - 2em);
+    width: 4em;
+}
+.droppos-into {
+    bottom: calc(50% - 0.5em);
+    left: calc(50% - 2em);
+    width: 4em;
+}
+.trash {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    bottom: 10em;
+    background: #888;
+    border-radius: 1em;
+    width: 6em;
+    height: 6em;
+    left: calc((100% - 6em) / 2);
+}
+.trash.visible {
+    display: block;
+    opacity: 0.8;
+}
+.trash.dropinto {
+    background: #f88;
+}

@@ -1,0 +1,54 @@
+.menubtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0.5em;
+    width: 2em;
+    height: 2em;
+    border-radius: 0.3em;
+    opacity: 0.5;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.1s, opacity 0.1s;
+}
+.menubtn:hover {
+    background:#865;
+}
+.menubtn:active {
+    opacity: 1;
+}
+.menubtn span,
+.menubtn span:before,
+.menubtn span:after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 1.5em;
+    border-radius: 1px;
+    background-color: #fff;
+    position: absolute;
+    transform: rotate(0);
+    transition: all 0.2s;
+}
+.menubtn span {
+    top:50%;
+}
+.menubtn span:before {
+    top: 0.3em;
+}
+.menubtn span::after {
+    bottom: 0.3em;
+}
+.visiblemenu .menubtn span {
+    background-color: unset;
+}
+.visiblemenu .menubtn span::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+.visiblemenu .menubtn span::after {
+    bottom: 0;
+    transform: rotate(-45deg);
+}

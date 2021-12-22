@@ -323,9 +323,13 @@ class SklWrappingClass(SklClass):
         r["estname"] = self.estname
         r["multiple"] = self.multiple
         _children = {}
+        # dummy split arg for javascript counterpart
+        _split = []
         for i,v in self.child.items():
             _children[i+1] = v.dump()
+            _split.append(i+1)
         r["_children"] = _children
+        r["splits"] = _split
         return r
         
     def __setitem__(self, key: int, block: Block):
