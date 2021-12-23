@@ -1,4 +1,11 @@
-
+html, body {
+    height: 100%;
+    display: block;
+}
+.context-menu-highlighted {
+    background: #eff !important;
+    border: 1px solid #cee !important;
+}
 #toolbox {
     position: fixed;
     display: flex;

@@ -330,6 +330,10 @@ class SklWrappingClass(SklClass):
             _split.append(i+1)
         r["_children"] = _children
         r["splits"] = _split
+        if isinstance(self.estname, int):
+            r["initargs"][self.estname] = None
+        else:
+            r["initkargs"][self.estname] = None
         return r
         
     def __setitem__(self, key: int, block: Block):

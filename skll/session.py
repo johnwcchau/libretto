@@ -1,6 +1,8 @@
+import traceback
 from skll.block import Block
 from skll.block.baseblock import RunSpec
 from skll.inout import Output
+import pandas as pd
 
 class Session:
 
@@ -19,7 +21,7 @@ class Session:
         self.rootblock:Block = None
         self.out:Output = Output()
         self.runspec:RunSpec = None
-        self.result:tuple = None
+        self._result:tuple = None
     
     def _attach(self, ws):
         if self.out.ws is not None and self.out.ws != ws:
@@ -30,17 +32,38 @@ class Session:
         self.out.ws = None
 
     def run(self, mode:str, upto:str, **kwargs)->None:
-        if self.rootblock is None:
-            raise RuntimeError('No receipe')
-        self.runspec = RunSpec(mode=RunSpec.RunMode[mode.upper()], upto=upto, out=self.out)
-        self.result = self.rootblock(self.runspec, None)
-        self.out.finished("Finished")
+        try:
+            if self.rootblock is None:
+                raise RuntimeError('No receipe')
+            self.out.working(f'{mode} upto {upto if upto else "end"}...')
+            self.runspec = RunSpec(mode=RunSpec.RunMode[mode.upper()], upto=upto, out=self.out)
+            self._result = self.rootblock(self.runspec, None)
+            self.out.finished("Finished")
+        except Exception as e:
+            traceback.print_exc()
+            self.out.error(repr(e))
     
-    def result(self, **kwargs)->None:
-        if self.result is None:
-            raise RuntimeError('No result, run first')
-        self.out.finished("Result ready", {"id": self.out[2], "x": self.out[0], "y": self.out[1], "score": self.runspec.scores})
-    
+    def result(self, usage:str="table", **kwargs)->None:
+        try:
+            if self._result is None:
+                raise RuntimeError('No result, run first')
+            result = self._result[0]
+            if not isinstance(result, pd.DataFrame):
+                result = pd.DataFrame(result)
+            if self._result[1] is not None:
+                result["__Y__"] = self._result[1].values
+            if self._result[2] is not None:
+                result["__ID__"] = self._result[2].values
+            if usage=="plotly":
+                orient="list"
+            else:
+                orient="records"
+                
+            self.out.finished("Result ready", {"data": result.where(pd.notnull(result), None).to_dict(orient=orient), "score": self.runspec.scores})
+        except Exception as e:
+            traceback.print_exc()
+            self.out.error(repr(e))
+
     def dump(self, **kwargs)->None:
         if self.rootblock is None:
             self.out.finished("No receipe", {"receipe": None})

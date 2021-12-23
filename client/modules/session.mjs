@@ -1,6 +1,7 @@
 import WsClient from "./WsClient.mjs";
 import pyimport from "./pyjs.mjs";
 import { Root } from "./BaseBlock.mjs";
+import { Block } from "./BaseBlock.mjs";
 
 class Session {
     warnBeforeLoad() {
@@ -58,6 +59,31 @@ class Session {
         this.model = new Root({});
         this.$dom.html("");
     }
+    /**
+     * Cook the receipe
+     * @param mode "PREVIEW", "TRAIN", "TEST", "RUN"
+     * @param upto Block (or block name)
+     * @param usage "table" or "plotly", defines return format
+     * @returns Promise
+     */
+    run(mode, upto, usage) {
+        if (typeof(mode)=="string") mode = mode.toUpperCase();
+        switch(mode) {
+            case "PREVIEW":
+            case "TRAIN":
+            case "TEST":
+            case "RUN":
+                break;
+            default:
+                mode = "PREVIEW";
+        }
+        return WsClient.send("run", {
+            mode: mode,
+            upto: (upto && upto.name) ? upto.name : null,
+        }).then((r) => {
+            return WsClient.send("result", {usage: usage});
+        });
+    }
     static encode(s) {
         var out = [];
         for ( var i = 0; i < s.length; i++ ) {
@@ -77,10 +103,20 @@ class Session {
         event.initMouseEvent( 'click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
         link.dispatchEvent( event );
     }
+    /**
+     * Dependency breaking helper for Block preview
+     * @param block Block run up-to
+     * @param usage "table" or "plotly", @see run
+     * @returns Promise
+     */
+    static preview(block, usage) {
+        return Session.instance.run("PREVIEW", block, usage);
+    }
     constructor() {
         if (Session.instance) {
             return Session.instance;
         }
+        Block.previewBroker = Session.preview;
         this.load();
         Session.instance = this;
     }

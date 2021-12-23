@@ -1,12 +1,12 @@
-import {Block, Parent, Split, Trash, Root} from './modules/BaseBlock.mjs';
+import {Trash} from './modules/BaseBlock.mjs';
 import {} from "./modules/pyjs.mjs";
-import {DataFrame} from "./modules/DataFrame.mjs";
 import Log from "./modules/Log.mjs";
 import EditDialog from "./modules/EditDialog.mjs";
+import TableDialog from "./modules/TableDialog.mjs";
 import FileBrowser from "./modules/FileBrowser.mjs";
-import MethodBrowser from "./modules/MethodBrowser.mjs"
+import MethodBrowser from "./modules/MethodBrowser.mjs";
 import addbtn from './modules/maintoolbar.mjs';
-import Session from "./modules/session.mjs";
+import Session from "./modules/Session.mjs";
 
 window.Session = Session;
 
@@ -60,6 +60,7 @@ const init = () => {
     Log.panel.appendTo("body");
     Log.prompt.appendTo("body");
     EditDialog.dialog.appendTo("body");
+    TableDialog.dialog.appendTo("body");
     FileBrowser.panel.attr("id", "filesPane").addClass("tabPanel").appendTo("#toolbox");
     MethodBrowser.panel.attr("id", "methodsPane").addClass("tabPanel").appendTo("#toolbox");
     setTimeout(()=>{

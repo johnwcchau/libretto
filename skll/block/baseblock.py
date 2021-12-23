@@ -8,6 +8,7 @@ from uuid import uuid4
 from enum import Enum
 import numpy as np
 import pandas as pd
+import traceback
 
 from skll.inout import Output
 from skll.tpe import TPE
@@ -74,7 +75,15 @@ class Block:
     """
     def __init__(self, name:str=None, disable_mask:list=None, **kwargs:dict)->None:
         self.name = name if name else str(uuid4())
-        self.disable_mask = disable_mask if isinstance(disable_mask, list) else []
+        self.disable_mask = []
+        if isinstance(disable_mask, list):
+            for d in disable_mask:
+                if isinstance(d, RunSpec.RunMode):
+                    self.disable_mask.append(d)
+                elif isinstance(d, str):
+                    self.disable_mask.append(RunSpec.RunMode[d.upper()])
+                elif isinstance(d, int):
+                    self.disable_mask.append(RunSpec.RunMode.value(d))
         self.next = None
 
     def __getitem__(self, key:int)->Block:
@@ -129,6 +138,7 @@ class Block:
         if not runspec.upto == self.name and self.next:
             return self.next(runspec, x, y, id)
         return x, y, id
+            
 
 class Split(Block):
     """
@@ -206,16 +216,23 @@ class Split(Block):
             return [[r[c] for c in split] for r in x]
         raise TypeError(f'Unsupported input type {type(x)}')
 
+    def __uptoismine(self, upto:str):
+        if not upto: return False
+        for i, split in enumerate(self.splits):
+            if self.children[i].containsblock(upto): return True
+        return False
+
     def run(self, runspec: RunSpec, x, y=None, id=None)->tuple:
         results = []
         out_y = y
         out_id = id
         name = runspec.upto
         self.resetsplit()
+        uptoismine = self.__uptoismine(name)
         for i, split in enumerate(self.splits):
             runspec.out.working(f'In {self.name} processing group {i}...')
             child = self.children[i]
-            if child and (not name or child.containsblock(name)):
+            if child and (not uptoismine or child.containsblock(name)):
                 if len(split) == 0:
                     if i != len(self.splits) - 1:
                         raise AttributeError('Empty split encountered')

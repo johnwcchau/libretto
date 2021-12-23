@@ -1,0 +1,10 @@
+.table-dialog {
+    min-width: 50vw;
+    min-height: 50vh;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+#datatable_wrapper {
+    overflow: auto;
+    max-height: inherit;
+}

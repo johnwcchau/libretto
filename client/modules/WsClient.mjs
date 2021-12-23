@@ -24,7 +24,7 @@ class WsClient {
                 let msg;
                 try {
                     msg = JSON.parse(e.data);
-                } catch (e) {
+                } catch (ex) {
                     Log.log("err", "Invalid response from remote");
                     rej({});
                     return true;

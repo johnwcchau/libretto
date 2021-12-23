@@ -1,34 +1,59 @@
-import Session from "./session.mjs";
+import Session from "./Session.mjs";
+import TableDialog from "./TableDialog.mjs";
 
 export default function addbtn(spec) {
     const $li = $("<li>").appendTo("#toolbar");
     const $a = $('<a href="#">').appendTo($li);
-    if (spec.img) $(`<img src="${img}" alt="${name}">`).appendTo($a);
-    else if (spec.text) $a.html(spec.text);
+    if (spec.icon) $(`<img src="${spec.icon}" alt="${spec.title}">`).appendTo($a);
+    else if (spec.title) $a.html(spec.title);
     if (spec.click) $a.on("click", spec.click);
+}
+function addObj($obj) {
+    const $li = $("<li>").appendTo("#toolbar");
+    $obj.appendTo($li);
 }
 
 addbtn({
-    text: "New model",
+    title: "New model",
     click: () => {
         Session.reset();
     },
 });
 addbtn({
-    text: "Read from runtime",
+    title: "Read from runtime",
     click: () => {
         Session.load();
     },
 });
 addbtn({
-    text: "Upload to runtime",
+    title: "Upload to runtime",
     click: () => {
         Session.dump();
     }
 });
 addbtn({
-    text: "Save local",
+    title: "Save local",
     click: () => {
         Session.saveLocal();
     }
 });
+addObj($(`
+    <select id="runmode">
+        <option value="PREVIEW">Preview</option>
+        <option value="TRAIN">Train</option>
+        <option value="TEST">Test</option>
+        <option value="RUN">Run</option>
+    </select>
+`));
+addbtn({
+    title: "Run",
+    click: () => {
+        Session.run($("#runmode").val(), null, "table").then(r=>{
+            const data = r.data;
+            const dialog = TableDialog.render(data);
+            setTimeout(()=> {
+                dialog.modal();
+            }, 1);
+        });
+    }
+})

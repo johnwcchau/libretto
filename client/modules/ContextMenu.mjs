@@ -21,16 +21,22 @@ class ContextMenu {
         return this;
     }
     static hide() {
+        $(".context-menu-highlighted").removeClass("context-menu-highlighted");
+        const thiz = ContextMenu.instance;
+        if (thiz.onHide) thiz.onHide();
         $("div.context-menu").remove();
-        $(document).off("click", ContextMenu.hide)
+        $(document).off("click", ContextMenu.hide);
     }
     showAt(e) {
+        $(".context-menu-highlighted").removeClass("context-menu-highlighted");
+        if (e.delegateTarget) $(e.delegateTarget).addClass("context-menu-highlighted");
         this.positonToEvent(e);
         this._panel.appendTo("body");
         $(document).on("click", ContextMenu.hide);
         return this;
     }
-    make(options) {
+    make(options, onHide) {
+        this.onHide = onHide;
         this._panel.html("");
         options.forEach(v => {
             const a = $('<a class="context-menu-item" href="#">').click((e)=>{
@@ -50,6 +56,7 @@ class ContextMenu {
         }
         this._panel = $("<div>").addClass("context-menu");
         this.data = null;
+        this.onHide = null;
         ContextMenu.instance = this;
     }
     get panel() {

@@ -1,7 +1,7 @@
 import WsClient from './WsClient.mjs';
 import {File} from './BaseBlock.mjs';
 import ContextMenu from './ContextMenu.mjs';
-import Session from './session.mjs';
+import Session from './Session.mjs';
 
 class FileBrowser {
     static _dragTimer = null;
@@ -22,12 +22,13 @@ class FileBrowser {
                 this.refresh();
             }).on("contextmenu", (e) => {
                 e.preventDefault();
+                const thiz = $(e.delegateTarget);
                 ContextMenu.make([
                     {
                         title: "Delete",
                         icon: "/static/img/delete_forever_black_24dp.svg",
                         click: () => {
-                            const name = $(e.delegateTarget).html();
+                            const name = thiz.html();
                             if (confirm(`Delete ${name}?`)) {
                                 WsClient.send("rm", {
                                     path: `${this._cd}/${name}`,
@@ -62,7 +63,8 @@ class FileBrowser {
                 window.open(`/storage${this._cd}/${name}`, "_blank");
             }).on("contextmenu", (e) => {
                 e.preventDefault();
-                const name = $(e.delegateTarget).html();
+                const thiz = $(e.delegateTarget);
+                const name = thiz.html();
                 let contexts = [
                     {
                         title: "Open in new tab",
@@ -153,6 +155,7 @@ class FileBrowser {
         });
         panel.addEventListener("drop", (e) => {
             e.preventDefault();
+            panel.classList.remove("file-dragged-into");
             if (e.dataTransfer.files.length) {
                 thiz.put(e.dataTransfer.files);
             }

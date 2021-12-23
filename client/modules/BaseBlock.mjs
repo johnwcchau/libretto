@@ -1,6 +1,8 @@
 import EditDialog from './EditDialog.mjs';
 import UUID from './UUID.mjs';
-import Log from "./Log.mjs"
+import Log from "./Log.mjs";
+import ContextMenu from "./ContextMenu.mjs";
+import TableDialog from './TableDialog.mjs';
 
 /**
  * 
@@ -24,6 +26,25 @@ export class BlockTypes {
 
 const blockTypes = new BlockTypes();
 export class Block {
+    static previewBroker = null;
+
+    canMove = true;
+    canEdit = true;
+
+    constructor(args) {
+        this._properties = {};
+        this._allowchild = [];
+        this._type = (args && args._type) ? args._type : "skll.block.Block";
+        const cls = blockTypes.get(this._type);
+        if (cls) {
+            this.applycls(args, cls);
+        }
+        if (!this.name) {
+            const t = this._type.split(".");
+            this.name = t[t.length - 1] + "-" + UUID().substring(0, 4);
+        }
+    }
+    
     applycls(args, cls) {
         if (!cls) return;
         if (cls.defaults) {
@@ -42,27 +63,16 @@ export class Block {
                 } else if (v.default !== undefined) {
                     this[i] = v.default;
                 }
+                if (v.type == "file") {
+                    this._acceptfile = v;
+                }
             })
         }
         if (cls.child_types) {
             this._allowchild = this._allowchild.concat(cls.child_types);
         }
     }
-    constructor(args) {
-        this._properties = {};
-        this._allowchild = [];
-        this._type = (args && args._type) ? args._type : "skll.block.Block";
-        const cls = blockTypes.get(this._type);
-        if (cls) {
-            this.applycls(args, cls);
-        }
-        if (!this.name) {
-            const t = this._type.split(".");
-            this.name = t[t.length - 1] + "-" + UUID().substring(0, 4);
-        }
-    }
-    canMove = true;
-    canEdit = true;
+    
     get desc() {
         let result = this._type + " (";
         let props = [];
@@ -191,6 +201,7 @@ export class Block {
 
     static dragTimer = null;
     static onmousedown(e) {
+        if (e.originalEvent.button != 0) return;
         let thiz = e.data.thiz;
         if (!thiz.canMove) return;
         e.preventDefault();
@@ -209,6 +220,7 @@ export class Block {
         }, 100);
     }
     static onmouseup(e) {
+        if (e.originalEvent.button != 0) return;
         $(".droppos").remove();
         let thiz = $(document).data("dragsource");
         if (!thiz) return;
@@ -312,6 +324,36 @@ export class Block {
         this._droptype = null;
         $(".droppos").remove();
     }
+    preview() {
+        if (Block.previewBroker) {
+            Block.previewBroker(this, "table").then((r)=>{
+                const data = r.data;
+                const dialog = TableDialog.render(data);
+                setTimeout(()=> {
+                    dialog.modal();
+                }, 1);
+            });
+        }
+    }
+    makeContextMenu() {
+        return [
+            {
+                title: "Preview block",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    this.preview();
+                }
+            },
+            {
+                title: "Edit",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    this.onEditClicked();
+                }
+            },
+        ];
+    }
+
     static onmouseover(e) {
         const dragsrc = $(document).data("dragsource");
         const thiz = e.data.thiz;
@@ -338,11 +380,19 @@ export class Block {
             $(document).data("droptarget", false);
         }
     }
+    static oncontextmenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const thiz = e.data.thiz;
+        const options = thiz.makeContextMenu();
+        ContextMenu.make(options).showAt(e);
+    }
     registerEvents() {
         this.$div.on("mousedown", {"thiz": this}, Block.onmousedown)
             .on("mouseenter", {"thiz": this}, Block.onmouseover)
             .on("mouseleave", {"thiz": this}, Block.onmouseout)
-            .on("dragover", {"thiz": this}, Block.onmouseover);
+            .on("dragover", {"thiz": this}, Block.onmouseover)
+            .on("contextmenu", {"thiz": this}, Block.oncontextmenu);
     }
 }
 

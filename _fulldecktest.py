@@ -74,3 +74,5 @@ imported.url = "file://train.csv"
 out = input(rs, None)
 
 # %%
+out = input(RunSpec(mode=RunSpec.RunMode.PREVIEW, upto=dummy.name), None)
+# %%
