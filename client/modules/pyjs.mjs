@@ -3,6 +3,7 @@ import { Parent, Split, Block, BlockTypes } from "./BaseBlock.mjs";
 new BlockTypes().add({
     "skll.block.baseblock.Split": {
         cls: Split,
+        typename: "Column Split",
         childof: "skll.block.baseblock.Block",
         properties: {
             // "splits": {
@@ -14,7 +15,7 @@ new BlockTypes().add({
         defaults: {
             "singlar": false,
         },
-        child_types: [".parent"]
+        split_type: "column"
     },
     "skll.block.baseblock.Parent": {
         cls: Parent,
@@ -36,6 +37,7 @@ new BlockTypes().add({
     },
     "skll.block.input.Input": {
         cls: Block,
+        typename: "Input",
         desc: "Data input",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -44,10 +46,45 @@ new BlockTypes().add({
                 type: "file",
                 enabled: true,
             }
-        }
+        },
+        events: {
+            onFileDropped: (thiz, src, type) => {
+                const filename = src.filename;
+                const ext = filename.split(".").pop();
+                switch (ext) {
+                    case "csv":
+                    case "xls":
+                    case "xlsx":
+                        thiz.url = `file://${filename}`;
+                        break;
+                    default:
+                        alert(`Unsupported file type ${ext}`);
+                }
+                thiz.render();
+            },
+            onRendered: (thiz) => {
+                if (!thiz.url) return;
+                let fname = thiz.url.replace("file://", "");
+                thiz.$div.find("span.title").html(`${thiz.name} (${fname})`);
+            }
+        },
+    },
+    "skll.block.input.Drop": {
+        cls: Block,
+        typename: "Column Drop",
+        desc: "Column Drop",
+        childof: "skll.block.baseblock.Block",
+        properties: {
+            "cols": {
+                desc: "Columns to drop",
+                type: "list(column)",
+                enabled: true,
+            }
+        },
     },
     "skll.block.imputer.ConstantImputer": {
         cls: Block,
+        typename: "Constant Imputer",
         desc: "Data imputation with any constant",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -60,6 +97,7 @@ new BlockTypes().add({
     },
     "skll.block.imputer.MethodImputer": {
         cls: Block,
+        typename: "Method Imputer",
         desc: "Data imputation with python method, with optionally group-by column",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -70,6 +108,24 @@ new BlockTypes().add({
             },
             "groupby": {
                 desc: "column name to group-by before applying method",
+                type: "list(column)",
+                enabled: true,
+            }
+        }
+    },
+    "skll.block.imputer.Eval": {
+        cls: Block,
+        typename: "Lambda Function",
+        desc: "Column generation using apply with insecure eval",
+        childof: "skll.block.baseblock.Block",
+        properties: {
+            "colname": {
+                desc: "column to add/replace",
+                type: "text",
+                enabled: true,
+            },
+            "lamda": {
+                desc: "lamda function with row input <x>",
                 type: "text",
                 enabled: true,
             }
@@ -77,11 +133,13 @@ new BlockTypes().add({
     },
     "skll.block.splitter.ColumnWise": {
         cls: Parent,
+        typename: "Column Wise Operation",
         desc: "Transformation for each column",
         childof: "skll.block.baseblock.Parent",
     },
     "skll.block.splitter.TypeSplit": {
         cls: Split,
+        typename: "Type Split",
         desc: "Column splitting by data-type",
         childof: "skll.block.baseblock.Split",
         properties: {
@@ -90,26 +148,29 @@ new BlockTypes().add({
                 type: "boolean",
                 enabled: true,
             }
-        }
+        },
+        split_type: "datatype"
     },
     "skll.block.splitter.RunModeSplit": {
         cls: Block,
+        typename: "Train/Test Split",
         desc: "Dataset splitting by run mode",
         childof: "skll.block.sklwrapper.SklSplitter",
     },
     "skll.block.splitter.XyidSplit": {
         cls: Block,
+        typename: "X/Y/ID Split",
         desc: "Specifying column for Y and/or Id",
         childof: "skll.block.baseblock.Block",
         properties: {
             "ycol": {
                 desc: "name of y column",
-                type: "text",
+                type: "column",
                 enabled: true,
             },
             "idcol": {
                 desc: "name of id column",
-                type: "text",
+                type: "column",
                 enabled: true,
             }
         }
@@ -244,6 +305,7 @@ new BlockTypes().add({
                 enabled: true,
             },
         },
+        split_type: "none",
         child_types: [
             "skll.block.sklwrapper.SklClass",
             "skll.block.sklwrapper.SklPipeline",

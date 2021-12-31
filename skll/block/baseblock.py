@@ -30,15 +30,18 @@ class RunSpec:
     """
     class RunMode(Enum):
         """
-        Preview is row limited fit-predict
-        Train is fit-predict
-        Test is fold + predict/transform + score
-        Run is predict/transform
+        Columns: Special case for check columns
+        Preview: row limited fit-predict
+        Train: fit-predict
+        Test: fold + predict/transform + score
+        Run: predict/transform
         """
+        COLUMNS = 0
         PREVIEW = 1
         TRAIN = 2
         TEST = 3
         RUN = 4
+        BREAK = -1
     
     """
     Run mode for different tactics
@@ -101,7 +104,13 @@ class Block:
             raise KeyError(f'Invalid input')
         type = obj["_type"]
         args = {k: v for k, v in obj.items() if not k.startswith("_")}
-        res = import_load(type)(**args)
+        try:
+            res = import_load(type)(**args)
+        except Exception as e:
+            v = type
+            if "name" in args:
+                v += f'({args["name"]})'
+            raise Exception(f'at {v}: {repr(e)}')
         if "_children" in obj:
             for k, v in obj["_children"].items():
                 if v is not None: res[int(k)] = Block.load(v)
@@ -132,14 +141,20 @@ class Block:
         return x, y, id
     
     def __call__(self, runspec:RunSpec, x, y=None, id=None)->tuple:
+        if runspec.mode == RunSpec.RunMode.BREAK:
+            return x, y, id
+        if runspec.mode == RunSpec.RunMode.COLUMNS and runspec.upto == self.name:
+            runspec.mode = RunSpec.RunMode.BREAK
+            return x, y, id
         if not runspec.mode in self.disable_mask:
             runspec.out.working(f'Processing {self.name}...')
             x, y, id = self.run(runspec, x, y, id)
-        if not runspec.upto == self.name and self.next:
+        if runspec.upto == self.name:
+            runspec.mode = RunSpec.RunMode.BREAK
+        elif self.next:
             return self.next(runspec, x, y, id)
         return x, y, id
             
-
 class Split(Block):
     """
     Split block which splits input columns to multiple groups, process and 

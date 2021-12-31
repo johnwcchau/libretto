@@ -65,7 +65,7 @@ class SklClass(Block):
         if self.obj == None:
             self.createobject()
         if runspec.mode in [RunSpec.RunMode.TEST, RunSpec.RunMode.RUN]:
-            resx, y = self.testmethod(x), y
+            resx = self.testmethod(x)
             if runspec.mode == RunSpec.RunMode.TEST and hasattr(self, "scoremethod"):
                 runspec.scores.append((self.name, self.scoremethod(x, y)))
             return resx, y, id
@@ -157,6 +157,21 @@ class Method(Block):
         func = getattr(package, func)
         if not callable(func):
             raise AttributeError(f'{method} is not a method')
+        try:
+            if xname == "": 
+                xname = None
+            else:
+                xname = int(xname)
+        except Exception:
+            pass
+        try:
+            if yname == "":
+                yname = None
+            else:
+                yname = int(yname)
+        except Exception:
+            pass
+        
         self.method = method
         self.func = func
         self.xname = xname
@@ -314,6 +329,10 @@ class SklWrappingClass(SklClass):
     """
     def __init__(self, estname:str="estimator", multiple:bool=False, **kwargs):
         super().__init__(**kwargs)
+        try:
+            estname = int(estname)
+        except Exception:
+            pass
         self.estname = estname
         self.multiple = multiple
         self.child:dict[int,SklClass] = {}
@@ -366,7 +385,7 @@ class SklWrappingClass(SklClass):
         else:
             est = []
             for child in self.child.values():
-                if not child.obj:
+                if child.obj is None:
                     child.createobject()
                 est.append((child.name, child.obj))
         if isinstance(self.estname, int):

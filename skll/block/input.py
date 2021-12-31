@@ -49,7 +49,7 @@ class Input(Block):
         if not hasattr(self, "df") or self.df is None:
             self.__seturl()
         runspec.out.working(f'Input {self.name} has {self.df.shape[0]} rows and {self.df.shape[1]} columns')
-        if runspec.mode == RunSpec.RunMode.PREVIEW:
+        if runspec.mode == RunSpec.RunMode.PREVIEW or runspec.mode == RunSpec.RunMode.COLUMNS:
             runspec.out.working(f'Limiting to 100 rows for preview')
             return self.df.iloc[:100], None, None
         else:
@@ -69,7 +69,12 @@ class Drop(Block):
         super().__init__(**kwargs)
         self.cols = cols
     
-    def run(self, runspec: RunSpec, x, y=None) -> tuple:
+    def dump(self) -> dict:
+        r = super().dump()
+        r["cols"] = self.cols
+        return r
+    
+    def run(self, runspec: RunSpec, x, y=None, id=None) -> tuple:
         if not isinstance(x, pd.DataFrame):
             x = pd.DataFrame(x)
-        return x.drop(self.cols), y
+        return x.drop(self.cols, axis=1), y, id

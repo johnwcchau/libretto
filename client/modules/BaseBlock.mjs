@@ -26,7 +26,7 @@ export class BlockTypes {
 
 const blockTypes = new BlockTypes();
 export class Block {
-    static previewBroker = null;
+    static runBroker = null;
 
     canMove = true;
     canEdit = true;
@@ -34,13 +34,16 @@ export class Block {
     constructor(args) {
         this._properties = {};
         this._allowchild = [];
+        this._events = {};
         this._type = (args && args._type) ? args._type : "skll.block.Block";
         const cls = blockTypes.get(this._type);
         if (cls) {
             this.applycls(args, cls);
+            if (cls.typename)
+                this._typename = cls.typename;
         }
         if (!this.name) {
-            const t = this._type.split(".");
+            const t = (this._typename ? this._typename : this._type).split(".");
             this.name = t[t.length - 1] + "-" + UUID().substring(0, 4);
         }
     }
@@ -63,16 +66,27 @@ export class Block {
                 } else if (v.default !== undefined) {
                     this[i] = v.default;
                 }
-                if (v.type == "file") {
-                    this._acceptfile = v;
-                }
             })
         }
         if (cls.child_types) {
             this._allowchild = this._allowchild.concat(cls.child_types);
         }
+        if (cls.split_type) {
+            this._splittype = cls.split_type;
+        }
+        if (cls.events) {
+            Object.entries(cls.events).forEach(([i, v]) => {
+                this._events[i] = v;
+            })
+        }
     }
     
+    clone() {
+        let copy = Object.assign({}, this);
+        copy.$div = null;
+        copy.__proto__ = this.__proto__;
+        return copy;
+    }
     get desc() {
         let result = this._type + " (";
         let props = [];
@@ -107,10 +121,11 @@ export class Block {
         e.data.thiz.onEditClicked();
     }
     onEditClicked() {
-        EditDialog.createEditDialog(this).modal();
+        EditDialog.createEditDialog(this).addClass("shown");//.modal();
     }
     onEditApplied() {
         this.render();
+        Root.model_changed = true;
     }
     createEditBtn() {
         return $("<a href='#'>")
@@ -135,6 +150,7 @@ export class Block {
             else if (!this.canEdit)
                 this.$div.children("a.editbtn").remove();
         }
+        if (this._events["onRendered"]) this._events["onRendered"](this);
         return this.$div;
     }
     export() {
@@ -161,10 +177,15 @@ export class Block {
         return false;
     }
 
-    begindrag() {
-        this.dragging = this.$div.clone().addClass("dragbox").appendTo($("body"))
-        this.$div.addClass("dragsource");
-        $(document).data("dragsource", this)
+    begindrag(clone) {
+        let src = this;
+        if (clone) {
+            src = this.clone();
+            src.render();
+        }
+        src.dragging = src.$div.clone().addClass("dragbox").appendTo($("body"))
+        src.$div.addClass("dragsource");
+        $(document).data("dragsource", src)
             .on('mousemove', Block.onmousemove)
             .on('mouseup', Block.onmouseup);
         $(".trash").addClass("visible");
@@ -176,7 +197,7 @@ export class Block {
     }
     allowdroptypes(dragsrc) {
         let droptypes = [];
-        if (this.filedrop && dragsrc._type == File.TYPE) {
+        if (this._events["onFileDropped"] && dragsrc._type == File.TYPE) {
             droptypes.push("dropinto")
         }
         if (dragsrc._type != File.TYPE && this.parent) {
@@ -185,6 +206,10 @@ export class Block {
         return droptypes;
     }
     ondrop(src, droptype) {
+        if (src._type == File.TYPE && this._events["onFileDropped"]) {
+            this._events["onFileDropped"](this, src, droptype);
+            return;
+        }
         switch (droptype) {
             case "dropbefore":
             case "dropleft":
@@ -216,7 +241,7 @@ export class Block {
         });
         Block.dragTimer = setTimeout(() => {
             Block.dragTimer = null;
-            thiz.begindrag();
+            thiz.begindrag(e.originalEvent.ctrlKey);
         }, 100);
     }
     static onmouseup(e) {
@@ -228,14 +253,15 @@ export class Block {
         e.stopPropagation();
         $(".trash").removeClass("visible");
         let target = $(document).data("droptarget");
-        if (target) {
-            if ((target != "trash") && target._droptype) {
+        if (target && target._droptype) {
+            //if ((target != "trash") && target._droptype) {
                 thiz.afterdrag();
                 target.ondrop(thiz, target._droptype);
-            } else {
-                $(".trash").removeClass("dropinto");
-                $(".newobj").remove();
-            }
+            //} else {
+            //    $(".trash").removeClass("dropinto");
+            //    $(".newobj").remove();
+            //}
+            Root.model_changed = true;
             //Block.performdragndrop(thiz, target);
         } else if (thiz.$div.hasClass("newobj")) {
             $(".newobj").remove();
@@ -324,9 +350,20 @@ export class Block {
         this._droptype = null;
         $(".droppos").remove();
     }
+    getInputColumns() {
+        if (Block.runBroker) {
+            Block.runBroker("COLUMNS", this, "columns").then((r)=>{
+                const columns = r.columns;
+                //const dialog = TableDialog.render(data);
+                setTimeout(()=> {
+                    dialog.modal();
+                }, 1);
+            });
+        }
+    }
     preview() {
-        if (Block.previewBroker) {
-            Block.previewBroker(this, "table").then((r)=>{
+        if (Block.runBroker) {
+            Block.runBroker("PREVIEW", this, "table").then((r)=>{
                 const data = r.data;
                 const dialog = TableDialog.render(data);
                 setTimeout(()=> {
@@ -443,6 +480,14 @@ export class Parent extends Block {
             v.parent = this;
         })
     }
+    clone() {
+        let copy = super.clone();
+        copy._blocks = [];
+        this._blocks.forEach(v => {
+            copy._blocks.push(v.clone());
+        })
+        return copy;
+    }
     get desc() {
         return "";
     }
@@ -543,12 +588,12 @@ export class Parent extends Block {
     }
 }
 export class Root extends Parent {
-    
+    static model_changed;
+
     constructor(kwargs) {
         super(kwargs);
         this.canMove = false;
-        this.canEdit = false;
-        this.name = "";
+        this.canEdit = true;
     }
     render() {
         super.render();
@@ -560,12 +605,44 @@ class SplitGroup extends Parent {
     constructor(kwargs) {
         if (!kwargs._type) kwargs["_type"] = ".splitgroup";
         super(kwargs);
+        if (kwargs.split_type) this._splittype = kwargs.split_type;
         if (!this._splits) this._splits = [];
+        switch (this._splittype) {
+            case "column":
+                this._properties._splits.type = "list(column)";
+                break;
+            case "datatype":
+                this._properties._splits.type = "list(datatype)";
+                break;
+            case "none":
+            default:
+                this.canEdit = false;
+                break;
+
+        } 
     }
 
+    get name() {
+        return this.parent ? this.parent.name: "";
+    }
+    set name(v) {
+        //ignore
+    }
+    clone() {
+        let copy = super.clone();
+        copy._splits = [];
+        this._splits.forEach(v => {
+            copy._splits.push(v);
+        })
+        return copy;
+    }
     render() {
         const res = super.render();
-        this.$div.children("span.title").html(JSON.stringify(this._splits).replaceAll(",", ", "));
+        if (this._splittype == "none") {
+            this.$div.children("span.title").remove();
+        } else {
+            this.$div.children("span.title").html(JSON.stringify(this._splits).replaceAll(",", ", "));
+        }
         return res;
     }
 }
@@ -575,7 +652,7 @@ class SplitGroup extends Parent {
 export class File extends Block {
     static TYPE = ".file";
     constructor(kwargs) {
-        kwargs.type = File.TYPE;
+        kwargs._type = File.TYPE;
         kwargs.name = "File";
         super(kwargs);
         this.filename = kwargs.filename;
@@ -596,11 +673,23 @@ export class Split extends Block {
         this.children = [];
         const splits = args.splits || [];
         for (let i = 0; i < splits.length; i++) {
-            const child = new SplitGroup({_type: ".splitgroup", children: [args.children[i]]});
+            const child = new SplitGroup({
+                _type: ".splitgroup", 
+                children: [args.children[i]],
+                split_type: this._splittype,
+            });
             child._splits = splits[i];
             child.parent = this;
             this.children.push(child);
         }
+    }
+    clone() {
+        let copy = super.clone();
+        copy.children = [];
+        this.children.forEach(v => {
+            copy.children.push(v.clone());
+        })
+        return copy;
     }
     prepend(obj, at) {
         if (this.singlar && this.children.length > 0)
@@ -673,10 +762,14 @@ export class Split extends Block {
         this.children.forEach(v => {
             v.render().appendTo(this.$splitdiv);
         });
+        const thiz = this;
         this.$addbtn = $("<div>").addClass("block split-add-block")
             .on("click", {thiz: this}, (e)=>{
                 const thiz = e.data.thiz;
-                const newgroup = new SplitGroup({});
+                const newgroup = new SplitGroup({
+                    split_type: thiz._splittype,
+                });
+                newgroup.parent = thiz;
                 thiz.children.push(newgroup);
                 this.$addbtn.before(newgroup.render());
                 thiz.adjustAddButton();
@@ -699,6 +792,7 @@ export class Split extends Block {
 blockTypes.add({
     "skll.block.baseblock.Block": {
         cls: Block,
+        typename: "Passthrough",
         desc: "A block that simply pass-though data and do nothing",
         properties: {
             "name": {
@@ -723,15 +817,22 @@ blockTypes.add({
         hidden: true,
         desc: "Internal type that has no effect",
         childof: "skll.block.baseblock.Block",
+        child_types: [".splitgroup"],
     },
     ".parent": {
         cls: Parent,
         hidden: true,
         desc: "Internal type that has no effect",
-        childof: "skll.block.baseblock.Block",
         defaults: {
             "_isinternal": true,
-        }
+        },
+        properties: {
+            "name": {
+                desc: "Name",
+                type: "text",
+                enabled: true,
+            },
+        },
     },
     ".splitgroup": {
         cls: SplitGroup,
@@ -739,7 +840,7 @@ blockTypes.add({
         desc: "Internal type that has no effect",
         properties: {
             "_splits": {
-                desc: "Split specification",
+                desc: "Split",
                 type: "list(text)",
                 enabled: true,
             },

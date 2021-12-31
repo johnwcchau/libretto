@@ -89,6 +89,38 @@ class WsClient {
         this.#start();
         return promise;
     }
+    async uploadBlob(blob, fullname) {
+        const reader = new FileReader();
+        let finalResolve = null;
+        let finalReject = null;
+        
+        reader.onload = (e) => {
+            const param = {
+                "data": e.target.result,
+                "flag": "begin",
+                "size": blob.size,
+                "name": fullname,
+            }
+            this.send('put', param).then(r => {
+                const param = {
+                    "size": blob.size,
+                    "flag": "end",
+                    "name": fullname,
+                }
+                return this.send('put', param);
+            }).then(r => {
+                finalResolve(r);
+            }).catch(r => {
+                finalReject(r);
+            });
+        }
+        
+        return new Promise((res, rej) => {
+            finalResolve = res;
+            finalReject = rej;
+            reader.readAsDataURL(blob);
+        });
+    }
     async upload(file, fullname) {
         const reader = new FileReader();
         let uploaded=0;

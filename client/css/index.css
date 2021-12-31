@@ -2,16 +2,31 @@ html, body {
     height: 100%;
     display: block;
 }
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
 .context-menu-highlighted {
     background: #eff !important;
     border: 1px solid #cee !important;
 }
 #toolbox {
-    position: fixed;
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 25em;
+    flex-basis: 25em;
     background: linear-gradient(to top, #fed, #fff8f0);
 }
 .tabView .ui-tabs-nav {
@@ -172,10 +187,7 @@ html, body {
     background: #999;
 }
 main {
-    position: fixed;
-    left: 25em;
-    width: calc(100% - 25em);
-    height: calc(100% - 12em);
+    flex: 1;
     overflow: auto;
 }
 
@@ -213,29 +225,4 @@ main {
 input.invalid-val,
 textarea.invalid-val {
     color: red;
-}
-.logPanel {
-    width: 100%;
-    padding: 1em;
-    overflow-y: scroll;
-    font-family: monospace, monospace;
-    background-color: #333;
-    color: #fff;
-    position: fixed;
-    bottom: 0;
-    height: 10%;
-    z-index: 101;
-}
-.logPanel .err,
-.logPanel .stream3 {
-    color: #f33;
-}
-.logPanel .stream0 {
-    color: #8f8;
-}
-.logPanel > .logPanel_clear_button {
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
-    padding: 0.5em;
 }

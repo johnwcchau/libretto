@@ -10,27 +10,34 @@
 <link rel="stylesheet" href="static/css/toolbar.css" />
 <link rel="stylesheet" href="static/css/blocks.css" />
 <link rel="stylesheet" href="static/css/tabledialog.css" />
+<link rel="stylesheet" href="static/css/logpanel.css" />
+<link rel="stylesheet" href="static/css/editdialog.css" />
 <!-- <link rel="stylesheet" href="static/css/menubtn.css" /> -->
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<script type="text/javascript" src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
 <script type="module" src="static/index.js"></script>
 </head>
 <body>
-    <ul id="toolbar">
-    </ul>
-    <main>
-    </main>
-    <div id="toolbox" class="tabView">
-        <!-- <div>
-            <a href="#" class="menubtn"><span></span></a>
-        </div> -->
-        <ul>
-            <li><a href="#filesPane" id="tb_files"><img src="/static/img/attachment_black_24dp.svg" />Files</a></li>
-            <li><a href="#methodsPane" id="tb_methods"><img src="/static/img/functions_black_24dp.svg" />Methods</a></li>
+    <div id="root" class="flex-column">
+        <ul id="toolbar">
         </ul>
+        <div class="flex-row">
+            <div id="toolbox" class="tabView">
+                <!-- <div>
+                    <a href="#" class="menubtn"><span></span></a>
+                </div> -->
+                <ul>
+                    <li><a href="#filesPane" id="tb_files"><img src="/static/img/attachment_black_24dp.svg" />Files</a></li>
+                    <li><a href="#methodsPane" id="tb_methods"><img src="/static/img/functions_black_24dp.svg" />Methods</a></li>
+                </ul>
+            </div>
+            <main>
+            </main>
+        </div>
     </div>
 </body>
 </html>

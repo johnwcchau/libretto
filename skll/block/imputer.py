@@ -2,6 +2,7 @@
 from skll.block import Block, RunSpec
 import pandas as pd
 import numpy as np
+import re
 
 class ConstantImputer(Block):
     def __init__(self, value:any=0, **kwargs: dict) -> None:
@@ -43,14 +44,14 @@ class MethodImputer(Block):
         if not isinstance(x, pd.DataFrame):
             x = pd.DataFrame(x)
         for col in x.columns:
-            if self.groupby and self.groupby in x.columns and self.groupby != col:
+            if self.groupby is not None and ((isinstance(self.groupby, str) and self.groupby != col and self.groupby) or (isinstance(self.groupby, list) and col not in self.groupby)):
                 def lamda(x):
                     v = getattr(x, self.method)
                     if hasattr(v, "__getitem__"):
                         v = v[0]
                     x.fillna(v)
                 x.loc[:, col] = x.groupby(self.groupby).transform(lambda x: x.fillna(self.__get_v(x)))
-            elif not self.groupby or self.groupby != col:
+            elif self.groupby is None:
                 v = x[col]
                 x.loc[:, col] = v.fillna(self.__get_v(v))
         return x, y, id
@@ -66,4 +67,34 @@ if __name__ == "__main__":
         [1, 1], [1, 1], [2, 1], [2, 1], [2, 1], [np.NaN, 1],
         [1, 2], [1, 2], [1, 2], [2, 2], [2, 2], [np.NaN, 2],])))
 
+# %%
+class Eval(Block):
+    """
+    Apply eval to dataset
+    """
+    
+    def __init__(self, colname="", lamda:str="", **kwargs:dict) -> None:
+        super().__init__(**kwargs)
+        self.lamda = lamda
+        self.colname = colname if colname else self.name
+
+    def dump(self) -> dict:
+        r = super().dump()
+        r["colname"] = self.colname
+        r["lamda"] = self.lamda
+        return r
+
+    def run(self, runspec:RunSpec, X, y=None, id=None)->tuple:
+        if not isinstance(X, pd.DataFrame):
+            X = pd.DataFrame(X)
+        X[self.colname] = X.apply(lambda x: eval(self.lamda, {"X": X, "x": x}), axis=1)
+        #X = X.eval(self.lamda, engine='numexpr')
+        return X, y, id
+
+# %%
+if __name__ == '__main__':
+    from skll.block.input import Input
+    input = Input("file://kaggle_hpp_train.csv")
+    input[0] = Eval(lamda="x.TotalBsmtSF")
+    print(input(RunSpec(), None, None))
 # %%

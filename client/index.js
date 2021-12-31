@@ -57,7 +57,7 @@ window.Session = Session;
 // }
 const init = () => {
     $(".tabView").tabs();
-    Log.panel.appendTo("body");
+    Log.panel.appendTo("#root");
     Log.prompt.appendTo("body");
     EditDialog.dialog.appendTo("body");
     TableDialog.dialog.appendTo("body");

@@ -50,6 +50,9 @@ class Session:
             result = self._result[0]
             if not isinstance(result, pd.DataFrame):
                 result = pd.DataFrame(result)
+            if usage=='columns':
+                self.out.finished("Listed columns", {"columns": [(c, str(result[c].dtype)) for c in result.columns]})
+                return
             if self._result[1] is not None:
                 result["__Y__"] = self._result[1].values
             if self._result[2] is not None:
@@ -65,13 +68,21 @@ class Session:
             self.out.error(repr(e))
 
     def dump(self, **kwargs)->None:
-        if self.rootblock is None:
-            self.out.finished("No receipe", {"receipe": None})
-        else:
-            self.out.finished("Receipe ready", {"receipe": self.rootblock.dump()})
+        try:
+            if self.rootblock is None:
+                self.out.finished("No receipe", {"receipe": None})
+            else:
+                self.out.finished("Receipe ready", {"receipe": self.rootblock.dump()})
+        except Exception:
+            traceback.print_exc()
+            self.out.error("Corrupted receipe")
     
     def load(self, dump:dict, **kwargs)->None:
-        self.rootblock = Block.load(dump)
-        self.out.finished("Receipe loaded")
+        try:
+            self.rootblock = Block.load(dump)
+            self.out.finished("Receipe loaded")
+        except Exception as e:
+            traceback.print_exc()
+            self.out.error(f'Receipe load error: {repr(e)}')
 
 # %%

@@ -10,7 +10,7 @@ class MethodBrowser {
         Object.entries(blockTypes.cls).forEach(([i, v]) => {
             if (v.hidden) return;
             const a = $('<a href="#">').addClass("methodobj").data("type", [i, v]);
-            $('<span class="method_name">').html(i).appendTo(a);
+            $('<span class="method_name">').html(v.typename ? v.typename : i).appendTo(a);
             $('<span class="method_desc">').html(v.desc ? v.desc : "No description").appendTo(a);
             a.appendTo(this._methodlist);
         });

@@ -1,0 +1,23 @@
+
+.logPanel {
+    padding: 1em;
+    overflow-y: scroll;
+    font-family: monospace, monospace;
+    background-color: #333;
+    color: #fff;
+    height: 9em;
+    z-index: 101;
+}
+.logPanel .err,
+.logPanel .stream3 {
+    color: #f33;
+}
+.logPanel .stream0 {
+    color: #8f8;
+}
+.logPanel > .logPanel_clear_button {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    padding: 0.5em;
+}

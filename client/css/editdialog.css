@@ -1,0 +1,49 @@
+
+#edit_dialog {
+    max-width: 100vw;
+    display: none;
+    border-radius: 1.5em;
+    padding: 15px 30px;
+}
+#edit_dialog.shown {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+#edit_dialog h2 {
+    margin: 0;
+}
+#edit_dialog section {
+    display: flex;
+    flex-direction: column;
+}
+#edit_dialog ul {
+    display: inline-table;
+}
+#edit_dialog > ul {
+    padding-left: 0;
+}
+#edit_dialog li {
+    display: table-row;
+    list-style: none;
+    margin: 0;
+}
+#edit_dialog li>label {
+    display: table-cell;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding-right: 0.5em;
+}
+#edit_dialog li>input, 
+#edit_dialog li>select {
+    font-family: monospace, monospace;
+    font-size: 1em;
+    display: table-cell;
+    width: 100%;
+}
+#edit_dialog input.invalid-val,
+#edit_dialog textarea.invalid-val {
+    color: red;
+}

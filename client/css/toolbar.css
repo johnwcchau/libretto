@@ -1,7 +1,29 @@
 #toolbar {
     display: flex;
     flex-direction: row;
+    padding: 0;
+    margin: 0;
+    background: #fff8f0;
 }
 #toolbar li {
     list-style: none;
+    padding: 0.3em;
+    margin: 0.3em;
+    border-radius: 0.3em;
+    border: 1px solid #888;
+}
+#toolbar li.no-border {
+    border: none;
+}
+#toolbar li:hover {
+    background: #dcb;
+}
+#toolbar li.no-border:hover {
+    background: unset;
+}
+#toolbar li a img {
+    vertical-align: middle;
+}
+#toolbar li h3 {
+    margin: 0 2em 0 0;
 }

@@ -6,6 +6,38 @@ import Session from './Session.mjs';
 class FileBrowser {
     static _dragTimer = null;
 
+    #makeRenContextMenuOption(name) {
+        return {
+            title: "Rename",
+            icon: "/static/img/delete_forever_black_24dp.svg",
+            click: () => {
+                const newName = prompt("New file name", name);
+                if (newName) {
+                    WsClient.send("ren", {
+                        path: `${this._cd}/${name}`,
+                        newname: `${this._cd}/${newName}`,
+                    }).then(()=> {
+                        this.refresh();
+                    });
+                }
+            }
+        };
+    }
+    #makeDelContextMenuOption(name) {
+        return {
+            title: "Delete",
+            icon: "/static/img/delete_forever_black_24dp.svg",
+            click: () => {
+                if (confirm(`Delete ${name}?`)) {
+                    WsClient.send("rm", {
+                        path: `${this._cd}/${name}`,
+                    }).then(()=> {
+                        this.refresh();
+                    });
+                }
+            }
+        };
+    }
     refresh() {
         WsClient.send("ls", {path: this._cd}).then(r => {
             this._filelist.html("");
@@ -24,20 +56,8 @@ class FileBrowser {
                 e.preventDefault();
                 const thiz = $(e.delegateTarget);
                 ContextMenu.make([
-                    {
-                        title: "Delete",
-                        icon: "/static/img/delete_forever_black_24dp.svg",
-                        click: () => {
-                            const name = thiz.html();
-                            if (confirm(`Delete ${name}?`)) {
-                                WsClient.send("rm", {
-                                    path: `${this._cd}/${name}`,
-                                }).then(()=> {
-                                    this.refresh();
-                                });
-                            }
-                        }
-                    },
+                    this.#makeRenContextMenuOption(thiz.html()),
+                    this.#makeDelContextMenuOption(thiz.html()),
                 ]).showAt(e);
             });
             $(".fileobj_file").on("mousedown", (e) => {
@@ -73,19 +93,8 @@ class FileBrowser {
                             $(e.delegateTarget).click();
                         }
                     },
-                    {
-                        title: "Delete",
-                        icon: "/static/img/delete_forever_black_24dp.svg",
-                        click: () => {
-                            if (confirm(`Delete ${name}?`)) {
-                                WsClient.send("rm", {
-                                    path: `${this._cd}/${name}`,
-                                }).then(()=> {
-                                    this.refresh();
-                                });
-                            }
-                        }
-                    },
+                    this.#makeRenContextMenuOption(thiz.html()),
+                    this.#makeDelContextMenuOption(thiz.html()),
                 ];
                 if (name.split(".").pop() == "json") {
                     contexts.unshift({

@@ -12,6 +12,9 @@
     background: linear-gradient(to bottom, #fff, #ddd);
     border-radius: 0.5em;
 }
+.block:hover {
+    background: #ccc;
+}
 .block.split-block {
     overflow: auto;
 }

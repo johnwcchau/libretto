@@ -1,8 +1,10 @@
 from __future__ import annotations
 import base64
+import shutil
 from skll.inout import Output
 import os
 import base64
+import traceback
 
 class FileIO:
     __instance:FileIO = None
@@ -106,6 +108,29 @@ class FileIO:
         if not valid:
             self.out.invalid()
             return
-        import shutil
-        shutil.rmtree(fullpath)
-        self.out.finished(f'Deleted')
+        try:
+            if os.path.isdir(fullpath):
+                import shutil
+                shutil.rmtree(fullpath)
+            else:
+                os.remove(fullpath)
+            self.out.finished(f'Deleted')
+        except Exception:
+            traceback.print_exc()
+            self.out.error(f'Delete {path} failed')
+
+    def ren(self, path:str=None, newname:str=None, **kwargs)->None:
+        fullpath, valid = self._getvalidpath(path, checkexist=True)
+        newpath, already = self._getvalidpath(newname, checkexist=True)
+        if not fullpath or not newpath:
+            self.out.invalid(f'Invalid name')
+            return
+        if not valid:
+            self.out.invalid(f'No such file {path}')
+            return
+        if already:
+            self.out.invalid(f'{newname} already exists')
+            return
+        os.rename(fullpath, newpath)
+        self.out.finished(f'Renamed {path} to {newname}')
+

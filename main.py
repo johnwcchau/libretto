@@ -10,12 +10,13 @@ import signal
 import sys
 import json
 import traceback
+import re
 
 import logging
 
 from skll.fileio import FileIO
 from skll.session import Session
-from skll.jsoncodec import JSONEncoder
+from skll.jsoncodec import Encoder
 
 tpe = TPE().executor
 
@@ -67,7 +68,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         param["result"] = _id
         param["message"] = msg
-        msg = json.dumps(param, cls=JSONEncoder)
+        msg = json.dumps(param, cls=Encoder)
         logging.debug(f'<<{msg}')
         self.write_message(msg)
 
@@ -91,7 +92,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 action = msg["action"]
                 if action=="ping":
                     session.out.finished("OK")
-                elif action in ["ls", "exist", "put", "mkdir", "rm"]:
+                elif action in ["ls", "exist", "put", "mkdir", "rm", "ren"]:
                     del msg["action"]
                     fileio = FileIO(self)
                     tpe.submit(getattr(fileio, action), **msg)
