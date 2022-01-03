@@ -1,5 +1,4 @@
 import Session from "./Session.mjs";
-import TableDialog from "./TableDialog.mjs";
 
 export default function addbtn(spec) {
     const $li = $("<li>").appendTo("#toolbar");
@@ -61,14 +60,13 @@ addbtn({
     title: "Run",
     icon: "/static/img/play_arrow_black_24dp.svg",
     click: () => {
-        Session.run($("#runmode").val(), null, "table").then(r=>{
+        const runMode = $("#runmode").val();
+        Session.run(runMode, null, "table").then(r=>{
             if (!r) return;
             const data = r.data;
             const score = r.score;
-            const dialog = TableDialog.render(data, score);
-            setTimeout(()=> {
-                dialog.modal();
-            }, 1);
+            Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data);
+            if (score) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
         });
     }
 })

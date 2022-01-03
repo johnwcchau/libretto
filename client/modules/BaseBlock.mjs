@@ -2,7 +2,6 @@ import EditDialog from './EditDialog.mjs';
 import UUID from './UUID.mjs';
 import Log from "./Log.mjs";
 import ContextMenu from "./ContextMenu.mjs";
-import TableDialog from './TableDialog.mjs';
 
 /**
  * 
@@ -26,7 +25,6 @@ export class BlockTypes {
 
 const blockTypes = new BlockTypes();
 export class Block {
-    static runBroker = null;
 
     canMove = true;
     canEdit = true;
@@ -81,6 +79,15 @@ export class Block {
         }
     }
     
+    get root() {
+        if (this._session) return this;
+        if (this.parent) return this.parent.root;
+        return null;
+    }
+    get session() {
+        return this.root._session;
+    }
+
     clone() {
         let copy = Object.assign({}, this);
         copy.$div = null;
@@ -125,7 +132,7 @@ export class Block {
     }
     onEditApplied() {
         this.render();
-        Root.model_changed = true;
+        this.root.model_changed = true;
     }
     createEditBtn() {
         return $("<a href='#'>")
@@ -141,7 +148,8 @@ export class Block {
             if (this.canEdit)
                 this.createEditBtn().appendTo(this.$div);
             this.registerEvents();
-        } else {
+        } 
+        else {
             this.$div.children("span.title").html(this.name);
             if (this.desc)
                 this.$div.children("span.desc").html(this.desc);
@@ -261,7 +269,7 @@ export class Block {
             //    $(".trash").removeClass("dropinto");
             //    $(".newobj").remove();
             //}
-            Root.model_changed = true;
+            if (this.root) this.root.model_changed = true;
             //Block.performdragndrop(thiz, target);
         } else if (thiz.$div.hasClass("newobj")) {
             $(".newobj").remove();
@@ -351,26 +359,21 @@ export class Block {
         $(".droppos").remove();
     }
     getInputColumns() {
-        if (Block.runBroker) {
-            Block.runBroker("COLUMNS", this, "columns").then((r)=>{
-                const columns = r.columns;
-                //const dialog = TableDialog.render(data);
-                setTimeout(()=> {
-                    dialog.modal();
-                }, 1);
-            });
-        }
+        if (!this.session) return;
+        this.session.run("COLUMNS", this, "columns").then((r)=>{
+            const columns = r.columns;
+            //const dialog = TableDialog.render(data);
+            setTimeout(()=> {
+                dialog.modal();
+            }, 1);
+        });
     }
-    preview() {
-        if (Block.runBroker) {
-            Block.runBroker("PREVIEW", this, "table").then((r)=>{
-                const data = r.data;
-                const dialog = TableDialog.render(data);
-                setTimeout(()=> {
-                    dialog.modal();
-                }, 1);
-            });
-        }
+    runto(mode) {
+        if (!this.session) return;
+        this.session.run(mode, this, "table").then((r)=>{
+            if (!r) return;
+            this.session.tabView.addDataTable(`${this.name}_${mode}`, r.data);
+        });
     }
     makeContextMenu() {
         return [
@@ -378,7 +381,14 @@ export class Block {
                 title: "Preview block",
                 icon: "/static/img/open_in_new_black_24dp.svg",
                 click: () => {
-                    this.preview();
+                    this.runto("PREVIEW");
+                }
+            },
+            {
+                title: "Train upto block",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    this.runto("TRAIN");
                 }
             },
             {
@@ -474,8 +484,7 @@ export class Parent extends Block {
         if (!kwargs._type) kwargs._type = Parent.TYPE;
         super(kwargs);
         //Children is 2D array although only 1 column to unify with Split
-        this._blocks = kwargs.children ? kwargs.children[0] : [];
-        this.singlar = kwargs.singlar || false;
+        this._blocks = kwargs.children ? kwargs.children : [];
         this._blocks.forEach(v => {
             v.parent = this;
         })
@@ -489,7 +498,9 @@ export class Parent extends Block {
         return copy;
     }
     get desc() {
-        return "";
+        if (this._type == "skll.block.baseblock.Parent")
+            return "";
+        return super.desc;
     }
     allowdroptypes(dragsrc) {
         if (dragsrc._type == File.TYPE) return [];
@@ -502,7 +513,6 @@ export class Parent extends Block {
         return types;
     }
     childdroptypes(dragsrc) {
-        if (this.singlar && (dragsrc != this._blocks[0])) return [];
         if (!this.childtypematch(dragsrc)) return [];
         return ["dropbefore", "dropafter"];
     }
@@ -512,8 +522,6 @@ export class Parent extends Block {
         obj.parent = null;
     }
     prepend(obj, at) {
-        if (this.singlar && this._blocks.length > 0)
-            return;
         if (at === null) at = 0;
         if (typeof(at) == "object") {
             at = this._blocks.indexOf(at) - 1;
@@ -523,8 +531,6 @@ export class Parent extends Block {
         obj.parent = this;
     }
     append(obj, at) {
-        if (this.singlar && this._blocks.length > 0)
-            return;
         if (at === null) at = -1;
         if (typeof(at) == "object") {
             at = this._blocks.indexOf(at);
@@ -572,80 +578,82 @@ export class Parent extends Block {
         return this.$div;
     }
     export() {
-        const root = {_next: null};
-        var next = root;
-        this._blocks.forEach((v) => {
-            next._next = v.export();
-            next = next._next;
+        const thiz = super.export();
+        let children = {};
+        this._blocks.forEach((v, i) => {
+            children[i] = v.export();
         });
-        if (this._isinternal) {
-            return root._next;
-        } else {
-            const thiz = super.export();
-            thiz["_children"] = {"1": root._next}
-            return thiz;
-        }
+        thiz["_children"] = children;
+        return thiz;
     }
 }
-export class Root extends Parent {
-    static model_changed;
+// export class Root extends Parent {
+//     static model_changed;
 
-    constructor(kwargs) {
-        super(kwargs);
-        this.canMove = false;
-        this.canEdit = true;
-    }
-    render() {
-        super.render();
-        this.$div.addClass("rootblock");
-        return this.$div;
-    }
-}
-class SplitGroup extends Parent {
-    constructor(kwargs) {
-        if (!kwargs._type) kwargs["_type"] = ".splitgroup";
-        super(kwargs);
-        if (kwargs.split_type) this._splittype = kwargs.split_type;
-        if (!this._splits) this._splits = [];
-        switch (this._splittype) {
-            case "column":
-                this._properties._splits.type = "list(column)";
-                break;
-            case "datatype":
-                this._properties._splits.type = "list(datatype)";
-                break;
-            case "none":
-            default:
-                this.canEdit = false;
-                break;
+//     constructor(kwargs) {
+//         super(kwargs);
+//         this.canMove = false;
+//         this.canEdit = true;
+//     }
+//     render() {
+//         super.render();
+//         this.$div.addClass("rootblock");
+//         return this.$div;
+//     }
+//     export() {
+//         const r = super.export();
+//         r._type = "skll.block.baseblock.Parent";
+//         return r;
+//     }
+// }
+// class SplitGroup extends Parent {
+//     constructor(kwargs) {
+//         if (!kwargs._type) kwargs["_type"] = ".splitgroup";
+//         super(kwargs);
+//         //disable drag and drop for splitgroup
+//         this.canMove = false;
+//         if (kwargs.split_type) this._splittype = kwargs.split_type;
+//         if (!this._splits) this._splits = [];
+//         switch (this._splittype) {
+//             case "column":
+//                 this._properties._splits.type = "list(column)";
+//                 break;
+//             case "datatype":
+//                 this._properties._splits.type = "list(datatype)";
+//                 break;
+//             case "none":
+//             default:
+//                 this.canEdit = false;
+//                 break;
 
-        } 
-    }
+//         } 
+//     }
 
-    get name() {
-        return this.parent ? this.parent.name: "";
-    }
-    set name(v) {
-        //ignore
-    }
-    clone() {
-        let copy = super.clone();
-        copy._splits = [];
-        this._splits.forEach(v => {
-            copy._splits.push(v);
-        })
-        return copy;
-    }
-    render() {
-        const res = super.render();
-        if (this._splittype == "none") {
-            this.$div.children("span.title").remove();
-        } else {
-            this.$div.children("span.title").html(JSON.stringify(this._splits).replaceAll(",", ", "));
-        }
-        return res;
-    }
-}
+//     get name() {
+//         return this.parent ? this.parent.name: "";
+//     }
+//     set name(v) {
+//         //ignore
+//     }
+//     clone() {
+//         let copy = super.clone();
+//         copy._splits = [];
+//         this._splits.forEach(v => {
+//             copy._splits.push(v);
+//         })
+//         return copy;
+//     }
+//     render() {
+//         const res = super.render();
+//         if (this._splittype == "none") {
+//             this.$div.children("span.title").remove();
+//         } else {
+//             this.$div.children("span.title").html(JSON.stringify(this._splits).replaceAll(",", ", "));
+//         }
+//         return res;
+//     }
+// }
+
 /**
  * Hacking block for file drag and drop
  */
@@ -665,129 +673,133 @@ export class File extends Block {
         $(".dragbox").addClass("fileblock");
     }
 }
-export class Split extends Block {
-    static TYPE = ".split";
-    constructor(args) {
-        if (!args._type) args._type = Split.TYPE;
-        super(args);
-        this.children = [];
-        const splits = args.splits || [];
-        for (let i = 0; i < splits.length; i++) {
-            const child = new SplitGroup({
-                _type: ".splitgroup", 
-                children: [args.children[i]],
-                split_type: this._splittype,
-            });
-            child._splits = splits[i];
-            child.parent = this;
-            this.children.push(child);
-        }
-    }
-    clone() {
-        let copy = super.clone();
-        copy.children = [];
-        this.children.forEach(v => {
-            copy.children.push(v.clone());
-        })
-        return copy;
-    }
-    prepend(obj, at) {
-        if (this.singlar && this.children.length > 0)
-            return;
-        if (at === null) at = 0;
-        if (typeof(at) == "object") {
-            at = this.children.indexOf(at) - 1;
-            if (at < 0) at = 0;
-        }
-        this.children.splice(at, 0, obj);
-        obj.parent = this;
-    }
-    append(obj, at) {
-        if (this.singlar && this.children.length > 0)
-            return;
-        if (at === null) at = -1;
-        if (typeof(at) == "object") {
-            at = this.children.indexOf(at);
-        }
-        if (at == -1) {
-            this.children.push(obj);
-        } else {
-            this.children.splice(at+1, 0, obj);
-        }
-        obj.parent = this;
-    }
-    remove(obj) {
-        let idx = this.children.indexOf(obj);
-        if (idx != -1) this.children.splice(idx, 1);
-        obj.parent = null;
-        this.adjustAddButton();
-    }
-    allowdroptypes(dragsrc) {
-        if (dragsrc._type == File.TYPE) return [];
-        let types = super.allowdroptypes(dragsrc);
+
+// export class Split extends Block {
+//     static TYPE = ".split";
+//     constructor(args) {
+//         if (!args._type) args._type = Split.TYPE;
+//         super(args);
+//         this.children = [];
+//         const splits = args.splits || [];
+//         for (let i = 0; i < splits.length; i++) {
+//             const child = new SplitGroup({
+//                 _type: ".splitgroup", 
+//                 children: [args.children[i]],
+//                 split_type: this._splittype,
+//             });
+//             child._splits = splits[i];
+//             child.parent = this;
+//             this.children.push(child);
+//         }
+//     }
+//     clone() {
+//         let copy = super.clone();
+//         copy.children = [];
+//         this.children.forEach(v => {
+//             copy.children.push(v.clone());
+//         })
+//         return copy;
+//     }
+//     prepend(obj, at) {
+//         if (this.singlar && this.children.length > 0)
+//             return;
+//         if (at === null) at = 0;
+//         if (typeof(at) == "object") {
+//             at = this.children.indexOf(at) - 1;
+//             if (at < 0) at = 0;
+//         }
+//         this.children.splice(at, 0, obj);
+//         obj.parent = this;
+//     }
+//     append(obj, at) {
+//         if (this.singlar && this.children.length > 0)
+//             return;
+//         if (at === null) at = -1;
+//         if (typeof(at) == "object") {
+//             at = this.children.indexOf(at);
+//         }
+//         if (at == -1) {
+//             this.children.push(obj);
+//         } else {
+//             this.children.splice(at+1, 0, obj);
+//         }
+//         obj.parent = this;
+//     }
+//     remove(obj) {
+//         let idx = this.children.indexOf(obj);
+//         if (idx != -1) this.children.splice(idx, 1);
+//         obj.parent = null;
+//         this.adjustAddButton();
+//     }
+//     allowdroptypes(dragsrc) {
+//         //disable dropping to split, b/c user should drop into splitgroup
+//         return [];
+//         // if (dragsrc._type == File.TYPE) return [];
+//         // let types = super.allowdroptypes(dragsrc);
         
-        if (this.children.length == 0) {
-            if (this.childtypematch(dragsrc)) 
-                types.push("dropinto");
-        }
-        return types;
-    }
-    childdroptypes(dragsrc) {
-        if (this.singlar) return [];
-        if (!this.childtypematch(dragsrc)) return [];
-        return ["dropleft", "dropright"];
-    }
-    ondrop(src, droptype) {
-        switch (droptype) {
-            case 'dropinto':
-                this.prepend(src, 0);
-                this.$addbtn.before(src.$div);
-                break;
-            default:
-                super.ondrop(src, droptype);
-        }
-        this.adjustAddButton();
-    }
-    adjustAddButton() {
-        if (this.singlar && this.children.length) {
-            this.$addbtn.hide();
-        } else {
-            this.$addbtn.show();
-        }
-    }
-    render() {
-        this.$div = super.render().addClass("split-block");
-        this.$div.children(".splitblock").remove();
-        this.$splitdiv = $("<div>").addClass("block splits-container").appendTo(this.$div);
-        this.children.forEach(v => {
-            v.render().appendTo(this.$splitdiv);
-        });
-        const thiz = this;
-        this.$addbtn = $("<div>").addClass("block split-add-block")
-            .on("click", {thiz: this}, (e)=>{
-                const thiz = e.data.thiz;
-                const newgroup = new SplitGroup({
-                    split_type: thiz._splittype,
-                });
-                newgroup.parent = thiz;
-                thiz.children.push(newgroup);
-                this.$addbtn.before(newgroup.render());
-                thiz.adjustAddButton();
-            }).appendTo(this.$splitdiv);
-        this.adjustAddButton();
-        return this.$div;
-    }
-    export() {
-        const thiz = super.export();
-        thiz["_children"] = {};
-        thiz["splits"] = [];
-        this.children.forEach((v, i) => {
-            thiz["_children"][i+1] = v.export();
-            thiz["splits"].push(v._splits);
-        });
-        return thiz;
-    }
-}
+//         // if (this.children.length == 0) {
+//         //     if (this.childtypematch(dragsrc)) 
+//         //         types.push("dropinto");
+//         // }
+//         // return types;
+//     }
+//     childdroptypes(dragsrc) {
+//         if (this.singlar) return [];
+//         if (!this.childtypematch(dragsrc)) return [];
+//         //disable dropleft and dropright
+//         //return ["dropleft", "dropright"];
+//     }
+//     ondrop(src, droptype) {
+//         switch (droptype) {
+//             case 'dropinto':
+//                 this.prepend(src, 0);
+//                 this.$addbtn.before(src.$div);
+//                 break;
+//             default:
+//                 super.ondrop(src, droptype);
+//         }
+//         this.adjustAddButton();
+//     }
+//     adjustAddButton() {
+//         if (this.singlar && this.children.length) {
+//             this.$addbtn.hide();
+//         } else {
+//             this.$addbtn.show();
+//         }
+//     }
+//     render() {
+//         this.$div = super.render().addClass("split-block");
+//         this.$div.children(".splitblock").remove();
+//         this.$splitdiv = $("<div>").addClass("block splits-container").appendTo(this.$div);
+//         this.children.forEach(v => {
+//             v.render().appendTo(this.$splitdiv);
+//         });
+//         const thiz = this;
+//         this.$addbtn = $("<div>").addClass("block split-add-block")
+//             .on("click", {thiz: this}, (e)=>{
+//                 const thiz = e.data.thiz;
+//                 const newgroup = new SplitGroup({
+//                     split_type: thiz._splittype,
+//                 });
+//                 newgroup.parent = thiz;
+//                 thiz.children.push(newgroup);
+//                 this.$addbtn.before(newgroup.render());
+//                 thiz.adjustAddButton();
+//             }).appendTo(this.$splitdiv);
+//         this.adjustAddButton();
+//         return this.$div;
+//     }
+//     export() {
+//         const thiz = super.export();
+//         thiz["_children"] = {};
+//         thiz["splits"] = [];
+//         this.children.forEach((v, i) => {
+//             thiz["_children"][i+1] = v.export();
+//             thiz["splits"].push(v._splits);
+//         });
+//         return thiz;
+//     }
+// }
 
 blockTypes.add({
     "skll.block.baseblock.Block": {
@@ -809,16 +821,20 @@ blockTypes.add({
                 desc: "Disable this block when",
                 type: "mc(preview,train,test,run)",
                 enabled: true,
+            },
+            "column_mask": {
+                desc: "Columns applies to",
+                type: "list(column)",
+                enabled: true,
             }
         },
     },
-    ".split": {
-        cls: Split,
-        hidden: true,
-        desc: "Internal type that has no effect",
-        childof: "skll.block.baseblock.Block",
-        child_types: [".splitgroup"],
-    },
+    // ".split": {
+    //     cls: Split,
+    //     hidden: true,
+    //     desc: "Internal type that has no effect",
+    //     childof: "skll.block.baseblock.Block",
+    // },
     ".parent": {
         cls: Parent,
         hidden: true,
@@ -834,19 +850,19 @@ blockTypes.add({
             },
         },
     },
-    ".splitgroup": {
-        cls: SplitGroup,
-        hidden: true,
-        desc: "Internal type that has no effect",
-        properties: {
-            "_splits": {
-                desc: "Split",
-                type: "list(text)",
-                enabled: true,
-            },
-        },
-        defaults: {
-            "_isinternal": true,
-        }
-    },
+    // ".splitgroup": {
+    //     cls: SplitGroup,
+    //     hidden: true,
+    //     desc: "Internal type that has no effect",
+    //     properties: {
+    //         "_splits": {
+    //             desc: "Split",
+    //             type: "list(text)",
+    //             enabled: true,
+    //         },
+    //     },
+    //     defaults: {
+    //         "_isinternal": true,
+    //     }
+    // },
 });

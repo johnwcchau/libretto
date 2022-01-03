@@ -1,8 +1,9 @@
 import WsClient from "./WsClient.mjs";
-import { Root } from "./BaseBlock.mjs";
+import { Parent } from "./BaseBlock.mjs";
 import { Block } from "./BaseBlock.mjs";
 import FileBrowser from "./FileBrowser.mjs";
 import pyimport from "./pyjs.mjs";
+import TabView from "./TabView.mjs";
 
 class Session {
     warnBeforeLoad() {
@@ -20,12 +21,11 @@ class Session {
                     this.reset();
                     return;
                 }
-                const root = new Root({
-                    children: [receipe] //2D array to align with Split Class
-                });
-                this.model = root;
-                this.render();
-                Root.model_changed = false;
+                // const root = new Root({
+                //     children: [receipe] //2D array to align with Split Class
+                // });
+                this.#setReceipe(receipe);
+                receipe.model_changed = false;
                 res(this);
             }).catch((e)=>{
                 rej(e);
@@ -37,39 +37,43 @@ class Session {
         if (!model || !model.export) return;
         const receipe = model.export();
         return WsClient.send("load", {dump: receipe}).then(r=>{
-            Root.model_changed = false;
+            receipe.model_changed = false;
         });
     }
     loadRemote(name) {
-        if (Root.model_changed && !this.warnBeforeLoad()) return null; 
+        if (this.model.model_changed && !this.warnBeforeLoad()) return null; 
         return $.ajax({
             dataType: "json",
             url: name,
         }).then(r => {
             const receipe = pyimport(r);
             if (!receipe || receipe.length == 0) return;
-            const root = new Root({
-                name: name.split(".")[0].split("/").pop(),
-                children: [receipe] //2D array to align with Split Class
-            });
-            this.model = root;
-            this.render();
-            Root.model_changed = true;
+            // const root = new Root({
+            //     name: name.split(".")[0].split("/").pop(),
+            //     children: [receipe] //2D array to align with Split Class
+            // });
+            this.#setReceipe(receipe);
+            this.model.model_changed = true;
             return this;
         });
     }
+    #setReceipe(receipe) {
+        this.model = receipe;
+        receipe._session = this;
+        this.render();
+    }
     render() {
-        if (!this.$dom) return;
-        this.$dom.html("");
-        this.model.render().appendTo(this.$dom);
+        if (!this.$receipe) return;
+        this.$receipe.html("");
+        this.model.render().appendTo(this.$receipe);
     }
     reset() {
         if (!this.warnBeforeLoad()) return null; 
-        this.model = new Root({name: "Untitled"});
-        const input = new Block({name: "Input", _type: "skll.block.input.Input"});
-        input.render();
-        this.model.append(input, 0);
-        this.render();
+        const parent = new Parent({name: "Untitled", _type: "skll.block.baseblock.Parent"});
+        const input = new Block({name: "Input", _type: "skll.block.input.FileInput"});
+        parent.append(input, 0);
+        this.#setReceipe(parent);
+        this.model._model_changed = true;
     }
     /**
      * Cook the receipe
@@ -91,7 +95,7 @@ class Session {
                 mode = "PREVIEW";
         }
         return new Promise((res, rej) => {
-            if (Root.model_changed) {
+            if (this.model.model_changed) {
                 if (!confirm("Receipe not in sync with runtime, sync now?"))
                     rej("Receipe not in sync");
                 this.dump().then(r=>{
@@ -141,22 +145,21 @@ class Session {
             FileBrowser.refresh();
         });
     }
-    /**
-     * Dependency breaking helper for Block preview
-     * @param block Block run up-to
-     * @param usage "table" or "plotly", @see run
-     * @returns Promise
-     */
-    static runBroker(mode, block, usage) {
-        return Session.instance.run(mode, block, usage);
-    }
+
     constructor() {
         if (Session.instance) {
             return Session.instance;
         }
-        Block.runBroker = Session.runBroker;
+        this.$dom = $("<div>").addClass("session");
+        this.$receipe = $("<div>").addClass("receipe").appendTo(this.$dom);
+        this.$table = $("<div>").addClass("data").appendTo(this.$dom);
+        this.tabView = new TabView(this.$table);
         this.load();
         Session.instance = this;
+    }
+
+    get panel() {
+        return this.$dom;
     }
 }
 

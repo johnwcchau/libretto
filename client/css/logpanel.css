@@ -5,7 +5,7 @@
     font-family: monospace, monospace;
     background-color: #333;
     color: #fff;
-    height: 9em;
+    flex: 10em 0 0;
     z-index: 101;
 }
 .logPanel .err,

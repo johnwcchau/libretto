@@ -1,48 +1,48 @@
-import { Parent, Split, Block, BlockTypes } from "./BaseBlock.mjs";
+import { Parent, Block, BlockTypes } from "./BaseBlock.mjs";
 
 new BlockTypes().add({
-    "skll.block.baseblock.Split": {
-        cls: Split,
-        typename: "Column Split",
-        childof: "skll.block.baseblock.Block",
-        properties: {
-            // "splits": {
-            //     desc: "Splits",
-            //     type: "list(text)",
-            //     enabled: true,
-            // },
-        },
-        defaults: {
-            "singlar": false,
-        },
-        split_type: "column"
-    },
+    // "skll.block.baseblock.Split": {
+    //     cls: Split,
+    //     typename: "Column Split",
+    //     childof: "skll.block.baseblock.Block",
+    //     properties: {
+    //         // "splits": {
+    //         //     desc: "Splits",
+    //         //     type: "list(text)",
+    //         //     enabled: true,
+    //         // },
+    //     },
+    //     split_type: "column"
+    // },
     "skll.block.baseblock.Parent": {
         cls: Parent,
-        hidden: true,
+        typename: "Group",
+        desc: "Group of blocks",
         childof: "skll.block.baseblock.Block",
         properties: {
         },
-        defaults: {
-            "singlar": false,
-        }
+    },
+    "skll.block.baseblock.Drop": {
+        cls: Block,
+        typename: "Drop",
+        desc: "Remove columns",
+        childof: "skll.block.baseblock.Block",
+        properties: {
+        },
     },
     "skll.block.baseblock.Loop": {
         cls: Parent,
         hidden: true,
         childof: "skll.block.baseblock.Block",
-        defaults: {
-            "singlar": true,
-        }
     },
-    "skll.block.input.Input": {
+    "skll.block.input.FileInput": {
         cls: Block,
-        typename: "Input",
-        desc: "Data input",
+        typename: "File Input",
+        desc: "File input",
         childof: "skll.block.baseblock.Block",
         properties: {
-            "url": {
-                desc: "Input file url",
+            "filename": {
+                desc: "Name of input file",
                 type: "file",
                 enabled: true,
             }
@@ -55,7 +55,7 @@ new BlockTypes().add({
                     case "csv":
                     case "xls":
                     case "xlsx":
-                        thiz.url = `file://${filename}`;
+                        thiz.filename = filename;
                         break;
                     default:
                         alert(`Unsupported file type ${ext}`);
@@ -63,25 +63,24 @@ new BlockTypes().add({
                 thiz.render();
             },
             onRendered: (thiz) => {
-                if (!thiz.url) return;
-                let fname = thiz.url.replace("file://", "");
-                thiz.$div.find("span.title").html(`${thiz.name} (${fname})`);
+                if (!thiz.filename) return;
+                thiz.$div.find("span.title").html(`${thiz.name} (${thiz.filename})`);
             }
         },
     },
-    "skll.block.input.Drop": {
-        cls: Block,
-        typename: "Column Drop",
-        desc: "Column Drop",
-        childof: "skll.block.baseblock.Block",
-        properties: {
-            "cols": {
-                desc: "Columns to drop",
-                type: "list(column)",
-                enabled: true,
-            }
-        },
-    },
+    // "skll.block.input.Drop": {
+    //     cls: Block,
+    //     typename: "Column Drop",
+    //     desc: "Column Drop",
+    //     childof: "skll.block.baseblock.Block",
+    //     properties: {
+    //         "cols": {
+    //             desc: "Columns to drop",
+    //             type: "list(column)",
+    //             enabled: true,
+    //         }
+    //     },
+    // },
     "skll.block.imputer.ConstantImputer": {
         cls: Block,
         typename: "Constant Imputer",
@@ -116,7 +115,7 @@ new BlockTypes().add({
     "skll.block.imputer.Eval": {
         cls: Block,
         typename: "Lambda Function",
-        desc: "Column generation using apply with insecure eval",
+        desc: "Column generation with eval(X, x)",
         childof: "skll.block.baseblock.Block",
         properties: {
             "colname": {
@@ -125,7 +124,7 @@ new BlockTypes().add({
                 enabled: true,
             },
             "lamda": {
-                desc: "lamda function with row input <x>",
+                desc: "lamda function",
                 type: "text",
                 enabled: true,
             }
@@ -137,21 +136,21 @@ new BlockTypes().add({
         desc: "Transformation for each column",
         childof: "skll.block.baseblock.Parent",
     },
-    "skll.block.splitter.TypeSplit": {
-        cls: Split,
-        typename: "Type Split",
-        desc: "Column splitting by data-type",
-        childof: "skll.block.baseblock.Split",
-        properties: {
-            "convert_types": {
-                desc: "normalize value type before splitting",
-                type: "boolean",
-                enabled: true,
-            }
-        },
-        split_type: "datatype"
-    },
-    "skll.block.splitter.RunModeSplit": {
+    // "skll.block.splitter.TypeSplit": {
+    //     cls: Split,
+    //     typename: "Type Split",
+    //     desc: "Column splitting by data-type",
+    //     childof: "skll.block.baseblock.Split",
+    //     properties: {
+    //         "convert_types": {
+    //             desc: "normalize value type before splitting",
+    //             type: "boolean",
+    //             enabled: true,
+    //         }
+    //     },
+    //     split_type: "datatype"
+    // },
+    "skll.block.sklwrapper.RunModeSplit": {
         cls: Block,
         typename: "Train/Test Split",
         desc: "Dataset splitting by run mode",
@@ -159,7 +158,7 @@ new BlockTypes().add({
     },
     "skll.block.splitter.XyidSplit": {
         cls: Block,
-        typename: "X/Y/ID Split",
+        typename: "Extract Y/ID Column",
         desc: "Specifying column for Y and/or Id",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -217,19 +216,6 @@ new BlockTypes().add({
             }
         }
     },
-    "skll.block.sklwrapper.SklPipeline": {
-        cls: Block,
-        desc: "SKlearn Pipeline",
-        childof: "skll.block.sklwrapper.SklClass",
-        properties: {
-            "cls": {
-                desc: "class name",
-                type: "text",
-                default: "sklearn.pipeline.Pipeline",
-                enabled: false,
-            },
-        }
-    },
     "skll.block.sklwrapper.Method": {
         cls: Block,
         desc: "Any python method applying 1-to-1 transformations",
@@ -264,7 +250,7 @@ new BlockTypes().add({
     },
     "skll.block.sklwrapper.SklScoringMethod": {
         cls: Block,
-        desc: "Sklearn method outputing a scalar scores",
+        desc: "Sklearn method outputting a scalar scores",
         childof: "skll.block.sklwrapper.Method",
     },
     "skll.block.sklwrapper.SklSplitter": {
@@ -290,7 +276,7 @@ new BlockTypes().add({
         }
     },
     "skll.block.sklwrapper.SklWrappingClass": {
-        cls: Split,
+        cls: Parent,
         desc: "Ensemble estimators or Hyper-parameter search class",
         childof: "skll.block.sklwrapper.SklClass",
         properties: {
@@ -314,24 +300,18 @@ new BlockTypes().add({
 });
 
 export default function pyimport(py) {
-    let next = py;
-    let root = [];
+    if (!py) return;
     const blockTypes = new BlockTypes();
-    while (next) {
-        const type = next._type;
-        const cls = blockTypes.get(type).cls;
-        if (!cls) throw `Unknown type for ${next._type}`;
-        if (next._children) {
-            let children = [];
-            Object.entries(next._children).forEach(([i, v]) => {
-                children[i-1] = pyimport(v); //python-side starts from 1
-            });
-            next["children"] = children;
-            delete next._children;
-        }
-        const obj = new cls(next);
-        root.push(obj);
-        next = next._next;
+    const type = py._type;
+    const cls = blockTypes.get(type).cls;
+    if (!cls) throw `Unknown type for ${py._type}`;
+    if (py._children) {
+        let children = [];
+        Object.entries(py._children).forEach(([i, v]) => {
+            children[i] = pyimport(v);
+        });
+        py["children"] = children;
+        delete py._children;
     }
-    return root;
+    return new cls(py);
 }

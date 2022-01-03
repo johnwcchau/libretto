@@ -21,7 +21,9 @@ class EditDialog {
         const mode = (prop.type == "list(datatype)") ? "datatype" : "column";
         this.createLabel(`edit_${name}`, name).appendTo($row);
         this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
-        new ColumnSelector(layer, layer[name], mode, multiple).panel
+        const selector = new ColumnSelector(layer[name], mode, multiple);
+        this.colsels.push(selector);
+        selector.panel
             .attr("id", `edit_${name}`)
             .attr("name", `edit_${name}`)
             .data("id", name)
@@ -90,63 +92,75 @@ class EditDialog {
     createToolbar() {
         return $("<div>").addClass("toolbar");
     }
-    createEditDialog(layer) {
-        const $dialog = this._dialog.html("").data("layer", layer);
-        const $toolbar = this.createToolbar().appendTo($dialog);
-        $("<a href='#'>").addClass("edit-apply").html("Apply").on("click", {thiz: layer, dialog: this}, (e)=> {
-            let res = true;
-            Object.entries(layer._properties).forEach(([name, v]) => {
-                if (!v.enabled) return;
-                switch(v.type.split("(")[0]) {
-                    case "list":
-                    case "dict":
-                        if ((v.type=="list(column)")||(v.type == "list(datatype)")) {
-                            layer[name] = $(`#edit_${name}`).data("thiz").json();
-                        } else {
-                            try {
-                                const t = $(`#edit_${name}`).removeClass("invalid-val").val();
-                                const val = JSON.parse(t == "" ? null : t);
-                                layer[name] = val;
-                            } catch (e) {
-                                console.log(e);
-                                $(`#edit_${name}`).addClass("invalid-val");
-                                res = false;
-                                return;
-                            }
-                        }
-                        break;
-                    case "column":
-                        break;
-                    case "boolean":
-                        layer[name] = $(`#edit_${name}`).prop("checked");
-                        break;
-                    case "mc":
-                        let r = [];
-                        $(`.editchk_${name}`).each((i, v) => {
-                            if ($(v).prop("checked")) r.push($(v).data("val"));
-                        })
-                        layer[name] = r;
-                        break;
-                    case "number":
+    async #resolveColumnNames(layer) {
+        const Session = (await import("./Session.mjs")).default;
+        Session.run("COLUMNS", layer, "columns").then((r) => {
+            this.colsels.forEach(v => {
+                v.render(r.columns);
+            });
+        });
+    }
+    static #applyHandler(e) {
+        let res = true;
+        const layer = e.data.thiz;
+        const dialog = e.data.dialog;
+        Object.entries(layer._properties).forEach(([name, v]) => {
+            if (!v.enabled) return;
+            switch(v.type.split("(")[0]) {
+                case "list":
+                case "dict":
+                    if ((v.type=="list(column)")||(v.type == "list(datatype)")) {
+                        layer[name] = $(`#edit_${name}`).data("thiz").json();
+                    } else {
                         try {
-                            layer[name] = parseFloat($(`#edit_${name}`).removeClass("invalid-val").val());
+                            const t = $(`#edit_${name}`).removeClass("invalid-val").val();
+                            const val = JSON.parse(t == "" ? null : t);
+                            layer[name] = val;
                         } catch (e) {
                             console.log(e);
                             $(`#edit_${name}`).addClass("invalid-val");
                             res = false;
                             return;
                         }
-                    case "string":
-                    default:
-                        layer[name] = $(`#edit_${name}`).val();
-                        break;
-                }
-            });
-            if (!res) return;
-            e.data.dialog._dialog.removeClass("shown");
-            e.data.thiz.onEditApplied();
-            
-        }).appendTo($toolbar);
+                    }
+                    break;
+                case "column":
+                    layer[name] = $(`#edit_${name}`).val();
+                    break;
+                case "boolean":
+                    layer[name] = $(`#edit_${name}`).prop("checked");
+                    break;
+                case "mc":
+                    let r = [];
+                    $(`.editchk_${name}`).each((i, v) => {
+                        if ($(v).prop("checked")) r.push($(v).data("val"));
+                    })
+                    layer[name] = r;
+                    break;
+                case "number":
+                    try {
+                        layer[name] = parseFloat($(`#edit_${name}`).removeClass("invalid-val").val());
+                    } catch (e) {
+                        console.log(e);
+                        $(`#edit_${name}`).addClass("invalid-val");
+                        res = false;
+                        return;
+                    }
+                case "string":
+                default:
+                    layer[name] = $(`#edit_${name}`).val();
+                    break;
+            }
+        });
+        if (!res) return;
+        dialog._dialog.removeClass("shown");
+        layer.onEditApplied();
+    }
+    createEditDialog(layer) {
+        const $dialog = this._dialog.html("").data("layer", layer);
+        const $toolbar = this.createToolbar().appendTo($dialog);
+        this.colsels = [];
+        $("<a href='#'>").addClass("edit-apply").html("Apply").on("click", {thiz: layer, dialog: this}, EditDialog.#applyHandler).appendTo($toolbar);
         $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
             e.data.thiz._dialog.removeClass("shown");
         }).appendTo($toolbar);
@@ -180,6 +194,9 @@ class EditDialog {
                     break;
             }
         });
+        if (this.colsels.length) {
+            this.#resolveColumnNames(layer);
+        }
         return $dialog;
     }
     constructor() {
@@ -187,6 +204,7 @@ class EditDialog {
             return EditDialog.instance;
         }
 
+        this.colsels = [];
         this._dialog = $("<dialog>")
             .attr("id", "edit_dialog");
         EditDialog.instance = this;

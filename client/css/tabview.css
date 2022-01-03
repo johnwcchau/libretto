@@ -1,0 +1,23 @@
+
+.tab-view-tab-bar {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+    border-bottom: 1px solid #a98;
+}
+.tab-view-tab-button {
+    list-style: none;
+    padding: 0.5em;
+}
+.tab-view-tab-button>a {
+    text-decoration: none;
+    color: #222;
+}
+.tab-view-selected-tab-button {
+    background: #a98;
+}
+.tab-view-selected-tab-button>a {
+    text-decoration: none;
+    color: #fff;
+}

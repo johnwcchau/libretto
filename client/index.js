@@ -2,10 +2,9 @@ import {Trash} from './modules/BaseBlock.mjs';
 import {} from "./modules/pyjs.mjs";
 import Log from "./modules/Log.mjs";
 import EditDialog from "./modules/EditDialog.mjs";
-import TableDialog from "./modules/TableDialog.mjs";
 import FileBrowser from "./modules/FileBrowser.mjs";
 import MethodBrowser from "./modules/MethodBrowser.mjs";
-import addbtn from './modules/maintoolbar.mjs';
+import _ from './modules/maintoolbar.mjs';
 import Session from "./modules/Session.mjs";
 
 window.Session = Session;
@@ -60,7 +59,7 @@ const init = () => {
     Log.panel.appendTo("#root");
     Log.prompt.appendTo("body");
     EditDialog.dialog.appendTo("body");
-    TableDialog.dialog.appendTo("body");
+    Session.panel.appendTo(".flex-row");
     FileBrowser.panel.attr("id", "filesPane").addClass("tabPanel").appendTo("#toolbox");
     MethodBrowser.panel.attr("id", "methodsPane").addClass("tabPanel").appendTo("#toolbox");
     setTimeout(()=>{
@@ -70,7 +69,6 @@ const init = () => {
     
     new Trash().render().appendTo("body");
 
-    Session.$dom = $("main");
 }
 
 $(document).ready(() => {
