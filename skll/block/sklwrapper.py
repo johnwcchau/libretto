@@ -6,7 +6,7 @@ from importlib import import_module
 import pandas as pd
 
 class SklClass(Block):
-    def __init__(self, cls:str, trainmethod:str=None, testmethod:str=None, scoremethod:str=None, keepcolnames=True, initargs:list=None, initkargs:dict=None, **kwargs):
+    def __init__(self, cls:str=None, trainmethod:str=None, testmethod:str=None, scoremethod:str=None, keepcolnames=True, initargs:list=None, initkargs:dict=None, **kwargs):
         super().__init__(**kwargs)
         #if not cls.startswith("sklearn"):
         #    raise KeyError(f'{cls} is not from sklearn')
@@ -31,6 +31,8 @@ class SklClass(Block):
         return r
     
     def createobject(self):
+        if self.cls is None:
+            raise AttributeError('No class specified')
         self.obj = import_load(self.cls)(*self.initargs, **self.initkargs)
         if not self.testmethodname:
             self.testmethodname = [attr for attr in ["predict", "transform"] if hasattr(self.obj, attr)]
@@ -91,19 +93,13 @@ class Method(Block):
     xname : str
     yname : str
     """
-    def __init__(self, method:str, xname=None, yname=None, keepcolnames=True, args:list=None, kargs:dict=None, **kwargs):
+    def __init__(self, method:str=None, xname=None, yname=None, keepcolnames=True, args:list=None, kargs:dict=None, **kwargs):
         super().__init__(**kwargs)
         if "name" in kwargs: del kwargs["name"]
         if "disable_mask" in kwargs: del kwargs["disable_mask"]
         #if not method.startswith("sklearn"):
         #    raise KeyError(f'{method} is not from sklearn')
-        func = method.split(".")
-        package = ".".join(func[:-1])
-        func = func[-1]
-        package = import_module(package)
-        func = getattr(package, func)
-        if not callable(func):
-            raise AttributeError(f'{method} is not a method')
+
         try:
             if xname == "": 
                 xname = None
@@ -120,7 +116,7 @@ class Method(Block):
             pass
         
         self.method = method
-        self.func = func
+        self.func = None
         self.xname = xname
         self.yname = yname
         self.funcargs = args if args else []
@@ -131,6 +127,16 @@ class Method(Block):
         if isinstance(yname, int) and len(self.funcargs) <= yname:
             self.funcargs += [None] * (1 + yname - len(self.funcargs))
     
+    def loadmethod(self):
+        func = self.method.split(".")
+        package = ".".join(func[:-1])
+        func = func[-1]
+        package = import_module(package)
+        func = getattr(package, func)
+        if not callable(func):
+            raise AttributeError(f'{self.method} is not a method')
+        self.func = func
+
     def dump(self) -> dict:
         r = super().dump()
         r["method"] = self.method
@@ -164,6 +170,8 @@ class Method(Block):
                 self.funckargs[self.yname] = y
     
     def run(self, runspec:RunSpec, x, y=None, id=None):
+        if self.func is None:
+            self.loadmethod()
         self.resolvexyargs(x, y)
         newx = self.func(*self.funcargs, **self.funckargs)
         if not isinstance(newx, pd.DataFrame):

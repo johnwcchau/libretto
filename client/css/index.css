@@ -29,53 +29,27 @@ body {
 }
 #toolbox {
     display: flex;
+    flex: 0;
     flex-direction: column;
     flex-basis: 20em;
     background: linear-gradient(to top, #fed, #fff8f0);
 }
-.tabView .ui-tabs-nav {
-    background: unset !important;
-    border: none;
-    display: flex;
-    flex-direction: row;
-}
-.tabView .ui-tabs-panel {
+#toolbox .tab-view-tab-button {
     background: #fff;
-    padding: 0.5em !important;
     flex-grow: 1;
-    overflow-y: scroll;
+    border-radius: 0;
 }
-.tabView li.ui-tabs-tab {
-    background: #a98;
-    flex: 1;
-    justify-content: center;
-    border: none;
-}
-.tabView li.ui-tabs-tab:hover {
+#toolbox .tab-view-tab-button:hover {
     background: #dcb;
 }
-.tabView li.ui-tabs-tab a {
-    display: flex;
-    align-items: center;
-    color: #fff;
-    border: none !important;
-    width: 100%;
+#toolbox .tab-view-selected-tab-button {
+    background: #a98;
 }
-.tabView li.ui-tabs-tab a > img {
-    padding-right: 0.5em;
-}
-.tabView li.ui-tabs-tab a:hover {
-    background: unset !important;
-}
-.tabView li.ui-tabs-tab.ui-tabs-active {
+#toolbox .tab-view-item {
     background: #fff;
-    border: none;
-}
-.tabView li.ui-tabs-tab.ui-tabs-active a {
-    color: #000;
-}
-.tabPanel {
-    height: 100%;
+    padding: 0.5em;
+    flex: 100% 1 1;
+    overflow-y: scroll;
 }
 .list-view {
     background: #fff;
@@ -102,28 +76,28 @@ body {
 .list-view a:active {
     background: #999;
 }
-#filesPane .fileobj_parentdir::before {
+.fileBrowser .fileobj_parentdir::before {
     content: url("/static/img/folder_open_black_24dp.svg");
     padding-right: 0.5em;
 }
-#filesPane .fileobj_dir::before {
+.fileBrowser .fileobj_dir::before {
     content: url("/static/img/folder_black_24dp.svg");
     padding-right: 0.5em;
 }
-#filesPane .fileobj_file::before {
+.fileBrowser .fileobj_file::before {
     content: url("/static/img/text_snippet_black_24dp.svg");
     padding-right: 0.5em;
 }
-#methodsPane .methodobj {
+.methodBrowser .methodobj {
     flex-direction: column;
     align-items: start;
     padding: 0.3em 0 0.3em 0;
 }
-#methodsPane .methodobj .methodname {
+.methodBrowser .methodobj .methodname {
     font-weight: bolder;
     color: #888;
 }
-#methodsPane .methodobj .method_desc {
+.methodBrowser .methodobj .method_desc {
     font-size: 0.8em;
     font-style: italic;
     color: #888;

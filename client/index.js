@@ -6,6 +6,8 @@ import FileBrowser from "./modules/FileBrowser.mjs";
 import MethodBrowser from "./modules/MethodBrowser.mjs";
 import _ from './modules/maintoolbar.mjs';
 import Session from "./modules/Session.mjs";
+import PlotDialog from "./modules/PlotDialog.mjs";
+import TabView from "./modules/TabView.mjs";
 
 window.Session = Session;
 
@@ -55,13 +57,17 @@ window.Session = Session;
 //     });
 // }
 const init = () => {
-    $(".tabView").tabs();
+    const toolbox = new TabView();
+    toolbox.panel.attr("id", "toolbox").appendTo("#main-pane");
+    toolbox.addTab("Files", "/static/img/attachment_black_24dp.svg", FileBrowser.panel, false);
+    toolbox.addTab("Methods", "/static/img/functions_black_24dp.svg", MethodBrowser.panel, false);
+    toolbox.addTab("Properties", "/static/img/functions_black_24dp.svg", EditDialog.dialog, false);
+    toolbox.showTab(FileBrowser.panel.attr("id"));
+    
     Log.panel.appendTo("#root");
     Log.prompt.appendTo("body");
-    EditDialog.dialog.appendTo("body");
+    PlotDialog.dialog.appendTo("body");
     Session.panel.appendTo(".flex-row");
-    FileBrowser.panel.attr("id", "filesPane").addClass("tabPanel").appendTo("#toolbox");
-    MethodBrowser.panel.attr("id", "methodsPane").addClass("tabPanel").appendTo("#toolbox");
     setTimeout(()=>{
         $("#tb_methods").click();
         $("#tb_files").click();

@@ -1,4 +1,6 @@
-
+.tab-view {
+    overflow: auto;
+}
 .tab-view-tab-bar {
     display: flex;
     flex-direction: row;
@@ -9,6 +11,10 @@
 .tab-view-tab-button {
     list-style: none;
     padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    border-radius: 0.5em 0.5em 0 0;
+    transition: background 0.2s;
 }
 .tab-view-tab-button>a {
     text-decoration: none;
@@ -20,4 +26,47 @@
 .tab-view-selected-tab-button>a {
     text-decoration: none;
     color: #fff;
+}
+.tab-view-close-button {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    display: block;
+    float: right;
+    margin-left: 0.5em;
+    border-radius: 0.5em;
+    padding: 0.2em;
+}
+.tab-view-close-button:hover {
+    background: #ddd;
+}
+.tab-view-close-button::before,
+.tab-view-close-button::after {
+    content: "";
+    width: 1em;
+    height: 1px;
+    display: block;
+    top: 50%;
+    position: absolute;
+    background: #222;
+}
+.tab-view-close-button::before {
+    transform: rotateZ(45deg);
+}
+.tab-view-close-button::after {
+    transform: rotateZ(-45deg);
+}
+.tab-view-selected-tab-button .tab-view-close-button::before,
+.tab-view-selected-tab-button .tab-view-close-button::after {
+    background: #fff;
+}
+.tab-view-selected-tab-button .tab-view-close-button:hover {
+    background: #876;
+}
+
+.tab-view-item {
+    display: none;
+}
+.tab-view-visible-item {
+    display: unset;
 }

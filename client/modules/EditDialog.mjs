@@ -1,76 +1,76 @@
 import {ColumnSelector} from "./ColumnSelector.mjs";
 
 class EditDialog {
-    createLabel(for_id, desc) {
-        return $(`<label class="editlabel" for="${for_id}">`).html(desc);
+    createLabel(for_id, desc, cls="label") {
+        return $(`<label class="${cls}" for="${for_id}">`).html(desc);
     }
     createJsonRow(layer, name, prop) {
         const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name).appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         $(`<textarea name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
             .addClass("edittextarea")
             .data("id", name)
             .val(JSON.stringify(layer[name], null, 2))
-            .prop("disabled", !prop.enabled)
+            .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createColumnListRow(layer, name, prop, multiple) {
         const $row = $("<li>").addClass("editrow");
         const mode = (prop.type == "list(datatype)") ? "datatype" : "column";
-        this.createLabel(`edit_${name}`, name).appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         const selector = new ColumnSelector(layer[name], mode, multiple);
         this.colsels.push(selector);
         selector.panel
             .attr("id", `edit_${name}`)
             .attr("name", `edit_${name}`)
             .data("id", name)
-            .prop("disabled", !prop.enabled)
+            .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createTextRow(layer, name, prop) {
         const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name).appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         $(`<input type="text" name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
             .addClass("edittext")
             .data("id", name)
             .val(layer[name])
-            .prop("disabled", !prop.enabled)
+            .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createNumberRow(layer, name, prop) {
         const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name).appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         $(`<input type="number" name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
             .addClass("editnum")
             .data("id", name)
             .val(layer[name])
-            .prop("disabled", !prop.enabled)
+            .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createBooleanRow(layer, name, prop) {
         const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name).appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         $(`<input type="checkbox" name="edit_${name}" id="edit_${name}">`)
             .addClass("editchk")
             .data("id", name)
             .prop("checked", layer[name])
-            .prop("disabled", !prop.enabled)
+            .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createMCRow(layer, name, prop) {
         const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name).appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc).appendTo($row);
+        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
+        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         const $fields = $(`<span>`).addClass("editmcs").appendTo($row);
         var choices = prop.type.split('(', 2);
         if (choices.length > 1) {
@@ -82,7 +82,7 @@ class EditDialog {
                 .data("id", name)
                 .data("val", v)
                 .prop("checked", layer[name] && (layer[name].indexOf(v) != -1))
-                .prop("disabled", !prop.enabled)
+                .prop("disabled", prop.disabled)
                 .appendTo($fields);
                 this.createLabel(`edit_${name}[${v}]`, v).appendTo($fields);
             });
@@ -105,7 +105,7 @@ class EditDialog {
         const layer = e.data.thiz;
         const dialog = e.data.dialog;
         Object.entries(layer._properties).forEach(([name, v]) => {
-            if (!v.enabled) return;
+            if (v.disabled || v.hidden) return;
             switch(v.type.split("(")[0]) {
                 case "list":
                 case "dict":
@@ -153,7 +153,8 @@ class EditDialog {
             }
         });
         if (!res) return;
-        dialog._dialog.removeClass("shown");
+        //dialog._dialog.removeClass("shown");
+        dialog._dialog.html("");
         layer.onEditApplied();
     }
     createEditDialog(layer) {
@@ -161,12 +162,14 @@ class EditDialog {
         const $toolbar = this.createToolbar().appendTo($dialog);
         this.colsels = [];
         $("<a href='#'>").addClass("edit-apply").html("Apply").on("click", {thiz: layer, dialog: this}, EditDialog.#applyHandler).appendTo($toolbar);
-        $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
-            e.data.thiz._dialog.removeClass("shown");
-        }).appendTo($toolbar);
-        $("<h2>").html(layer._typename ? layer._typename : layer._type).appendTo($dialog);
+        // $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
+        //     e.data.thiz._dialog.removeClass("shown");
+        // }).appendTo($toolbar);
+        $("<h2>").html(layer.name).appendTo($dialog);
+        $("<h3>").html(layer._typename ? layer._typename : layer._type).appendTo($dialog);
         const $root = $("<ul>").addClass("editgroup").appendTo($dialog);
         Object.entries(layer._properties).forEach(([name, v]) => {
+            if (v.hidden) return;
 
             switch(v.type.split("(")[0]) {
                 case "number":
@@ -197,6 +200,8 @@ class EditDialog {
         if (this.colsels.length) {
             this.#resolveColumnNames(layer);
         }
+
+        $dialog.parents("#toolbox").data("thiz").showTab($dialog.attr("id"));
         return $dialog;
     }
     constructor() {
@@ -205,8 +210,7 @@ class EditDialog {
         }
 
         this.colsels = [];
-        this._dialog = $("<dialog>")
-            .attr("id", "edit_dialog");
+        this._dialog = $("<div>").addClass("edit-dialog");
         EditDialog.instance = this;
     }
     get dialog() {

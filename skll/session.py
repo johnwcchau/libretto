@@ -3,6 +3,8 @@ from skll.block import Block
 from skll.block.baseblock import RunSpec
 from skll.inout import Output
 import pandas as pd
+import numpy as np
+import logging
 
 class Session:
 
@@ -10,6 +12,7 @@ class Session:
 
     def __new__(cls, name:str):
         if name not in Session.__sessions:
+            logging.info(f'Creating new session {name}')
             s = object.__new__(Session)
             s.__init()
             Session.__sessions[name] = s
@@ -43,8 +46,34 @@ class Session:
             traceback.print_exc()
             self.out.error(repr(e))
     
+    def __genstat(self):
+        data:pd.DataFrame = self._result[0]
+        result:pd.DataFrame = data.describe(include="all")
+        def fillunique(x:pd.Series):
+            if np.isnan(x["unique"]):
+                x["unique"] = len(data[x.name].unique())
+            return x
+        result = result.transform(fillunique, axis=0)
+        if self._result[1] is not None:
+            result.loc[len(result.index)] = data.corrwith(self._result[1])
+            result = result.rename(index={
+                len(result.index)-1 : "corr"
+            })
+        result.loc[len(result.index)] = data.median()
+        result.loc[len(result.index)] = data.skew()
+        result.loc[len(result.index)] = data.dtypes.astype(str)
+        result = result.rename(index={
+                len(result.index)-3 : "median",
+                len(result.index)-2 : "skew",
+                len(result.index)-1 : "dtype",
+            }).transpose().reset_index().rename(columns={"index": "column"})
+        return result.where(pd.notnull(result), None).to_dict(orient="records")
+
     def result(self, usage:str="table", **kwargs)->None:
         try:
+            if usage=='stat':
+                self.out.finished("Listed stats", {"stat": self.__genstat()})
+                return
             if self._result is None:
                 raise RuntimeError('No result, run first')
             result = self._result[0]

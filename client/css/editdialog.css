@@ -1,49 +1,44 @@
-
-#edit_dialog {
-    max-width: 100vw;
-    display: none;
-    border-radius: 1.5em;
-    padding: 15px 30px;
-}
-#edit_dialog.shown {
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-}
-#edit_dialog h2 {
+.edit-dialog h2 {
+    font-size: 1.2em;
+    font-style: italic;
     margin: 0;
 }
-#edit_dialog section {
+.edit-dialog h3 {
+    display: none;
+}
+.edit-dialog section {
     display: flex;
     flex-direction: column;
 }
-#edit_dialog ul {
-    display: inline-table;
+.edit-dialog ul {
+    display: flex;
+    flex-direction: column;
 }
-#edit_dialog > ul {
+.edit-dialog > ul {
     padding-left: 0;
 }
-#edit_dialog li {
-    display: table-row;
-    list-style: none;
-    margin: 0;
+.edit-dialog li {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0.5em;
 }
-#edit_dialog li>label {
-    display: table-cell;
+.edit-dialog .name-label {
     font-size: 0.8em;
     font-weight: bold;
-    padding-right: 0.5em;
 }
-#edit_dialog li>input, 
-#edit_dialog li>select {
+.edit-dialog .desc-label {
+    font-size: 0.7em;
+    font-style: italic;
+    color: #777;
+}
+.edit-dialog li>input, 
+.edit-dialog li>select {
     font-family: monospace, monospace;
     font-size: 1em;
     display: table-cell;
     width: 100%;
 }
-#edit_dialog input.invalid-val,
-#edit_dialog textarea.invalid-val {
+.edit-dialog input.invalid-val,
+.edit-dialog textarea.invalid-val {
     color: red;
 }

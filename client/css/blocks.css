@@ -11,6 +11,7 @@
     align-items: stretch;
     background: linear-gradient(to bottom, #fff, #ddd);
     border-radius: 0.5em;
+    transition: padding 0.2s, margin 0.2s, background 0.2s;
 }
 .block:hover {
     background: #ccc;
@@ -43,7 +44,11 @@
     z-index: 1000;
     min-width: 35%;
 }
-.block.dropinto {
+.block.droptarget {
+    margin: 2em 0 2em 0;
+    padding: 1em 0 1em 0;
+}
+/* .block.dropinto {
     background: linear-gradient(to bottom, #ddf, #aad);
 }
 .block.dropafter {
@@ -57,7 +62,7 @@
 .block.block-set.dropafter > .title {
     margin-bottom: 2em;
     border-bottom: 5px dashed #ccf;
-}
+} */
 .block>.editbtn {
     position: absolute;
     top: 0.1em;
@@ -80,11 +85,12 @@
 .droppos {
     position:absolute;
     display: block;
-    width: 1em;
-    height: 1em;
+    width: 2em;
+    height: 2em;
     border-radius: 0.5em;
     background: #cef;
     opacity: 0.5;
+    cursor: copy;
 }
 .droppos-left {
     left: 1em;
@@ -97,19 +103,19 @@
     height: 100%;
 }
 .droppos-before {
-    top: 0;
-    left: calc(50% - 2em);
-    width: 4em;
+    top: -2em;
+    left: calc(50% - 4em);
+    width: 8em;
 }
 .droppos-after {
-    bottom: 0;
-    left: calc(50% - 2em);
-    width: 4em;
+    bottom: -2em;
+    left: calc(50% - 4em);
+    width: 8em;
 }
 .droppos-into {
-    bottom: calc(50% - 0.5em);
-    left: calc(50% - 2em);
-    width: 4em;
+    bottom: calc(50% - 1em);
+    left: calc(50% - 4em);
+    width: 8em;
 }
 .trash {
     display: none;

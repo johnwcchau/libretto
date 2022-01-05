@@ -8,4 +8,10 @@ class Encoder(JSONEncoder):
     def default(self, o):
         if isinstance(o, RunSpec.RunMode):
             return o.value
+        if isinstance(o, np.integer):
+            return int(o)
+        if isinstance(o, np.floating):
+            return float(o)
+        if isinstance(o, np.ndarray):
+            return o.tolist()
         return super().default(o)

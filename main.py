@@ -20,26 +20,26 @@ from skll.jsoncodec import Encoder
 
 tpe = TPE().executor
 
-# def json_decode(o):
-#     if isinstance(o, str):
-#         if o.lower() == "true":
-#             return True
-#         elif o.lower() == "false":
-#             return False
-#         else:
-#             try:
-#                 return int(o)
-#             except ValueError:
-#                 try:
-#                     return float(o)
-#                 except ValueError:
-#                     return o
-#     elif isinstance(o, dict):
-#         return {k: json_decode(v) for k, v in o.items()}
-#     elif isinstance(o, list):
-#         return [json_decode(v) for v in o]
-#     else:
-#         return o
+def json_decode(o):
+    if isinstance(o, str):
+        if o.lower() == "true":
+            return True
+        elif o.lower() == "false":
+            return False
+        else:
+            try:
+                return int(o)
+            except ValueError:
+                try:
+                    return float(o)
+                except ValueError:
+                    return o
+    elif isinstance(o, dict):
+        return {k: json_decode(v) for k, v in o.items()}
+    elif isinstance(o, list):
+        return [json_decode(v) for v in o]
+    else:
+        return o
 
 # def json_encode(o):
 #     return o
@@ -84,7 +84,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         try:
             if isinstance(msg, str):
-                msg = json.loads(msg) #, object_hook=json_decode)
+                msg = json.loads(msg, object_hook=json_decode)
                 if not "action" in msg:
                     session.out.invalid()
                     return

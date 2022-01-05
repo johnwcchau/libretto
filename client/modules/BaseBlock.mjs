@@ -34,7 +34,7 @@ export class Block {
         this._allowchild = [];
         this._events = {};
         this._type = (args && args._type) ? args._type : "skll.block.Block";
-        const cls = blockTypes.get(this._type);
+        const cls = this.getcls();
         if (cls) {
             this.applycls(args, cls);
             if (cls.typename)
@@ -45,14 +45,11 @@ export class Block {
             this.name = t[t.length - 1] + "-" + UUID().substring(0, 4);
         }
     }
-    
+    getcls() {
+        return blockTypes.get(this._type);
+    }
     applycls(args, cls) {
         if (!cls) return;
-        if (cls.defaults) {
-            Object.entries(cls.defaults).forEach(([i, v]) => {
-                if (this[i] === undefined) this[i] = v;
-            })
-        }
         if (cls.childof) {
             this.applycls(args, blockTypes.get(cls.childof));
         }
@@ -64,6 +61,11 @@ export class Block {
                 } else if (v.default !== undefined) {
                     this[i] = v.default;
                 }
+            })
+        }
+        if (cls.defaults) {
+            Object.entries(cls.defaults).forEach(([i, v]) => {
+                this[i] = v;
             })
         }
         if (cls.child_types) {
@@ -128,9 +130,10 @@ export class Block {
         e.data.thiz.onEditClicked();
     }
     onEditClicked() {
-        EditDialog.createEditDialog(this).addClass("shown");//.modal();
+        EditDialog.createEditDialog(this);//.modal();
     }
     onEditApplied() {
+        if (this._events["onEditApplied"]) this._events["onEditApplied"](this);
         this.render();
         this.root.model_changed = true;
     }
@@ -140,7 +143,7 @@ export class Block {
             .on("click", {thiz: this}, Block.__onEditClicked)
             .html("✏️");
     }
-    render() {
+    createDomElement() {
         if (!this.$div) {
             this.$div = $("<div>").addClass("block");
             $("<span>").addClass("title").html(this.name).appendTo(this.$div);
@@ -158,13 +161,24 @@ export class Block {
             else if (!this.canEdit)
                 this.$div.children("a.editbtn").remove();
         }
-        if (this._events["onRendered"]) this._events["onRendered"](this);
+    }
+    render() {
+        if (this._events["onRender"]) this._events["onRender"](this);
+        else this.createDomElement();
         return this.$div;
     }
     export() {
         let result = {};
         Object.entries(this._properties).forEach(([i, v]) => {
-            result[i] = this[i];
+            if (v.dictKeyOf) {
+                if (!result[v.dictKeyOf]) result[v.dictKeyOf] = {};
+                result[v.dictKeyOf][v.dictKey] = this[i];
+            } else if (v.listItemOf) {
+                if (!result[v.dictKeyOf]) result[v.dictKeyOf] = [];
+                result[v.listItemOf][v.listIndex] = this[i];
+            } else {
+                result[i] = this[i];
+            }
         });
         return result;
     }
@@ -255,6 +269,7 @@ export class Block {
     static onmouseup(e) {
         if (e.originalEvent.button != 0) return;
         $(".droppos").remove();
+        $(".droptarget").removeClass("droptarget");
         let thiz = $(document).data("dragsource");
         if (!thiz) return;
         e.preventDefault();
@@ -298,6 +313,7 @@ export class Block {
     becomeDropTarget(src) {
         const droptypes = this.allowdroptypes(src);
         if (!droptypes || (droptypes.length == 0)) return;
+        this.$div.addClass("droptarget");
         if (droptypes.indexOf("dropleft") != -1) {
             $("<a>").addClass("droppos droppos-left")
             .on("mouseenter", {thiz: this}, (e) => {
@@ -357,6 +373,7 @@ export class Block {
     resetDropTarget() {
         this._droptype = null;
         $(".droppos").remove();
+        this.$div.removeClass("droptarget");
     }
     getInputColumns() {
         if (!this.session) return;
@@ -389,6 +406,17 @@ export class Block {
                 icon: "/static/img/open_in_new_black_24dp.svg",
                 click: () => {
                     this.runto("TRAIN");
+                }
+            },
+            {
+                title: "Dataset stat",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    if (!this.session) return;
+                    this.session.run("TRAIN", this, "stat").then((r)=>{
+                        if (!r) return;
+                        this.session.tabView.addDataTable(`${this.name}_Stats`, r.stat);
+                    });
                 }
             },
             {
@@ -587,72 +615,6 @@ export class Parent extends Block {
         return thiz;
     }
 }
-// export class Root extends Parent {
-//     static model_changed;
-
-//     constructor(kwargs) {
-//         super(kwargs);
-//         this.canMove = false;
-//         this.canEdit = true;
-//     }
-//     render() {
-//         super.render();
-//         this.$div.addClass("rootblock");
-//         return this.$div;
-//     }
-//     export() {
-//         const r = super.export();
-//         r._type = "skll.block.baseblock.Parent";
-//         return r;
-//     }
-// }
-// class SplitGroup extends Parent {
-//     constructor(kwargs) {
-//         if (!kwargs._type) kwargs["_type"] = ".splitgroup";
-//         super(kwargs);
-//         //disable drag and drop for splitgroup
-//         this.canMove = false;
-//         if (kwargs.split_type) this._splittype = kwargs.split_type;
-//         if (!this._splits) this._splits = [];
-//         switch (this._splittype) {
-//             case "column":
-//                 this._properties._splits.type = "list(column)";
-//                 break;
-//             case "datatype":
-//                 this._properties._splits.type = "list(datatype)";
-//                 break;
-//             case "none":
-//             default:
-//                 this.canEdit = false;
-//                 break;
-
-//         } 
-//     }
-
-//     get name() {
-//         return this.parent ? this.parent.name: "";
-//     }
-//     set name(v) {
-//         //ignore
-//     }
-//     clone() {
-//         let copy = super.clone();
-//         copy._splits = [];
-//         this._splits.forEach(v => {
-//             copy._splits.push(v);
-//         })
-//         return copy;
-//     }
-//     render() {
-//         const res = super.render();
-//         if (this._splittype == "none") {
-//             this.$div.children("span.title").remove();
-//         } else {
-//             this.$div.children("span.title").html(JSON.stringify(this._splits).replaceAll(",", ", "));
-//         }
-//         return res;
-//     }
-// }
 
 /**
  * Hacking block for file drag and drop
@@ -674,133 +636,6 @@ export class File extends Block {
     }
 }
 
-// export class Split extends Block {
-//     static TYPE = ".split";
-//     constructor(args) {
-//         if (!args._type) args._type = Split.TYPE;
-//         super(args);
-//         this.children = [];
-//         const splits = args.splits || [];
-//         for (let i = 0; i < splits.length; i++) {
-//             const child = new SplitGroup({
-//                 _type: ".splitgroup", 
-//                 children: [args.children[i]],
-//                 split_type: this._splittype,
-//             });
-//             child._splits = splits[i];
-//             child.parent = this;
-//             this.children.push(child);
-//         }
-//     }
-//     clone() {
-//         let copy = super.clone();
-//         copy.children = [];
-//         this.children.forEach(v => {
-//             copy.children.push(v.clone());
-//         })
-//         return copy;
-//     }
-//     prepend(obj, at) {
-//         if (this.singlar && this.children.length > 0)
-//             return;
-//         if (at === null) at = 0;
-//         if (typeof(at) == "object") {
-//             at = this.children.indexOf(at) - 1;
-//             if (at < 0) at = 0;
-//         }
-//         this.children.splice(at, 0, obj);
-//         obj.parent = this;
-//     }
-//     append(obj, at) {
-//         if (this.singlar && this.children.length > 0)
-//             return;
-//         if (at === null) at = -1;
-//         if (typeof(at) == "object") {
-//             at = this.children.indexOf(at);
-//         }
-//         if (at == -1) {
-//             this.children.push(obj);
-//         } else {
-//             this.children.splice(at+1, 0, obj);
-//         }
-//         obj.parent = this;
-//     }
-//     remove(obj) {
-//         let idx = this.children.indexOf(obj);
-//         if (idx != -1) this.children.splice(idx, 1);
-//         obj.parent = null;
-//         this.adjustAddButton();
-//     }
-//     allowdroptypes(dragsrc) {
-//         //disable dropping to split, b/c user should drop into splitgroup
-//         return [];
-//         // if (dragsrc._type == File.TYPE) return [];
-//         // let types = super.allowdroptypes(dragsrc);
-        
-//         // if (this.children.length == 0) {
-//         //     if (this.childtypematch(dragsrc)) 
-//         //         types.push("dropinto");
-//         // }
-//         // return types;
-//     }
-//     childdroptypes(dragsrc) {
-//         if (this.singlar) return [];
-//         if (!this.childtypematch(dragsrc)) return [];
-//         //disable dropleft and dropright
-//         //return ["dropleft", "dropright"];
-//     }
-//     ondrop(src, droptype) {
-//         switch (droptype) {
-//             case 'dropinto':
-//                 this.prepend(src, 0);
-//                 this.$addbtn.before(src.$div);
-//                 break;
-//             default:
-//                 super.ondrop(src, droptype);
-//         }
-//         this.adjustAddButton();
-//     }
-//     adjustAddButton() {
-//         if (this.singlar && this.children.length) {
-//             this.$addbtn.hide();
-//         } else {
-//             this.$addbtn.show();
-//         }
-//     }
-//     render() {
-//         this.$div = super.render().addClass("split-block");
-//         this.$div.children(".splitblock").remove();
-//         this.$splitdiv = $("<div>").addClass("block splits-container").appendTo(this.$div);
-//         this.children.forEach(v => {
-//             v.render().appendTo(this.$splitdiv);
-//         });
-//         const thiz = this;
-//         this.$addbtn = $("<div>").addClass("block split-add-block")
-//             .on("click", {thiz: this}, (e)=>{
-//                 const thiz = e.data.thiz;
-//                 const newgroup = new SplitGroup({
-//                     split_type: thiz._splittype,
-//                 });
-//                 newgroup.parent = thiz;
-//                 thiz.children.push(newgroup);
-//                 this.$addbtn.before(newgroup.render());
-//                 thiz.adjustAddButton();
-//             }).appendTo(this.$splitdiv);
-//         this.adjustAddButton();
-//         return this.$div;
-//     }
-//     export() {
-//         const thiz = super.export();
-//         thiz["_children"] = {};
-//         thiz["splits"] = [];
-//         this.children.forEach((v, i) => {
-//             thiz["_children"][i+1] = v.export();
-//             thiz["splits"].push(v._splits);
-//         });
-//         return thiz;
-//     }
-// }
-
 blockTypes.add({
     "skll.block.baseblock.Block": {
         cls: Block,
@@ -810,31 +645,25 @@ blockTypes.add({
             "name": {
                 desc: "Name",
                 type: "text",
-                enabled: true,
             },
             "_type": {
                 desc: "Underlying SK-ll type",
                 type: "text",
-                enabled: true,
             },
             "disable_mask": {
                 desc: "Disable this block when",
                 type: "mc(preview,train,test,run)",
-                enabled: true,
             },
             "column_mask": {
                 desc: "Columns applies to",
                 type: "list(column)",
-                enabled: true,
+            },
+            "as_new_columns": {
+                desc: "Append result instead of overwrite",
+                type: "boolean",
             }
         },
     },
-    // ".split": {
-    //     cls: Split,
-    //     hidden: true,
-    //     desc: "Internal type that has no effect",
-    //     childof: "skll.block.baseblock.Block",
-    // },
     ".parent": {
         cls: Parent,
         hidden: true,
@@ -846,23 +675,7 @@ blockTypes.add({
             "name": {
                 desc: "Name",
                 type: "text",
-                enabled: true,
             },
         },
     },
-    // ".splitgroup": {
-    //     cls: SplitGroup,
-    //     hidden: true,
-    //     desc: "Internal type that has no effect",
-    //     properties: {
-    //         "_splits": {
-    //             desc: "Split",
-    //             type: "list(text)",
-    //             enabled: true,
-    //         },
-    //     },
-    //     defaults: {
-    //         "_isinternal": true,
-    //     }
-    // },
 });
