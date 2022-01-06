@@ -55,8 +55,6 @@ export default class TabView {
         return this._view;
     }
 
-
-    
     addScoreTable(name, scores) {
         const columns = [
             {
@@ -67,7 +65,7 @@ export default class TabView {
                 data: 1,
             }
         ];
-        this.addTab(name, null, new Table(name, scores, columns, (table) => {
+        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, scores, columns, (table) => {
             PlotDialog.render(table, this).modal()
         }).table);
     }
@@ -90,7 +88,7 @@ export default class TabView {
                 });
             }
         });
-        this.addTab(name, null, new Table(name, data, columns, (table) => {
+        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, data, columns, (table) => {
             PlotDialog.render(table, this).modal()
         }).table);
     }

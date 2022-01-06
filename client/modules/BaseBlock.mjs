@@ -212,7 +212,7 @@ export class Block {
             .on('mouseup', Block.onmouseup);
         $(".trash").addClass("visible");
     }
-    afterdrag() {
+    afterDrag() {
         this.$div.detach();
         this.$div.removeClass("newobj");
         if (this.parent) this.parent.remove(this);
@@ -227,7 +227,7 @@ export class Block {
         }
         return droptypes;
     }
-    ondrop(src, droptype) {
+    onDrop(src, droptype) {
         if (src._type == File.TYPE && this._events["onFileDropped"]) {
             this._events["onFileDropped"](this, src, droptype);
             return;
@@ -278,8 +278,8 @@ export class Block {
         let target = $(document).data("droptarget");
         if (target && target._droptype) {
             //if ((target != "trash") && target._droptype) {
-                thiz.afterdrag();
-                target.ondrop(thiz, target._droptype);
+                thiz.afterDrag();
+                target.onDrop(thiz, target._droptype);
             //} else {
             //    $(".trash").removeClass("dropinto");
             //    $(".newobj").remove();
@@ -490,7 +490,7 @@ export class Trash extends Block {
         this.$div.removeClass("dropinto");
         this._droptype = null;
     }
-    ondrop(src, droptype) {
+    onDrop(src, droptype) {
         //do nothing
         this.$div.removeClass("dropinto");
         this._droptype = null;
@@ -570,7 +570,7 @@ export class Parent extends Block {
         }
         obj.parent = this;
     }
-    ondrop(src, droptype) {
+    onDrop(src, droptype) {
         switch (droptype) {
             case "dropleft":
                 this.parent.prepend(src, this);
@@ -590,7 +590,7 @@ export class Parent extends Block {
                     this.$div.append(src.$div);
                 break;
             default:
-                return super.ondrop(src, droptype);
+                return super.onDrop(src, droptype);
         }
     }
     render() {

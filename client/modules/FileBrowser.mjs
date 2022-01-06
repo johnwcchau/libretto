@@ -65,13 +65,23 @@ class FileBrowser {
                 e.preventDefault();
                 e.stopPropagation();
                 FileBrowser._dragTimer = setTimeout(()=>{
-                    const layer = new File({
-                        filename: `${this._cd}/${$(e.delegateTarget).html()}`
+                    const filename = `${this._cd}/${$(e.delegateTarget).html()}`;
+                    let promise;
+                    if (filename.endsWith(".skll.json")) {
+                        promise = window.Session.readRemote(filename);
+                    } else {
+                        promise = new Promise(res => {
+                            res(new File({
+                                filename: filename,
+                            }));
+                        });
+                    }
+                    promise.then(layer => {
+                        layer.render();
+                        layer.$div.addClass("newobj").appendTo($("body"));
+                        layer.begindrag();
                     });
-                    layer.render();
-                    layer.$div.addClass("newobj").appendTo($("body"));
-                    layer.begindrag();
-                }, 100);
+                }, 150);
             }).on("mouseup", (e) => {
                 if (FileBrowser._dragTimer) {
                     clearTimeout(FileBrowser._dragTimer);
@@ -96,12 +106,12 @@ class FileBrowser {
                     this.#makeRenContextMenuOption(thiz.html()),
                     this.#makeDelContextMenuOption(thiz.html()),
                 ];
-                if (name.split(".").pop() == "json") {
+                if (name.endsWith(".skll.json")) {
                     contexts.unshift({
                         title: "Load as receipe",
                         icon: "/static/img/open_in_browser_black_24dp.svg",
                         click: () => {
-                            Session.loadRemote(`/storage${this._cd}/${name}`);
+                            Session.loadRemote(`${this._cd}/${name}`);
                         }
                     })
                 }

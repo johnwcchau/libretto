@@ -30,9 +30,9 @@ class XyidSplit(Block):
     def run(self, runspec: RunSpec, x, y=None, id=None):
         if not isinstance(x, pd.DataFrame):
             x = pd.DataFrame(x)
-        if self.ycol is not None:
+        if self.ycol is not None and self.ycol in x.columns:
             x, y = self.__extractcol(x, self.ycol)
-        if self.idcol is not None:
+        if self.idcol is not None and self.idcol in x.columns:
             x, id = self.__extractcol(x, self.idcol)
         return x, y, id
 

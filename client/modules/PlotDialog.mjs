@@ -78,7 +78,7 @@ class PlotDialog {
             showlegend: showlegend,
         }
         const $div = $(`<div class="plot">`);
-        const id=thiz.tabView.addTab(title, null, $div); 
+        const id=thiz.tabView.addTab(title, "/static/img/show_chart_black_24dp.svg", $div); 
         $.modal.close();
         setTimeout(()=>{
             Plotly.newPlot(id, data, layout);

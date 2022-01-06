@@ -4,10 +4,11 @@ import Log from "./modules/Log.mjs";
 import EditDialog from "./modules/EditDialog.mjs";
 import FileBrowser from "./modules/FileBrowser.mjs";
 import MethodBrowser from "./modules/MethodBrowser.mjs";
-import _ from './modules/maintoolbar.mjs';
+import MainToolbar from './modules/maintoolbar.mjs';
 import Session from "./modules/Session.mjs";
 import PlotDialog from "./modules/PlotDialog.mjs";
 import TabView from "./modules/TabView.mjs";
+import plugin_css from "/plugin/plugins.mjs";
 
 window.Session = Session;
 
@@ -57,11 +58,20 @@ window.Session = Session;
 //     });
 // }
 const init = () => {
+    plugin_css();
+    $("body").html("");
+    $(`
+        <div id="root" class="flex-column">
+            <div class="flex-row" id="main-pane">
+            </div>
+        </div>
+    `).appendTo("body");
+    MainToolbar.init().panel.prependTo("#root");
     const toolbox = new TabView();
     toolbox.panel.attr("id", "toolbox").appendTo("#main-pane");
     toolbox.addTab("Files", "/static/img/attachment_black_24dp.svg", FileBrowser.panel, false);
-    toolbox.addTab("Methods", "/static/img/functions_black_24dp.svg", MethodBrowser.panel, false);
-    toolbox.addTab("Properties", "/static/img/functions_black_24dp.svg", EditDialog.dialog, false);
+    toolbox.addTab("Blocks", "/static/img/functions_black_24dp.svg", MethodBrowser.refresh().panel, false);
+    toolbox.addTab("Options", "/static/img/settings_black_24dp.svg", EditDialog.dialog, false);
     toolbox.showTab(FileBrowser.panel.attr("id"));
     
     Log.panel.appendTo("#root");

@@ -25,7 +25,7 @@ class WsClient {
                 try {
                     msg = JSON.parse(e.data);
                 } catch (ex) {
-                    Log.log("err", "Invalid response from remote");
+                    Log.err("Invalid response from remote");
                     rej({});
                     return true;
                 }
@@ -37,7 +37,7 @@ class WsClient {
                 if (result < 0) {
                     Log.hideDialog();
                     if (msg["message"]) 
-                        Log.log("err", "Remote: " + msg["message"]);
+                        Log.err("Remote: " + msg["message"]);
                     rej(msg);
                     return true;
                 } else if ((result == 0)||(result==4)) { //completed | continue
@@ -185,10 +185,10 @@ class WsClient {
             }, 1);
         };
         this.ws.onerror = function() {
-            Log.log("err", "Websocket error occured.");
+            Log.err("Websocket error occured.");
         }
         this.ws.onclose = function(e) {
-            Log.log("err", 'Connection closed with code ' + e.code);
+            Log.err('Connection closed with code ' + e.code);
             Log.dialog("Connection closed, please refresh browser to reconnect.")
         };
         this.send("ping");

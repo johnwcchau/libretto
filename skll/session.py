@@ -2,9 +2,11 @@ import traceback
 from skll.block import Block
 from skll.block.baseblock import RunSpec
 from skll.inout import Output
+from skll.plugin import dispatch
 import pandas as pd
 import numpy as np
 import logging
+
 
 class Session:
 
@@ -16,6 +18,7 @@ class Session:
             s = object.__new__(Session)
             s.__init()
             Session.__sessions[name] = s
+            dispatch(lambda _, obj: obj.new_session(name) if obj.new_session is not None else None)
         else:
             s = Session.__sessions[name]
         return s

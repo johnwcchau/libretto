@@ -40,22 +40,24 @@ class Session {
             receipe.model_changed = false;
         });
     }
-    loadRemote(name) {
-        if (this.model.model_changed && !this.warnBeforeLoad()) return null; 
+    readRemote(name) {
         return $.ajax({
             dataType: "json",
-            url: name,
+            url: `/storage${name}`,
         }).then(r => {
             const receipe = pyimport(r);
-            if (!receipe || receipe.length == 0) return;
-            // const root = new Root({
-            //     name: name.split(".")[0].split("/").pop(),
-            //     children: [receipe] //2D array to align with Split Class
-            // });
+            if (!receipe || receipe.length == 0) throw "No receipe";
+            return receipe;
+        });
+    }
+    loadRemote(name) {
+        if (this.model.model_changed && !this.warnBeforeLoad()) return null;
+        this.readRemote(name).then(receipe => {
             this.#setReceipe(receipe);
             this.model.model_changed = true;
-            return this;
+        }).catch(() => {
         });
+        return this;
     }
     #setReceipe(receipe) {
         this.model = receipe;
@@ -132,7 +134,7 @@ class Session {
         const url = URL.createObjectURL(blob);
         const link = document.createElement( 'a' );
         link.setAttribute( 'href', url );
-        link.setAttribute( 'download', 'model.json' );
+        link.setAttribute( 'download', `${this.model.name}.skll.json` );
         const event = document.createEvent( 'MouseEvents' );
         event.initMouseEvent( 'click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
         link.dispatchEvent( event );
@@ -141,17 +143,34 @@ class Session {
         const blob = new Blob([Session.encode(JSON.stringify(this.model.export(), null, 4))], {
             type: 'application/octet-stream'
         });
-        WsClient.uploadBlob(blob, `${this.model.name}.json`).then(r=>{
+        WsClient.uploadBlob(blob, `${this.model.name}.skll.json`).then(r=>{
             FileBrowser.refresh();
         });
     }
 
+    becomeDropTarget(src) {
+        if (!src._blocks) return;
+        this._droptype = "dropreplace";
+        this.$receipe.addClass("droptarget");
+    }
+    resetDropTarget() {
+        this.$receipe.removeClass("droptarget");
+    }
+    onDrop(src, type) {
+        if (type != "dropreplace") return;
+        if (!this.warnBeforeLoad()) return;
+        this.#setReceipe(src);
+        this.model.model_changed = true;
+    }
     constructor() {
         if (Session.instance) {
             return Session.instance;
         }
         this.$dom = $("<div>").addClass("session");
-        this.$receipe = $("<div>").addClass("receipe").appendTo(this.$dom);
+        this.$receipe = $("<div>").addClass("receipe").appendTo(this.$dom)
+            .on("mouseover", {thiz: this}, Block.onmouseover)
+            .on("mouseleave", {thiz: this}, Block.onmouseout)
+            .on("mouseup", {thiz: this}, Block.onmouseup);
         this.$table = $("<div>").addClass("data").appendTo(this.$dom);
         this.tabView = new TabView(this.$table);
         this.load();

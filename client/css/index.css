@@ -6,6 +6,13 @@ body {
     margin: 0;
     padding: 0;
 }
+.noscript {
+    display: block;
+    width: 100%;
+    padding-top: calc(50% - 3em);
+    text-align: center;
+    font-family: monospace, monospace;
+}
 .flex-column {
     display: flex;
     flex-direction: column;

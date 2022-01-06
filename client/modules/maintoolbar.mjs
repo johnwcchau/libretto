@@ -1,72 +1,89 @@
 import Session from "./Session.mjs";
 
-export default function addbtn(spec) {
-    const $li = $("<li>").appendTo("#toolbar");
-    const $a = $('<a href="#">').appendTo($li);
-    if (spec.icon) $(`<img src="${spec.icon}" title="${spec.title}">`).appendTo($a);
-    else if (spec.title) $a.html(spec.title);
-    if (spec.click) $a.on("click", spec.click);
-}
-function addObj($obj) {
-    const $li = $('<li class="no-border">').appendTo("#toolbar");
-    $obj.appendTo($li);
-}
-
-addObj($("<h3>SK-ll Editor</h3>"));
-addbtn({
-    title: "New model",
-    icon: "/static/img/clear_black_24dp.svg",
-    click: () => {
-        Session.reset();
-    },
-});
-addbtn({
-    title: "Read from runtime",
-    icon: "/static/img/cloud_download_black_24dp.svg",
-    click: () => {
-        Session.load();
-    },
-});
-addbtn({
-    title: "Upload to runtime",
-    icon: "/static/img/cloud_upload_black_24dp.svg",
-    click: () => {
-        Session.dump();
+class MainToolbar {
+    addbtn(spec) {
+        const $li = $("<li>").appendTo(this._toolbar);
+        const $a = $('<a href="#">').appendTo($li);
+        if (spec.icon) $(`<img src="${spec.icon}" title="${spec.title}">`).appendTo($a);
+        else if (spec.title) $a.html(spec.title);
+        if (spec.click) $a.on("click", spec.click);
     }
-});
-addbtn({
-    title: "Save",
-    icon: "/static/img/save_black_24dp.svg",
-    click: () => {
-        Session.save();
+    addObj($obj) {
+        const $li = $('<li class="no-border">').appendTo(this._toolbar);
+        $obj.appendTo($li);
     }
-})
-addbtn({
-    title: "Save local",
-    icon: "/static/img/file_download_black_24dp.svg",
-    click: () => {
-        Session.saveLocal();
+    get panel() {
+        return this._toolbar;
     }
-});
-addObj($(`
-    <select id="runmode">
-        <option value="PREVIEW">Preview</option>
-        <option value="TRAIN">Train</option>
-        <option value="TEST">Test</option>
-        <option value="RUN">Run</option>
-    </select>
-`));
-addbtn({
-    title: "Run",
-    icon: "/static/img/play_arrow_black_24dp.svg",
-    click: () => {
-        const runMode = $("#runmode").val();
-        Session.run(runMode, null, "table").then(r=>{
-            if (!r) return;
-            const data = r.data;
-            const score = r.score;
-            Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data);
-            if (score) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
+    init() {
+        this.addObj($("<h3>SK-ll Editor</h3>"));
+        this.addbtn({
+            title: "New model",
+            icon: "/static/img/clear_black_24dp.svg",
+            click: () => {
+                Session.reset();
+            },
         });
+        this.addbtn({
+            title: "Read from runtime",
+            icon: "/static/img/cloud_download_black_24dp.svg",
+            click: () => {
+                Session.load();
+            },
+        });
+        this.addbtn({
+            title: "Upload to runtime",
+            icon: "/static/img/cloud_upload_black_24dp.svg",
+            click: () => {
+                Session.dump();
+            }
+        });
+        this.addbtn({
+            title: "Save",
+            icon: "/static/img/save_black_24dp.svg",
+            click: () => {
+                Session.save();
+            }
+        })
+        this.addbtn({
+            title: "Save local",
+            icon: "/static/img/file_download_black_24dp.svg",
+            click: () => {
+                Session.saveLocal();
+            }
+        });
+        this.addObj($(`
+            <select id="runmode">
+                <option value="PREVIEW">Preview</option>
+                <option value="TRAIN">Train</option>
+                <option value="TEST">Test</option>
+                <option value="RUN">Run</option>
+            </select>
+        `));
+        this.addbtn({
+            title: "Run",
+            icon: "/static/img/play_arrow_black_24dp.svg",
+            click: () => {
+                const runMode = $("#runmode").val();
+                Session.run(runMode, null, "table").then(r=>{
+                    if (!r) return;
+                    const data = r.data;
+                    const score = r.score;
+                    Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data);
+                    if (score) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
+                });
+            }
+        })
+        return this;
     }
-})
+    constructor() {
+        if (MainToolbar.instance) {
+            return MainToolbar.instance;
+        }
+        MainToolbar.instance = this;
+        this._toolbar = $('<ul id="toolbar">');
+    }
+}
+const instance = new MainToolbar();
+Object.seal(instance);
+export default instance;

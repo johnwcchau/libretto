@@ -11,7 +11,7 @@
     align-items: stretch;
     background: linear-gradient(to bottom, #fff, #ddd);
     border-radius: 0.5em;
-    transition: padding 0.2s, margin 0.2s, background 0.2s;
+    transition: padding 0.1s, margin 0.1s, background 0.2s;
 }
 .block:hover {
     background: #ccc;
@@ -90,7 +90,7 @@
     border-radius: 0.5em;
     background: #cef;
     opacity: 0.5;
-    cursor: copy;
+    cursor: url("/static/img/add_black_24dp.svg"), auto;
 }
 .droppos-left {
     left: 1em;

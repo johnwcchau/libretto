@@ -34,6 +34,7 @@ class MethodBrowser {
                 $(e.delegateTarget).click();
             }
         });
+        return this;
     }
 
     constructor() {
@@ -43,14 +44,7 @@ class MethodBrowser {
         }
         this._cd = "";
         this._panel = $("<div>").addClass("methodBrowser");
-        //this._toolbar = $("<div>").addClass("methodBrowserBar toolbar").appendTo(this._panel);
         this._methodlist = $("<div>").addClass("methodList list-view").appendTo(this._panel);
-
-        // $('<a href="#"><img src="/static/img/refresh_black_24dp.svg" alt="Refresh" /></a>').click(() => {
-        //     thiz.refresh();
-        // }).appendTo(this._toolbar);
-        
-        this.refresh();
 
         MethodBrowser.instance = this;
     }

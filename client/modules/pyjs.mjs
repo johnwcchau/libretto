@@ -1,4 +1,5 @@
 import { Parent, Block, BlockTypes } from "./BaseBlock.mjs";
+import Log from "./Log.mjs";
 
 new BlockTypes().add({
     "skll.block.baseblock.Parent": {
@@ -109,12 +110,6 @@ new BlockTypes().add({
         desc: "Transformation for each column",
         childof: "skll.block.baseblock.Parent",
     },
-    "skll.block.sklwrapper.RunModeSplit": {
-        cls: Block,
-        typename: "Train/Test Split",
-        desc: "Dataset splitting by run mode",
-        childof: "skll.block.sklwrapper.SklSplitter",
-    },
     "skll.block.splitter.XyidSplit": {
         cls: Block,
         typename: "Extract Y/ID Column",
@@ -131,127 +126,28 @@ new BlockTypes().add({
             }
         }
     },
-    "skll.block.sklwrapper.SklClass": {
-        cls: Block,
-        desc: "Sklearn transformer or estimator class",
-        childof: "skll.block.baseblock.Block",
-        properties: {
-            "cls": {
-                desc: "class name",
-                type: "text",
-            },
-            "trainmethod": {
-                desc: "method for train or autodetect",
-                type: "text",
-            },
-            "testmethod": {
-                desc: "method for test or autodetect",
-                type: "text",
-            },
-            "scoremethod": {
-                desc: "method for score or autodetect",
-                type: "text",
-            },
-            "keepcolnames": {
-                desc: "reapply column names to result",
-                type: "boolean",
-            },
-            "initargs": {
-                desc: "fixed positional init arguments",
-                type: "list(text)",
-            },
-            "initkargs": {
-                desc: "fixed named init arguments",
-                type: "dict(text,text)",
-            }
-        }
-    },
-    "skll.block.sklwrapper.Method": {
-        cls: Block,
-        desc: "Any python method applying 1-to-1 transformations",
-        childof: "skll.block.baseblock.Block",
-        properties: {
-            "method": {
-                desc: "method name",
-                type: "text",
-            },
-            "xname": {
-                desc: "argument pos/name for x",
-                type: "text",
-            },
-            "yname": {
-                desc: "argument pos/name for y",
-                type: "text",
-            },
-            "args": {
-                desc: "fixed positional arguments",
-                type: "list(text)",
-            },
-            "kargs": {
-                desc: "fixed named arguments",
-                type: "dict(text,text)",
-            }
-        }
-    },
-    "skll.block.sklwrapper.SklScoringMethod": {
-        cls: Block,
-        desc: "Sklearn method outputting a scalar scores",
-        childof: "skll.block.sklwrapper.Method",
-    },
-    "skll.block.sklwrapper.SklSplitter": {
-        cls: Parent,
-        desc: "Scoring splitters e.g. Kfold",
-        childof: "skll.block.baseblock.Loop",
-        properties: {
-            "cls": {
-                desc: "class name",
-                type: "text",
-            },
-            "initargs": {
-                desc: "fixed positional init arguments",
-                type: "list(text)",
-            },
-            "initkargs": {
-                desc: "fixed named init arguments",
-                type: "dict(text,text)",
-            }
-        }
-    },
-    "skll.block.sklwrapper.SklWrappingClass": {
-        cls: Parent,
-        desc: "Ensemble estimators or Hyper-parameter search class",
-        childof: "skll.block.sklwrapper.SklClass",
-        properties: {
-            "estname": {
-                desc: "argument pos/name for estimators",
-                type: "text",
-            },
-            "multiple": {
-                desc: "multiple estimators accepted",
-                type: "boolean",
-            },
-        },
-        split_type: "none",
-        child_types: [
-            "skll.block.sklwrapper.SklClass",
-            "skll.block.sklwrapper.SklPipeline",
-        ]
-    },
 });
 
 export default function pyimport(py) {
     if (!py) return;
-    const blockTypes = new BlockTypes();
-    const type = py._type;
-    const cls = blockTypes.get(type).cls;
-    if (!cls) throw `Unknown type for ${py._type}`;
-    if (py._children) {
-        let children = [];
-        Object.entries(py._children).forEach(([i, v]) => {
-            children[i] = pyimport(v);
-        });
-        py["children"] = children;
-        delete py._children;
+    try {
+        const blockTypes = new BlockTypes();
+        py._type = py._type.replaceAll("skll.block.sklwrapper.", "skll.plugin.sklearn.sklearn.");
+        const type = py._type;
+        const blktype = blockTypes.get(type);
+        if (!blktype) throw `Unknown type ${type}`;
+        const cls = blktype.cls;
+        if (!cls) throw `Unknown type ${type}`;
+        if (py._children) {
+            let children = [];
+            Object.entries(py._children).forEach(([i, v]) => {
+                children[i] = pyimport(v);
+            });
+            py["children"] = children;
+            delete py._children;
+        }
+        return new cls(py);
+    } catch (ex) {
+        Log.err(ex);
     }
-    return new cls(py);
 }

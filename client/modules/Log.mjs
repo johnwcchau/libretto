@@ -18,6 +18,9 @@ class LogPanel {
     #replace(line, msg) {
         line.html(msg).detach().appendTo(this._panel);
     }
+    err(msg) {
+        this.log("err", msg);
+    }
     log(cls,msg) {
         if (!msg) return;
         const oldline = this.#getlastline();

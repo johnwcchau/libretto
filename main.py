@@ -18,6 +18,8 @@ from skll.fileio import FileIO
 from skll.session import Session
 from skll.jsoncodec import Encoder
 
+from skll import plugin
+
 tpe = TPE().executor
 
 def json_decode(o):
@@ -117,10 +119,17 @@ class MyStaticFileHandler(StaticFileHandler):
             return "text/javascript"
         return super().get_content_type()
 
+class PluginStaticFileHandler(MyStaticFileHandler):
+    async def get(self, path:str, include_body:bool = True):
+        ext = path.lower().split(".")[-1]
+        if ext in ["py", "pyc"]:
+            self.set_status(404)
+            return
+        await super().get(path, include_body)
+
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("client/index.html")
-
 
 def make_app(debug):
     return tornado.web.Application([
@@ -128,6 +137,7 @@ def make_app(debug):
         (r'/(favicon\.ico)', StaticFileHandler, {"path": "./client"}),
         (r"/static/(.*)", MyStaticFileHandler, {"path":"./client"}),
         (r"/storage/(.*)", MyStaticFileHandler, {"path":"./storage"}),
+        (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./skll/plugin"}),
         (r"/ws/(.*)", WebSocketHandler),
     ], debug=debug)
 
@@ -152,15 +162,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.debug:
         logging.basicConfig(level=logging.DEBUG)
+    
     from os import makedirs
-    makedirs("./storage/sessions", exist_ok=True)
-    print("SKll started!")
+    makedirs("./storage", exist_ok=True)
+
+    plugin.init()
+    
+    logging.info("SKll started!")
     app = make_app(args.debug)
+
     signal.signal(signal.SIGTERM, sig_handler)
     signal.signal(signal.SIGINT, sig_handler)
     if sys.platform == "win32":
         import win32api
         win32api.SetConsoleCtrlHandler(sig_handler, True)
+    
     app.listen(args.port)
     tpe.submit(open_browser, args.port)
     ioloop = tornado.ioloop.IOLoop.instance()
