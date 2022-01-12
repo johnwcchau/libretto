@@ -13,6 +13,7 @@ new BlockTypes().add({
     "skll.block.baseblock.Drop": {
         cls: Block,
         typename: "Drop",
+        group: "tablular data operations",
         desc: "Remove columns",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -29,8 +30,9 @@ new BlockTypes().add({
     },
     "skll.block.input.FileInput": {
         cls: Block,
-        typename: "File Input",
-        desc: "File input",
+        typename: "Tablular Input",
+        group: "inputs",
+        desc: "Tablular data input from a file",
         childof: "skll.block.baseblock.Block",
         properties: {
             "filename": {
@@ -63,6 +65,7 @@ new BlockTypes().add({
     "skll.block.imputer.ConstantImputer": {
         cls: Block,
         typename: "Constant Imputer",
+        group: "tablular data operations",
         desc: "Data imputation with any constant",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -75,6 +78,7 @@ new BlockTypes().add({
     "skll.block.imputer.MethodImputer": {
         cls: Block,
         typename: "Method Imputer",
+        group: "tablular data operations",
         desc: "Data imputation with python method, with optionally group-by column",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -91,6 +95,7 @@ new BlockTypes().add({
     "skll.block.imputer.Eval": {
         cls: Block,
         typename: "Lambda Function",
+        group: "tablular data operations",
         desc: "Column generation with eval(X, x)",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -107,12 +112,14 @@ new BlockTypes().add({
     "skll.block.splitter.ColumnWise": {
         cls: Parent,
         typename: "Column Wise Operation",
+        group: "tablular data operations",
         desc: "Transformation for each column",
         childof: "skll.block.baseblock.Parent",
     },
     "skll.block.splitter.XyidSplit": {
         cls: Block,
         typename: "Extract Y/ID Column",
+        group: "tablular data operations",
         desc: "Specifying column for Y and/or Id",
         childof: "skll.block.baseblock.Block",
         properties: {
@@ -132,8 +139,7 @@ export default function pyimport(py) {
     if (!py) return;
     try {
         const blockTypes = new BlockTypes();
-        py._type = py._type.replaceAll("skll.block.sklwrapper.", "skll.plugin.sklearn.sklearn.");
-        const type = py._type;
+        const type = py._jstype;
         const blktype = blockTypes.get(type);
         if (!blktype) throw `Unknown type ${type}`;
         const cls = blktype.cls;

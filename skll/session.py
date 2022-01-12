@@ -1,6 +1,5 @@
 import traceback
-from skll.block import Block
-from skll.block.baseblock import RunSpec
+from skll.block.baseblock import Block, RunSpec
 from skll.inout import Output
 from skll.plugin import dispatch
 import pandas as pd
@@ -53,7 +52,7 @@ class Session:
         data:pd.DataFrame = self._result[0]
         result:pd.DataFrame = data.describe(include="all")
         def fillunique(x:pd.Series):
-            if np.isnan(x["unique"]):
+            if "unique" in x and np.isnan(x["unique"]):
                 x["unique"] = len(data[x.name].unique())
             return x
         result = result.transform(fillunique, axis=0)

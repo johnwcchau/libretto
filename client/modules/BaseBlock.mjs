@@ -13,6 +13,7 @@ export class BlockTypes {
             return BlockTypes.instance;
         }
         this.cls = {};
+        this.groups = {};
         BlockTypes.instance = this;
     }
     get(name) {
@@ -20,6 +21,12 @@ export class BlockTypes {
     }
     add(types) {
         this.cls = Object.assign(this.cls, types);
+        Object.keys(types).forEach(k => {
+            const v = types[k];
+            const group = v.group ? v.group : "";
+            if (!this.groups[group]) this.groups[group] = [k];
+            else this.groups[group].push(k);
+        });
     }
 }
 
@@ -30,37 +37,46 @@ export class Block {
     canEdit = true;
 
     constructor(args) {
+        let typename;
         this._properties = {};
         this._allowchild = [];
         this._events = {};
-        this._type = (args && args._type) ? args._type : "skll.block.Block";
+        this._jstype = (args && args._jstype) ? args._jstype : "skll.block.Block";
         const cls = this.getcls();
         if (cls) {
             this.applycls(args, cls);
             if (cls.typename)
-                this._typename = cls.typename;
+                typename = cls.typename;
         }
+        if (!this._pytype) 
+            this._pytype = this._jstype;
         if (!this.name) {
-            const t = (this._typename ? this._typename : this._type).split(".");
+            const t = (typename ? typename : this._jstype).split(".");
             this.name = t[t.length - 1] + "-" + UUID().substring(0, 4);
         }
     }
     getcls() {
-        return blockTypes.get(this._type);
+        return blockTypes.get(this._jstype);
     }
     applycls(args, cls) {
         if (!cls) return;
         if (cls.childof) {
             this.applycls(args, blockTypes.get(cls.childof));
         }
+        if (cls.pytype) this._pytype = cls.pytype;
         if (cls.properties) {
             Object.entries(cls.properties).forEach(([i, v]) => {
                 this._properties[i] = v;
-                if (args[i] !== undefined) {
+                if (v.dictKeyOf && args[v.dictKeyOf] && (args[v.dictKeyOf][i] !== undefined)) {
+                    this[i] = args[v.dictKeyOf][i];
+                } else if (v.listItemOf && args[v.listItemOf] && (args[v.listItemOf][i] !== undefined)) {
+                    this[i] = args[v.listItemOf][i];
+                } else if (args[i] !== undefined) {
                     this[i] = args[i];
-                } else if (v.default !== undefined) {
-                    this[i] = v.default;
-                }
+                } 
+                // else if (v.default !== undefined) {
+                //     this[i] = v.default;
+                // }
             })
         }
         if (cls.defaults) {
@@ -97,7 +113,7 @@ export class Block {
         return copy;
     }
     get desc() {
-        let result = this._type + " (";
+        let result = this._jstype + " (";
         let props = [];
         Object.keys(this._properties).forEach(name => {
             const v = this._properties[name];
@@ -150,7 +166,6 @@ export class Block {
             $("<span>").addClass("desc").html(this.desc).appendTo(this.$div);
             if (this.canEdit)
                 this.createEditBtn().appendTo(this.$div);
-            this.registerEvents();
         } 
         else {
             this.$div.children("span.title").html(this.name);
@@ -161,6 +176,7 @@ export class Block {
             else if (!this.canEdit)
                 this.$div.children("a.editbtn").remove();
         }
+        this.registerEvents();
     }
     render() {
         if (this._events["onRender"]) this._events["onRender"](this);
@@ -170,9 +186,10 @@ export class Block {
     export() {
         let result = {};
         Object.entries(this._properties).forEach(([i, v]) => {
+            if (result[i] === null) return;
             if (v.dictKeyOf) {
                 if (!result[v.dictKeyOf]) result[v.dictKeyOf] = {};
-                result[v.dictKeyOf][v.dictKey] = this[i];
+                result[v.dictKeyOf][i] = this[i];
             } else if (v.listItemOf) {
                 if (!result[v.dictKeyOf]) result[v.dictKeyOf] = [];
                 result[v.listItemOf][v.listIndex] = this[i];
@@ -186,16 +203,24 @@ export class Block {
     append(obj, at) {}
     prepend(obj, at) {}
     childdroptypes(dragsrc) {return [];}
+    istype(type) {
+        if (type == this._jstype) return true;
+        let tstr = this._jstype;
+        do {
+            const t = blockTypes.get(tstr);
+            if (!t) return false;
+            tstr = t["childof"];
+            if (tstr == type) return true;
+        } while (tstr)
+        return false;
+    }
     childtypematch(src) {
         if (!this._allowchild||(this._allowchild.length == 0)) return true;
-        const cls = src._type;
+        //const cls = src._jstype;
         for (let i = 0; i < this._allowchild.length; i++) {
-            if (this._allowchild[i] == cls) return true;
+            if (src.istype(this._allowchild[i])) return true;
+            //if (this._allowchild[i] == cls) return true;
         }
-        // this._allowchild.forEach(v => {
-        //     const cls = src._type;
-        //     if (v == cls) result = true;
-        // })
         return false;
     }
 
@@ -215,20 +240,21 @@ export class Block {
     afterDrag() {
         this.$div.detach();
         this.$div.removeClass("newobj");
+        if (this.root) this.root.model_changed = true;
         if (this.parent) this.parent.remove(this);
     }
     allowdroptypes(dragsrc) {
         let droptypes = [];
-        if (this._events["onFileDropped"] && dragsrc._type == File.TYPE) {
+        if (this._events["onFileDropped"] && dragsrc._jstype == File.TYPE) {
             droptypes.push("dropinto")
         }
-        if (dragsrc._type != File.TYPE && this.parent) {
+        if (dragsrc._jstype != File.TYPE && this.parent) {
             droptypes = droptypes.concat(this.parent.childdroptypes(dragsrc));
         }
         return droptypes;
     }
     onDrop(src, droptype) {
-        if (src._type == File.TYPE && this._events["onFileDropped"]) {
+        if (src._jstype == File.TYPE && this._events["onFileDropped"]) {
             this._events["onFileDropped"](this, src, droptype);
             return;
         }
@@ -244,6 +270,7 @@ export class Block {
                 this.$div.after(src.$div);
                 break;
         }
+        if (this.root) this.root.model_changed = true;
     }
 
     static dragTimer = null;
@@ -277,26 +304,13 @@ export class Block {
         $(".trash").removeClass("visible");
         let target = $(document).data("droptarget");
         if (target && target._droptype) {
-            //if ((target != "trash") && target._droptype) {
-                thiz.afterDrag();
-                target.onDrop(thiz, target._droptype);
-            //} else {
-            //    $(".trash").removeClass("dropinto");
-            //    $(".newobj").remove();
-            //}
-            if (this.root) this.root.model_changed = true;
-            //Block.performdragndrop(thiz, target);
+            thiz.afterDrag();
+            target.onDrop(thiz, target._droptype);
         } else if (thiz.$div.hasClass("newobj")) {
             $(".newobj").remove();
         }
         thiz.$div.removeClass("dragsource");
         thiz.dragging.remove();
-        // .css({
-        //     "left": '',
-        //     "top": '',
-        //     "width": '',
-        //     "height": ''
-        // });
         $(document).data({
             "dragsource": false,
             "droptarget": false
@@ -433,6 +447,7 @@ export class Block {
         const dragsrc = $(document).data("dragsource");
         const thiz = e.data.thiz;
         if (!dragsrc) return;
+        console.log("onmouseenter@" + thiz.name);
         e.preventDefault();
         e.stopPropagation();
         let oldtgt = $(document).data("droptarget");
@@ -463,10 +478,13 @@ export class Block {
         ContextMenu.make(options).showAt(e);
     }
     registerEvents() {
-        this.$div.on("mousedown", {"thiz": this}, Block.onmousedown)
+        this.$div.off("mousedown")
+            .off("mouseenter")
+            .off("mouseleave")
+            .off("contextmenu")
+            .on("mousedown", {"thiz": this}, Block.onmousedown)
             .on("mouseenter", {"thiz": this}, Block.onmouseover)
             .on("mouseleave", {"thiz": this}, Block.onmouseout)
-            .on("dragover", {"thiz": this}, Block.onmouseover)
             .on("contextmenu", {"thiz": this}, Block.oncontextmenu);
     }
 }
@@ -478,7 +496,7 @@ export class Trash extends Block {
     static TYPE = ".trash";
     
     constructor() {
-        super({_type: Trash.TYPE});
+        super({_jstype: Trash.TYPE});
         this.canEdit = false;
         this.canMove = false;
     }
@@ -492,6 +510,7 @@ export class Trash extends Block {
     }
     onDrop(src, droptype) {
         //do nothing
+        if (src.root) src.root.model_changed = true;
         this.$div.removeClass("dropinto");
         this._droptype = null;
         $(".newobj").remove();
@@ -509,7 +528,7 @@ export class Parent extends Block {
     static TYPE = ".parent"
 
     constructor(kwargs) {
-        if (!kwargs._type) kwargs._type = Parent.TYPE;
+        if (!kwargs._jstype) kwargs._jstype = Parent.TYPE;
         super(kwargs);
         //Children is 2D array although only 1 column to unify with Split
         this._blocks = kwargs.children ? kwargs.children : [];
@@ -526,12 +545,12 @@ export class Parent extends Block {
         return copy;
     }
     get desc() {
-        if (this._type == "skll.block.baseblock.Parent")
+        if (this._jstype == "skll.block.baseblock.Parent")
             return "";
         return super.desc;
     }
     allowdroptypes(dragsrc) {
-        if (dragsrc._type == File.TYPE) return [];
+        if (dragsrc._jstype == File.TYPE) return [];
         let types = super.allowdroptypes(dragsrc);
         
         if (this._blocks.length == 0) {
@@ -552,7 +571,7 @@ export class Parent extends Block {
     prepend(obj, at) {
         if (at === null) at = 0;
         if (typeof(at) == "object") {
-            at = this._blocks.indexOf(at) - 1;
+            at = this._blocks.indexOf(at);
             if (at < 0) at = 0;
         }
         this._blocks.splice(at, 0, obj);
@@ -622,7 +641,7 @@ export class Parent extends Block {
 export class File extends Block {
     static TYPE = ".file";
     constructor(kwargs) {
-        kwargs._type = File.TYPE;
+        kwargs._jstype = File.TYPE;
         kwargs.name = "File";
         super(kwargs);
         this.filename = kwargs.filename;
@@ -644,11 +663,13 @@ blockTypes.add({
         properties: {
             "name": {
                 desc: "Name",
-                type: "text",
+                type: "string",
             },
-            "_type": {
-                desc: "Underlying SK-ll type",
-                type: "text",
+            "_pytype": {
+                hidden: true,
+            },
+            "_jstype": {
+                hidden: true,
             },
             "disable_mask": {
                 desc: "Disable this block when",
@@ -674,7 +695,7 @@ blockTypes.add({
         properties: {
             "name": {
                 desc: "Name",
-                type: "text",
+                type: "string",
             },
         },
     },

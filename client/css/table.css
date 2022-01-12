@@ -1,3 +1,7 @@
 .data-table .highlight {
     background: #eef;
 }
+table.data-table thead th, table.data-table tbody td {
+    padding: 0.5em 1.5em 0.5em 0.5em !important;
+    border-right: 1px solid #eee;
+}

@@ -1,5 +1,5 @@
 # %%
-from skll.block import Block, RunSpec
+from skll.block.baseblock import Block, RunSpec
 import pandas as pd
 from skll.fileio import FileIO
 

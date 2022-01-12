@@ -1,5 +1,5 @@
 # %%
-from skll.block import Block, RunSpec
+from skll.block.baseblock import Block, RunSpec
 import pandas as pd
 import numpy as np
 import re

@@ -1,0 +1,42 @@
+
+.methodBrowser {
+    display: flex;
+    flex-direction: column;
+}
+.methodBrowser #method_search {
+    flex: 0;
+}
+.methodBrowser .method-obj,
+.methodBrowser .method-group {
+    padding: 0.3em 0 0.3em 0;
+}
+.methodBrowser .method-obj {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.methodBrowser .method-obj .method-name,
+.methodBrowser .method-group {
+    font-weight: bolder;
+    color: #444;
+}
+.methodBrowser .method-group::before {
+    content: url("/static/img/folder_black_24dp.svg");
+    padding-right: 0.5em;
+}
+.methodBrowser .method-group.method-group-back::before {
+    content: url("/static/img/folder_open_black_24dp.svg");
+    padding-right: 0.5em;
+}
+.methodBrowser .method-obj .method-desc {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #888;
+    height: 3em;
+    overflow: hidden;
+    transition: height 0.2s;
+}
+.methodBrowser .method-obj:hover .method-desc {
+    height: auto;
+    overflow: unset;
+}

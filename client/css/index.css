@@ -5,6 +5,7 @@ html, body {
 body {
     margin: 0;
     padding: 0;
+    font-size: 10pt;
 }
 .noscript {
     display: block;
@@ -95,20 +96,6 @@ body {
     content: url("/static/img/text_snippet_black_24dp.svg");
     padding-right: 0.5em;
 }
-.methodBrowser .methodobj {
-    flex-direction: column;
-    align-items: start;
-    padding: 0.3em 0 0.3em 0;
-}
-.methodBrowser .methodobj .methodname {
-    font-weight: bolder;
-    color: #888;
-}
-.methodBrowser .methodobj .method_desc {
-    font-size: 0.8em;
-    font-style: italic;
-    color: #888;
-}
 .toolbar {
     display: flex;
     flex-direction: row;
@@ -183,6 +170,16 @@ body {
     border: 1px solid #ddd;
     border-radius: 0.3em;
     overflow: auto;
+    position: relative;
+}
+.session .receipe-drop-zone {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.session .receipe.droptarget {
+    border: 1px solid #cee;
+    background: #dff;
 }
 .modal {
     z-index: 100;

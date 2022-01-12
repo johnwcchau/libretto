@@ -38,6 +38,28 @@ class FileBrowser {
             }
         };
     }
+    
+    dirDropTarget() {
+        
+        //Drag drop parts for file movement
+        becomeDropTarget(src) {
+            if (!src._type != File.TYPE) return;
+            this._droptype = "dropinto";
+            this.$receipe.addClass("droptarget");
+        }
+        resetDropTarget() {
+            this._droptype = null;
+            this.$receipe.removeClass("droptarget");
+        }
+        onDrop(src, type) {
+            this._droptype = null;
+            if (type != "dropinto") return;
+            const filename = src.filename;
+            alert(`filedrop ${filename} to ${this.target}`);
+        }
+    }
+    
+
     refresh() {
         WsClient.send("ls", {path: this._cd}).then(r => {
             this._filelist.html("");
@@ -59,7 +81,14 @@ class FileBrowser {
                     this.#makeRenContextMenuOption(thiz.html()),
                     this.#makeDelContextMenuOption(thiz.html()),
                 ]).showAt(e);
-            });
+            }).each(v => {
+                const dropTarget = new this.dirDropTarget();
+                dropTarget.target = this._cd + "/" + $(v).html();
+                $(v).on("mouseenter", {thiz: dropTarget}, Block.onmouseover)
+                .on("mouseleave", {thiz: dropTarget}, Block.onmouseout)
+                .on("mouseup", {thiz: dropTarget}, Block.onmouseup);
+            })
+
             $(".fileobj_file").on("mousedown", (e) => {
                 if (e.originalEvent.button != 0) return;
                 e.preventDefault();

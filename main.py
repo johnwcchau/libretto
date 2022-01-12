@@ -16,35 +16,11 @@ import logging
 
 from skll.fileio import FileIO
 from skll.session import Session
-from skll.jsoncodec import Encoder
+from skll.jsoncodec import Encoder, json_decode
 
 from skll import plugin
 
 tpe = TPE().executor
-
-def json_decode(o):
-    if isinstance(o, str):
-        if o.lower() == "true":
-            return True
-        elif o.lower() == "false":
-            return False
-        else:
-            try:
-                return int(o)
-            except ValueError:
-                try:
-                    return float(o)
-                except ValueError:
-                    return o
-    elif isinstance(o, dict):
-        return {k: json_decode(v) for k, v in o.items()}
-    elif isinstance(o, list):
-        return [json_decode(v) for v in o]
-    else:
-        return o
-
-# def json_encode(o):
-#     return o
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
@@ -131,16 +107,6 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("client/index.html")
 
-def make_app(debug):
-    return tornado.web.Application([
-        (r"/", IndexHandler),
-        (r'/(favicon\.ico)', StaticFileHandler, {"path": "./client"}),
-        (r"/static/(.*)", MyStaticFileHandler, {"path":"./client"}),
-        (r"/storage/(.*)", MyStaticFileHandler, {"path":"./storage"}),
-        (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./skll/plugin"}),
-        (r"/ws/(.*)", WebSocketHandler),
-    ], debug=debug)
-
 def shutdown():
     global ioloop
     ioloop.stop()
@@ -155,32 +121,40 @@ def open_browser(port:int):
     webbrowser.open('http://localhost:%d' % port, new=2)
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description="SK-ll")
-    parser.add_argument("port", type=int, default=6789, help="Port to listen to")
-    parser.add_argument("debug", default=False, help="Debug flag")
-    args = parser.parse_args()
-    if args.debug:
-        logging.basicConfig(level=logging.DEBUG)
-    
     from os import makedirs
     makedirs("./storage", exist_ok=True)
 
-    plugin.init()
+    import argparse
+    parser = argparse.ArgumentParser(description="SK-ll")
+    parser.add_argument("-port", type=int, default=6789, help="Port to listen to")
+    parser.add_argument("-debug", nargs='?', const=True, default=False, help="Debug flag")
+    parser.add_argument("-model", type=open, help="Model file for runtime mode")
+    args = parser.parse_args()
+
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
     
+    plugin.init()
+
     logging.info("SKll started!")
-    app = make_app(args.debug)
+    app = tornado.web.Application([
+        (r"/", IndexHandler),
+        (r'/(favicon\.ico)', StaticFileHandler, {"path": "./client"}),
+        (r"/static/(.*)", MyStaticFileHandler, {"path":"./client"}),
+        (r"/storage/(.*)", MyStaticFileHandler, {"path":"./storage"}),
+        (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./skll/plugin"}),
+        (r"/ws/(.*)", WebSocketHandler),
+    ], debug=args.debug)
 
     signal.signal(signal.SIGTERM, sig_handler)
     signal.signal(signal.SIGINT, sig_handler)
     if sys.platform == "win32":
         import win32api
         win32api.SetConsoleCtrlHandler(sig_handler, True)
-    
     app.listen(args.port)
     tpe.submit(open_browser, args.port)
+
     ioloop = tornado.ioloop.IOLoop.instance()
     ioloop.start()
 
-# %%
 # %%

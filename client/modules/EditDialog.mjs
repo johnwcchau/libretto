@@ -4,73 +4,82 @@ class EditDialog {
     createLabel(for_id, desc, cls="label") {
         return $(`<label class="${cls}" for="${for_id}">`).html(desc);
     }
-    createJsonRow(layer, name, prop) {
+    createRow(name, prop) {
         const $row = $("<li>").addClass("editrow");
         this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
         this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
-        $(`<textarea name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
+        return $row;
+    }
+    createJsonRow(layer, name, prop) {
+        const $row = this.createRow(name, prop);
+        $(`<textarea name="edit_${name}" id="edit_${name}" placeholder="null">`)
             .addClass("edittextarea")
-            .data("id", name)
             .val(JSON.stringify(layer[name], null, 2))
             .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createColumnListRow(layer, name, prop, multiple) {
-        const $row = $("<li>").addClass("editrow");
+        const $row = this.createRow(name, prop);
         const mode = (prop.type == "list(datatype)") ? "datatype" : "column";
-        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
         const selector = new ColumnSelector(layer[name], mode, multiple);
         this.colsels.push(selector);
         selector.panel
             .attr("id", `edit_${name}`)
             .attr("name", `edit_${name}`)
-            .data("id", name)
             .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createTextRow(layer, name, prop) {
-        const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
-        $(`<input type="text" name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
+        const $row = this.createRow(name, prop);
+        $(`<input type="text" name="edit_${name}" id="edit_${name}">`)
             .addClass("edittext")
-            .data("id", name)
             .val(layer[name])
+            .attr("placeholder", prop.default)
             .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createNumberRow(layer, name, prop) {
-        const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
-        $(`<input type="number" name="edit_${name}" id="edit_${name}" placeholder="${prop.desc}">`)
+        const $row = this.createRow(name, prop);
+        $(`<input type="number" name="edit_${name}" id="edit_${name}">`)
             .addClass("editnum")
-            .data("id", name)
             .val(layer[name])
+            .attr("placeholder", prop.default)
             .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;
     }
     createBooleanRow(layer, name, prop) {
-        const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
-        $(`<input type="checkbox" name="edit_${name}" id="edit_${name}">`)
-            .addClass("editchk")
-            .data("id", name)
-            .prop("checked", layer[name])
+        const $row = this.createRow(name, prop);
+        // $(`<input type="checkbox" name="edit_${name}" id="edit_${name}">`)
+        //     .addClass("editchk")
+        //     .prop("checked", layer[name])
+        //     .prop("disabled", prop.disabled)
+        //     .appendTo($row);
+        const $select = $(`<select name="edit_${name}" id="edit_${name}">`)
+            .addClass("edit-select")
             .prop("disabled", prop.disabled)
             .appendTo($row);
+        const $none = $(`<option value="">(None)</option>`).appendTo($select);
+        const $false = $(`<option value="false">False</option>`).appendTo($select);
+        const $true = $(`<option value="true">True</option>`).appendTo($select);
+        switch (layer[name]) {
+            case true:
+                $true.prop("selected", true);
+                break;
+            case false:
+                $false.prop("selected", true);
+                break;
+            case undefined:
+                $none.prop("selected", true);
+                break;
+        }
         return $row;
     }
     createMCRow(layer, name, prop) {
-        const $row = $("<li>").addClass("editrow");
-        this.createLabel(`edit_${name}`, name, "name-label").appendTo($row);
-        this.createLabel(`edit_${name}`, prop.desc, "desc-label").appendTo($row);
+        const $row = this.createRow(name, prop);
         const $fields = $(`<span>`).addClass("editmcs").appendTo($row);
         var choices = prop.type.split('(', 2);
         if (choices.length > 1) {
@@ -79,12 +88,31 @@ class EditDialog {
             choices.forEach((v, i)=>{
                 $(`<input type="checkbox" name="edit_${name}[${v}]" id="edit_${name}_${v}">`)
                 .addClass(`editchk editchk_${name}`)
-                .data("id", name)
-                .data("val", v)
+                .prop("value", v)
                 .prop("checked", layer[name] && (layer[name].indexOf(v) != -1))
                 .prop("disabled", prop.disabled)
                 .appendTo($fields);
                 this.createLabel(`edit_${name}[${v}]`, v).appendTo($fields);
+            });
+        }
+        return $row;
+    }
+    createOptionRow(layer, name, prop) {
+        const $row = this.createRow(name, prop);
+        const $select = $(`<select name="edit_${name}" id="edit_${name}">`)
+            .addClass("edit-select")
+            .prop("disabled", prop.disabled)
+            .appendTo($row);
+        $(`<option value="">(None)</option>`).appendTo($select);
+        var choices = prop.type.split('(', 2);
+        if (choices.length > 1) {
+            choices = choices[1];
+            choices = choices.substring(0, choices.length - 1).split(",");
+            choices.forEach((v, i)=>{
+                v = v.trim();
+                $(`<option value="${v}">${v}</option>`)
+                .prop("selected", layer[name] && (layer[name] == v))
+                .appendTo($select);
             });
         }
         return $row;
@@ -104,6 +132,7 @@ class EditDialog {
         let res = true;
         const layer = e.data.thiz;
         const dialog = e.data.dialog;
+        let val;
         Object.entries(layer._properties).forEach(([name, v]) => {
             if (v.disabled || v.hidden) return;
             switch(v.type.split("(")[0]) {
@@ -114,7 +143,7 @@ class EditDialog {
                     } else {
                         try {
                             const t = $(`#edit_${name}`).removeClass("invalid-val").val();
-                            const val = JSON.parse(t == "" ? null : t);
+                            val = JSON.parse(t == "" ? null : t);
                             layer[name] = val;
                         } catch (e) {
                             console.log(e);
@@ -128,18 +157,36 @@ class EditDialog {
                     layer[name] = $(`#edit_${name}`).val();
                     break;
                 case "boolean":
-                    layer[name] = $(`#edit_${name}`).prop("checked");
+                    val = $(`#edit_${name}`).val();
+                    switch(val) {
+                        case "true":
+                            layer[name] = true;
+                            break;
+                        case "false":
+                            layer[name] = false;
+                            break;
+                        default:
+                            layer[name] = null;
+                    }
+                    break;
+                case "option":
+                    val = $(`#edit_${name}`).val();
+                    if (val == "") val = null;
+                    layer[name] = val;
                     break;
                 case "mc":
                     let r = [];
                     $(`.editchk_${name}`).each((i, v) => {
-                        if ($(v).prop("checked")) r.push($(v).data("val"));
+                        if ($(v).prop("checked")) r.push($(v).prop("value"));
                     })
                     layer[name] = r;
                     break;
                 case "number":
                     try {
-                        layer[name] = parseFloat($(`#edit_${name}`).removeClass("invalid-val").val());
+                        val = $(`#edit_${name}`).val();
+                        if (val == "") val = null;
+                        else val = parseFloat($(`#edit_${name}`).removeClass("invalid-val").val());
+                        layer[name] = val;
                     } catch (e) {
                         console.log(e);
                         $(`#edit_${name}`).addClass("invalid-val");
@@ -147,8 +194,20 @@ class EditDialog {
                         return;
                     }
                 case "string":
+                    val = $(`#edit_${name}`).val();
+                    if (val == "") val = null;
+                    layer[name] = val;
+                    break;
                 default:
-                    layer[name] = $(`#edit_${name}`).val();
+                    try {
+                        const t = $(`#edit_${name}`).removeClass("invalid-val").val();
+                        val = JSON.parse(t == "" ? null : t);
+                        layer[name] = val;
+                    } catch (e) {
+                        console.log(e);
+                        $(`#edit_${name}`).addClass("invalid-val");
+                        res = false;
+                    }
                     break;
             }
         });
@@ -162,9 +221,9 @@ class EditDialog {
         const $toolbar = this.createToolbar().appendTo($dialog);
         this.colsels = [];
         $("<a href='#'>").addClass("edit-apply").html("Apply").on("click", {thiz: layer, dialog: this}, EditDialog.#applyHandler).appendTo($toolbar);
-        // $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
-        //     e.data.thiz._dialog.removeClass("shown");
-        // }).appendTo($toolbar);
+        $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
+             e.data.thiz._dialog.html("");
+        }).appendTo($toolbar);
         $("<h2>").html(layer.name).appendTo($dialog);
         $("<h3>").html(layer._typename ? layer._typename : layer._type).appendTo($dialog);
         const $root = $("<ul>").addClass("editgroup").appendTo($dialog);
@@ -181,6 +240,9 @@ class EditDialog {
                 case "mc":
                     this.createMCRow(layer, name, v).appendTo($root);
                     break;
+                case "option":
+                    this.createOptionRow(layer, name, v).appendTo($root);
+                    break;
                 case "column":
                     this.createColumnListRow(layer, name, v, false).appendTo($root);
                     break;
@@ -192,8 +254,10 @@ class EditDialog {
                         this.createJsonRow(layer, name, v).appendTo($root);
                     break;
                 case "string":
-                default:
                     this.createTextRow(layer, name, v).appendTo($root);
+                    break;
+                default:
+                    this.createJsonRow(layer, name, v).appendTo($root);
                     break;
             }
         });

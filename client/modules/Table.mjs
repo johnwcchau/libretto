@@ -32,8 +32,11 @@ export default class Table {
                 }
             ],
             dom: 'Blfrtip',
+        }).on("draw.dt", {thiz: this}, (e) => {
+            const $td = e.data.thiz._table.find("td");
+            $td.off("click").on("click", {thiz: this}, Table.toggleColumnSelect);
         });
-        this._table.find("td").on("click", {thiz: this}, Table.toggleColumnSelect)
+        this._table.find("td").off("click").on("click", {thiz: this}, Table.toggleColumnSelect);
     }
     get dt() {
         return this._table.api();

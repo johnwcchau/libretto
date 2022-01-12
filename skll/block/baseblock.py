@@ -3,7 +3,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from importlib import import_module
-from typing import Generator
+from typing import Callable, Generator, IO
 from uuid import uuid4
 from enum import Enum
 import numpy as np
@@ -76,9 +76,10 @@ class Block:
     disable_mask : list[RunMode]
     list of runmode which this block will be bypassed
     """
-    def __init__(self, name:str=None, column_mask:list=None, as_new_columns:bool=False, disable_mask:list=None, **kwargs:dict)->None:
+    def __init__(self, name:str=None, _jstype:str=None, _pytype:str=None, column_mask:list=None, as_new_columns:bool=False, disable_mask:list=None, **kwargs:dict)->None:
         self.name = name if name else str(uuid4())
         self.disable_mask = []
+        self._jstype = _jstype
         if isinstance(disable_mask, list):
             for d in disable_mask:
                 if isinstance(d, RunSpec.RunMode):
@@ -101,10 +102,11 @@ class Block:
 
     @classmethod
     def load(cls, obj:dict)->Block:
-        if not "_type" in obj:
+        if not "_pytype" in obj:
             raise KeyError(f'Invalid input')
-        type = obj["_type"]
-        args = {k: v for k, v in obj.items() if not k.startswith("_")}
+        type = obj["_pytype"]
+        #args = {k: v for k, v in obj.items() if not k.startswith("_")}
+        args = obj
         try:
             res = import_load(type)(**args)
         except Exception as e:
@@ -123,7 +125,8 @@ class Block:
         klass = type(self)
         typestr = f'{klass.__module__}.{klass.__name__}'
         return {
-            "_type": typestr,
+            "_jstype": self._jstype if self._jstype else typestr,
+            "_pytype": typestr,
             "_next": self[0].dump() if self[0] else None,
             "name": self.name,
             "disable_mask": self.disable_mask,
@@ -141,7 +144,7 @@ class Block:
     
     def run(self, runspec:RunSpec, x:pd.DataFrame, y=None, id=None)->tuple:
         return x, y, id
-    
+
     def __call__(self, runspec:RunSpec, x, y=None, id=None)->tuple:
         if runspec.mode == RunSpec.RunMode.BREAK:
             return x, y, id
@@ -350,6 +353,7 @@ class Loop(Parent):
             if runspec.mode == RunSpec.RunMode.BREAK:
                 break
         return lastx, lasty, lastid
+
 # %%
 if __name__ == "__main__":
     

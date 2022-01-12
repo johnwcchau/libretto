@@ -1,5 +1,5 @@
 # %%
-from skll.block import Block, Parent, RunSpec
+from skll.block.baseblock import Block, Parent, RunSpec
 import pandas as pd
 
 class XyidSplit(Block):

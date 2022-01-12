@@ -37,7 +37,7 @@ class Session {
         if (!model || !model.export) return;
         const receipe = model.export();
         return WsClient.send("load", {dump: receipe}).then(r=>{
-            receipe.model_changed = false;
+            this.model.model_changed = false;
         });
     }
     readRemote(name) {
@@ -67,12 +67,18 @@ class Session {
     render() {
         if (!this.$receipe) return;
         this.$receipe.html("");
-        this.model.render().appendTo(this.$receipe);
+        // add model drag and drop part
+        $('<div class="receipe-drop-zone">')
+            .on("mouseenter", {thiz: this}, Block.onmouseover)
+            .on("mouseleave", {thiz: this}, Block.onmouseout)
+            .on("mouseup", {thiz: this}, Block.onmouseup)
+            .appendTo(this.$receipe);
+        this.model.render().addClass("root-block").appendTo(this.$receipe);
     }
     reset() {
         if (!this.warnBeforeLoad()) return null; 
-        const parent = new Parent({name: "Untitled", _type: "skll.block.baseblock.Parent"});
-        const input = new Block({name: "Input", _type: "skll.block.input.FileInput"});
+        const parent = new Parent({name: "Untitled", _jstype: "skll.block.baseblock.Parent"});
+        const input = new Block({name: "Input", _jstype: "skll.block.input.FileInput"});
         parent.append(input, 0);
         this.#setReceipe(parent);
         this.model._model_changed = true;
@@ -143,7 +149,7 @@ class Session {
         const blob = new Blob([Session.encode(JSON.stringify(this.model.export(), null, 4))], {
             type: 'application/octet-stream'
         });
-        WsClient.uploadBlob(blob, `${this.model.name}.skll.json`).then(r=>{
+        WsClient.uploadBlob(blob, `${FileBrowser._cd}/${this.model.name}.skll.json`).then(r=>{
             FileBrowser.refresh();
         });
     }
@@ -154,9 +160,11 @@ class Session {
         this.$receipe.addClass("droptarget");
     }
     resetDropTarget() {
+        this._droptype = null;
         this.$receipe.removeClass("droptarget");
     }
     onDrop(src, type) {
+        this._droptype = null;
         if (type != "dropreplace") return;
         if (!this.warnBeforeLoad()) return;
         this.#setReceipe(src);
@@ -167,10 +175,7 @@ class Session {
             return Session.instance;
         }
         this.$dom = $("<div>").addClass("session");
-        this.$receipe = $("<div>").addClass("receipe").appendTo(this.$dom)
-            .on("mouseover", {thiz: this}, Block.onmouseover)
-            .on("mouseleave", {thiz: this}, Block.onmouseout)
-            .on("mouseup", {thiz: this}, Block.onmouseup);
+        this.$receipe = $("<div>").addClass("receipe").appendTo(this.$dom);
         this.$table = $("<div>").addClass("data").appendTo(this.$dom);
         this.tabView = new TabView(this.$table);
         this.load();

@@ -1,7 +1,6 @@
 # %%
 from typing import Generator
-from skll.block import Block, Loop, RunSpec
-from skll.block.baseblock import import_load
+from skll.block.baseblock import Block, Loop, RunSpec, import_load
 from importlib import import_module
 import pandas as pd
 
@@ -185,9 +184,10 @@ class SklScoringMethod(Method):
     A method, instead of transforming data, generate a score and append to score list
     """
     def run(self, runspec: RunSpec, x, y=None, id=None):
-        if runspec.mode == RunSpec.RunMode.RUN:
-            self.resolvexyargs(x, y)
-            runspec.scores.append((self.name, self.func(*self.funcargs, **self.funckargs)))
+        if self.func is None:
+            self.loadmethod()
+        self.resolvexyargs(x, y)
+        runspec.scores.append((self.name, self.func(*self.funcargs, **self.funckargs)))
         return x, y, id
 
 class SklSplitter(Loop):
