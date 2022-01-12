@@ -96,6 +96,10 @@ body {
     content: url("/static/img/text_snippet_black_24dp.svg");
     padding-right: 0.5em;
 }
+.fileBrowser a.fileobj_dir.droptarget:hover {
+    background: #cef;
+    cursor:move;
+}
 .toolbar {
     display: flex;
     flex-direction: row;

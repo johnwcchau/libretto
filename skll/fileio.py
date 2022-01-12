@@ -74,7 +74,7 @@ class FileIO:
 
         os.makedirs(fullpath)
         self.out.finished(f'Directory created')
-        
+
     def put(self, name:str="temp", data:str=None, flag:str=None, size:int=0, **kwargs)->None:
         if not flag or (not data and flag != "end"):
             self.out.invalid()
@@ -119,18 +119,18 @@ class FileIO:
             traceback.print_exc()
             self.out.error(f'Delete {path} failed')
 
-    def ren(self, path:str=None, newname:str=None, **kwargs)->None:
-        fullpath, valid = self._getvalidpath(path, checkexist=True)
-        newpath, already = self._getvalidpath(newname, checkexist=True)
+    def ren(self, src:str=None, dest:str=None, overwrite:bool=False, **kwargs)->None:
+        fullpath, valid = self._getvalidpath(src, checkexist=True)
+        newpath, already = self._getvalidpath(dest, checkexist=True)
         if not fullpath or not newpath:
             self.out.invalid(f'Invalid name')
             return
         if not valid:
-            self.out.invalid(f'No such file {path}')
+            self.out.invalid(f'No such file {src}')
             return
-        if already:
-            self.out.invalid(f'{newname} already exists')
+        if already and not overwrite:
+            self.out.invalid(f'{dest} already exists')
             return
         os.rename(fullpath, newpath)
-        self.out.finished(f'Renamed {path} to {newname}')
+        self.out.finished(f'Renamed {src} to {dest}')
 

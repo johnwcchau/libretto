@@ -238,6 +238,7 @@ export class Block {
         $(".trash").addClass("visible");
     }
     afterDrag() {
+        delete this.__filename;  // in case this is a drop from file browser
         this.$div.detach();
         this.$div.removeClass("newobj");
         if (this.root) this.root.model_changed = true;

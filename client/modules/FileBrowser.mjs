@@ -1,10 +1,54 @@
 import WsClient from './WsClient.mjs';
-import {File} from './BaseBlock.mjs';
+import {Block, File} from './BaseBlock.mjs';
 import ContextMenu from './ContextMenu.mjs';
 import Session from './Session.mjs';
 
 class FileBrowser {
     static _dragTimer = null;
+    
+    static DirDropTarget = class {
+    
+        constructor(fileBrowser, dropTarget) {
+            this.fileBrowser = fileBrowser;
+            this.dropTarget = dropTarget
+                .on("mouseenter", {thiz: this}, Block.onmouseover)
+                .on("mouseleave", {thiz: this}, Block.onmouseout)
+                .on("mouseup", {thiz: this}, Block.onmouseup);
+        }
+    
+        //Drag drop parts for file movement
+        becomeDropTarget(src) {
+            if ((!src._jstype != File.TYPE) && !src.__filename) return;
+            this._droptype = "dropinto";
+            this.dropTarget.addClass("droptarget");
+        }
+        resetDropTarget() {
+            this._droptype = null;
+            this.dropTarget.removeClass("droptarget");
+        }
+        onDrop(src, type) {
+            this._droptype = null;
+            if (type != "dropinto") return;
+            const filename = src.filename || src.__filename;
+            const name = filename.split("/").pop();
+            const target = `${this.fileBrowser._cd}/${this.dropTarget.html()}/${name}`;
+            WsClient.send("exist", {
+                "path": target,
+            }).then(r => {
+                if (r.exist) {
+                    if (!confirm(`File with same name already exists in ${this.dropTarget.html()}, overwrite?`))
+                        return;
+                }
+                WsClient.send("ren", {
+                    src: filename,
+                    dest: target,
+                    overwrite: true
+                }).then(()=> {
+                    this.fileBrowser.refresh();
+                });
+            })
+        }
+    }
 
     #makeRenContextMenuOption(name) {
         return {
@@ -14,8 +58,8 @@ class FileBrowser {
                 const newName = prompt("New file name", name);
                 if (newName) {
                     WsClient.send("ren", {
-                        path: `${this._cd}/${name}`,
-                        newname: `${this._cd}/${newName}`,
+                        src: `${this._cd}/${name}`,
+                        dest: `${this._cd}/${newName}`,
                     }).then(()=> {
                         this.refresh();
                     });
@@ -38,27 +82,7 @@ class FileBrowser {
             }
         };
     }
-    
-    dirDropTarget() {
-        
-        //Drag drop parts for file movement
-        becomeDropTarget(src) {
-            if (!src._type != File.TYPE) return;
-            this._droptype = "dropinto";
-            this.$receipe.addClass("droptarget");
-        }
-        resetDropTarget() {
-            this._droptype = null;
-            this.$receipe.removeClass("droptarget");
-        }
-        onDrop(src, type) {
-            this._droptype = null;
-            if (type != "dropinto") return;
-            const filename = src.filename;
-            alert(`filedrop ${filename} to ${this.target}`);
-        }
-    }
-    
+
 
     refresh() {
         WsClient.send("ls", {path: this._cd}).then(r => {
@@ -81,12 +105,8 @@ class FileBrowser {
                     this.#makeRenContextMenuOption(thiz.html()),
                     this.#makeDelContextMenuOption(thiz.html()),
                 ]).showAt(e);
-            }).each(v => {
-                const dropTarget = new this.dirDropTarget();
-                dropTarget.target = this._cd + "/" + $(v).html();
-                $(v).on("mouseenter", {thiz: dropTarget}, Block.onmouseover)
-                .on("mouseleave", {thiz: dropTarget}, Block.onmouseout)
-                .on("mouseup", {thiz: dropTarget}, Block.onmouseup);
+            }).each((i, v) => {
+                new FileBrowser.DirDropTarget(this, $(v));
             })
 
             $(".fileobj_file").on("mousedown", (e) => {
@@ -108,6 +128,7 @@ class FileBrowser {
                     promise.then(layer => {
                         layer.render();
                         layer.$div.addClass("newobj").appendTo($("body"));
+                        layer.__filename = filename;
                         layer.begindrag();
                     });
                 }, 150);
