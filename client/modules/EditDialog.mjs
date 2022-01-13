@@ -14,7 +14,7 @@ class EditDialog {
         const $row = this.createRow(name, prop);
         $(`<textarea name="edit_${name}" id="edit_${name}" placeholder="null">`)
             .addClass("edittextarea")
-            .val(JSON.stringify(layer[name], null, 2))
+            .val((layer[name] === null) ? "" : JSON.stringify(layer[name], null, 2))
             .prop("disabled", prop.disabled)
             .appendTo($row);
         return $row;

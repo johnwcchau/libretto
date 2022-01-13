@@ -2,6 +2,7 @@ import { Parent, Block, BlockTypes } from "/static/modules/BaseBlock.mjs";
 import baseObjects from "./baseObjects.mjs";
 import sklearn from "./sklearn.mjs";
 import hdbscan from "./hdbscan.mjs";
+import lightgbm from "./lightgbm.mjs";
 import xgboost from "./xgboost.mjs";
 import gtda from "./gtda.mjs";
 export default null;
@@ -26,5 +27,6 @@ function addToBts(types) {
 addToBts(baseObjects);
 addToBts(sklearn);
 addToBts(hdbscan);
+addToBts(lightgbm);
 addToBts(xgboost);
 addToBts(gtda);

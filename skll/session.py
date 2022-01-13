@@ -56,11 +56,14 @@ class Session:
                 x["unique"] = len(data[x.name].unique())
             return x
         result = result.transform(fillunique, axis=0)
-        if self._result[1] is not None:
-            result.loc[len(result.index)] = data.corrwith(self._result[1])
-            result = result.rename(index={
-                len(result.index)-1 : "corr"
-            })
+        try:
+            if self._result[1] is not None:
+                result.loc[len(result.index)] = data.corrwith(self._result[1])
+                result = result.rename(index={
+                    len(result.index)-1 : "corr"
+                })
+        except TypeError:
+            pass
         result.loc[len(result.index)] = data.median()
         result.loc[len(result.index)] = data.skew()
         result.loc[len(result.index)] = data.dtypes.astype(str)

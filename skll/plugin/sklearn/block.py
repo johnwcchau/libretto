@@ -3,6 +3,7 @@ from typing import Generator
 from skll.block.baseblock import Block, Loop, RunSpec, import_load
 from importlib import import_module
 import pandas as pd
+import logging
 
 class SklClass(Block):
     def __init__(self, cls:str=None, trainmethod:str=None, testmethod:str=None, scoremethod:str=None, keepcolnames=True, initargs:list=None, initkargs:dict=None, **kwargs):
@@ -32,6 +33,7 @@ class SklClass(Block):
     def createobject(self):
         if self.cls is None:
             raise AttributeError('No class specified')
+        logging.debug(f'creating {self.name} with args {self.initargs} and kwargs {self.initkargs}')
         self.obj = import_load(self.cls)(*self.initargs, **self.initkargs)
         if not self.testmethodname:
             self.testmethodname = [attr for attr in ["predict", "transform"] if hasattr(self.obj, attr)]
@@ -75,6 +77,14 @@ class SklClass(Block):
                 res = self.testmethod(x)
             else:
                 res = self.trainmethod(x, y)
+        #
+        # get rid of sparse matrix
+        try:
+            getattr(res, "todense")  # checks if todense exists and calls
+            res = res.todense()
+        except Exception:
+            pass
+        
         res = pd.DataFrame(res)
         if self.keepcolnames and len(res.columns) == len(x.columns):
             res.columns = x.columns
@@ -173,6 +183,13 @@ class Method(Block):
             self.loadmethod()
         self.resolvexyargs(x, y)
         newx = self.func(*self.funcargs, **self.funckargs)
+        #
+        # get rid of sparse matrix
+        try:
+            getattr(newx, "todense")  # checks if todense exists and calls
+            newx = newx.todense()
+        except Exception:
+            pass
         if not isinstance(newx, pd.DataFrame):
             newx = pd.DataFrame(newx)
         if self.keepcolnames and len(newx.columns) == len(x.columns):

@@ -186,7 +186,7 @@ export class Block {
     export() {
         let result = {};
         Object.entries(this._properties).forEach(([i, v]) => {
-            if (result[i] === null) return;
+            if ((this[i] === null)||(this[i] === undefined)) return;
             if (v.dictKeyOf) {
                 if (!result[v.dictKeyOf]) result[v.dictKeyOf] = {};
                 result[v.dictKeyOf][i] = this[i];
