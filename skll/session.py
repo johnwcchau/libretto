@@ -120,7 +120,6 @@ class Session:
             self.out.error(f'Receipe load error: {repr(e)}')
 
     def export(self, path:str=None, dropinput:bool=True, **kwargs)->None:
-        print(path, dropinput)
         if not path:
             self.out.invalid()
             return
@@ -141,10 +140,10 @@ class Session:
                         block._original_disable_mask = block.disable_mask
                         block.disable_mask = [RunSpec.RunMode.RUN]
                     if isinstance(block, Parent):
-                        [disableinput(child) for child in block.child]
+                        [disableinput(child) for child in block.child.values()]
                 disableinput(self.rootblock)
-            
-            joblib.dump(self.rootblock, vpath)
+            with open(vpath, "wb") as f:
+                joblib.dump(self.rootblock, f)
             self.out.finished(f'Exported to {vpath}')
         except Exception as e:
             traceback.print_exc()
@@ -153,6 +152,7 @@ class Session:
             def reenableinput(block:Block):
                 if hasattr(block, "_original_disable_mask"):
                     block.disable_mask = block._original_disable_mask
+                    del block._original_disable_mask
                 if isinstance(block, Parent):
                     [reenableinput(child) for child in block.child]
             reenableinput(self.rootblock)
