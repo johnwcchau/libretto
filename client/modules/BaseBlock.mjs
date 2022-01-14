@@ -238,7 +238,6 @@ export class Block {
         $(".trash").addClass("visible");
     }
     afterDrag() {
-        delete this.__filename;  // in case this is a drop from file browser
         this.$div.detach();
         this.$div.removeClass("newobj");
         if (this.root) this.root.model_changed = true;
@@ -256,7 +255,8 @@ export class Block {
     }
     onDrop(src, droptype) {
         if (src._jstype == File.TYPE && this._events["onFileDropped"]) {
-            this._events["onFileDropped"](this, src, droptype);
+            if (this._events["onFileDropped"](this, src, droptype))
+            if (this.root) this.root.model_changed = true;
             return;
         }
         switch (droptype) {
@@ -307,6 +307,7 @@ export class Block {
         if (target && target._droptype) {
             thiz.afterDrag();
             target.onDrop(thiz, target._droptype);
+            delete thiz.__filename;  // in case thiz is a drop from file browser
         } else if (thiz.$div.hasClass("newobj")) {
             $(".newobj").remove();
         }

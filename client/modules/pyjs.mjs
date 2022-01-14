@@ -52,8 +52,10 @@ new BlockTypes().add({
                         break;
                     default:
                         alert(`Unsupported file type ${ext}`);
+                        return false;
                 }
                 thiz.render();
+                return true;
             },
             onRender: (thiz) => {
                 thiz.createDomElement();
