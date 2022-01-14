@@ -1,4 +1,5 @@
 from __future__ import annotations
+from datetime import timedelta
 
 import tornado.ioloop
 import tornado.web
@@ -108,14 +109,8 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("client/index.html")
 
-def shutdown():
-    global ioloop
-    ioloop.stop()
-    
-def sig_handler(sig, frame=None):
-    global ioloop
-    print('Caught signal: %s' % sig)
-    ioloop.add_callback_from_signal(shutdown)
+def set_ping(ioloop, timeout):
+    ioloop.add_timeout(timeout, lambda: set_ping(ioloop, timeout))
 
 def open_browser(port:int):
     import webbrowser
@@ -147,15 +142,11 @@ if __name__ == "__main__":
         (r"/ws/(.*)", WebSocketHandler),
     ], debug=args.debug)
 
-    signal.signal(signal.SIGTERM, sig_handler)
-    signal.signal(signal.SIGINT, sig_handler)
-    if sys.platform == "win32":
-        import win32api
-        win32api.SetConsoleCtrlHandler(sig_handler, True)
     app.listen(args.port)
     tpe.submit(open_browser, args.port)
 
     ioloop = tornado.ioloop.IOLoop.instance()
+    set_ping(ioloop, timedelta(seconds=2))
     ioloop.start()
 
 # %%
