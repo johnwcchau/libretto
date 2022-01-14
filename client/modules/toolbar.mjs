@@ -1,6 +1,12 @@
 import Session from "./Session.mjs";
 
-class MainToolbar {
+export class Toolbar {
+    constructor() {
+        this._toolbar = $('<ul id="toolbar">');
+    }
+    get panel() {
+        return this._toolbar;
+    }
     addbtn(spec) {
         const $li = $("<li>").appendTo(this._toolbar);
         const $a = $('<a href="#">').appendTo($li);
@@ -12,9 +18,10 @@ class MainToolbar {
         const $li = $('<li class="no-border">').appendTo(this._toolbar);
         $obj.appendTo($li);
     }
-    get panel() {
-        return this._toolbar;
-    }
+}
+
+class MainToolbar extends Toolbar{
+    
     init() {
         this.addObj($("<h3>SK-ll Editor</h3>"));
         this.addbtn({
@@ -73,15 +80,16 @@ class MainToolbar {
                     if (score) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
                 });
             }
-        })
+        });
+        
         return this;
     }
     constructor() {
         if (MainToolbar.instance) {
             return MainToolbar.instance;
         }
+        super();
         MainToolbar.instance = this;
-        this._toolbar = $('<ul id="toolbar">');
     }
 }
 const instance = new MainToolbar();

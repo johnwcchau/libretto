@@ -4,7 +4,7 @@ import Log from "./modules/Log.mjs";
 import EditDialog from "./modules/EditDialog.mjs";
 import FileBrowser from "./modules/FileBrowser.mjs";
 import MethodBrowser from "./modules/MethodBrowser.mjs";
-import MainToolbar from './modules/maintoolbar.mjs';
+import MainToolbar from './modules/toolbar.mjs';
 import Session from "./modules/Session.mjs";
 import PlotDialog from "./modules/PlotDialog.mjs";
 import TabView from "./modules/TabView.mjs";
