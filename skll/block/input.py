@@ -15,6 +15,7 @@ class FileInput(Block):
         """
         super().__init__(**kwargs)
         self.filename = filename
+        self._is_input = True
     
     def __readin(self):
         fileio = FileIO()

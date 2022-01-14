@@ -82,6 +82,14 @@ class MainToolbar extends Toolbar{
             }
         });
         
+        this.addbtn({
+            title: "Publish",
+            icon: "/static/img/local_shipping_black_24dp.svg",
+            click: () => {
+                Session.publish();
+            }
+        });
+        
         return this;
     }
     constructor() {

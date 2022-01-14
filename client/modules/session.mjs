@@ -153,6 +153,29 @@ class Session {
             FileBrowser.refresh();
         });
     }
+    publish() {
+        //TODO create publish dialog and ask for
+        //  1. how should the runtime run (Rest/WebSocket)
+        //  2. instance name, port, etc
+        //  3. should input block automatically disabled
+        //TODO Create dockerfile and package everything for deployment
+        //
+        if (!confirm('Please make sure the receipe is fully "cooked" and all input blocks are configured for runtime accordingly')) 
+            return;
+        const name = `${FileBrowser._cd}/${this.model.name}.skll.dump`;
+        FileBrowser.checkExist(name).then(exist => {
+            if (exist && !confirm(`${name} already exist, overwrite?`)) throw -1;
+            return WsClient.send("export", {
+                path: name,
+                dropinput: true,
+            });
+        }).then(() => {
+            alert(`Receipe exported to ${name}`);
+        }).catch((e)=> {
+            if (e === -1) return;
+            alert("Failed to publish, see log for more details");
+        })
+    }
 
     becomeDropTarget(src) {
         if (!src._blocks) return;
