@@ -41,6 +41,11 @@ class ColumnWise(Parent):
     Split columns into groups of one column each, for per-column processing
     """
     def run(self, runspec: RunSpec, x, y=None, id=None)->tuple:
+        #
+        # if run upto this, no work to do (user should set run upto inner block instead)
+        if runspec.upto == self.name:
+            runspec.mode = RunSpec.RunMode.BREAK
+            return x, y, id
         results = {}
         if not isinstance(x, pd.DataFrame):
             x = pd.DataFrame(x)
