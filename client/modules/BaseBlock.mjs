@@ -156,7 +156,6 @@ export class Block {
     createEditBtn() {
         return $("<a href='#'>")
             .addClass("editbtn")
-            .on("click", {thiz: this}, Block.__onEditClicked)
             .html("✏️");
     }
     createDomElement() {
@@ -165,7 +164,7 @@ export class Block {
             $("<span>").addClass("title").html(this.name).appendTo(this.$div);
             $("<span>").addClass("desc").html(this.desc).appendTo(this.$div);
             if (this.canEdit)
-                this.createEditBtn().appendTo(this.$div);
+                this.$edit_button = this.createEditBtn().appendTo(this.$div);    
         } 
         else {
             this.$div.children("span.title").html(this.name);
@@ -173,8 +172,10 @@ export class Block {
                 this.$div.children("span.desc").html(this.desc);
             if (this.canEdit && (this.$div.children("a.editbtn").length == 0)) 
                 this.createEditBtn().appendTo(this.$div);
-            else if (!this.canEdit)
+            else if (!this.canEdit) {
                 this.$div.children("a.editbtn").remove();
+                delete this.$edit_button;
+            }
         }
         this.registerEvents();
     }
@@ -488,6 +489,10 @@ export class Block {
             .on("mouseenter", {"thiz": this}, Block.onmouseover)
             .on("mouseleave", {"thiz": this}, Block.onmouseout)
             .on("contextmenu", {"thiz": this}, Block.oncontextmenu);
+        if (this.canEdit) {
+            this.$edit_button
+                .on("click", {thiz: this}, Block.__onEditClicked);
+        }
     }
 }
 
