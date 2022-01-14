@@ -7,6 +7,7 @@
     margin: 0 0 0.5em 0;
     padding: 0;
     border-bottom: 1px solid #a98;
+    flex-wrap: wrap;
 }
 .tab-view-tab-button {
     list-style: none;
