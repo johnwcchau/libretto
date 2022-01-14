@@ -32,10 +32,8 @@ class FileBrowser {
             const filename = src.filename || src.__filename;
             const name = filename.split("/").pop();
             const target = `${this.fileBrowser._cd}/${this.dropTarget.html()}/${name}`;
-            WsClient.send("exist", {
-                "path": target,
-            }).then(r => {
-                if (r.exist) {
+            this.checkExist(target).then(r => {
+                if (r) {
                     if (!confirm(`File with same name already exists in ${this.dropTarget.html()}, overwrite?`))
                         return;
                 }
@@ -50,6 +48,14 @@ class FileBrowser {
         }
     }
 
+    checkExist(name) {
+        return WsClient.send("exist", {
+            "path": name,
+        }).then(r => {
+            return r.exist;
+        })
+    };
+
     #makeRenContextMenuOption(name) {
         return {
             title: "Rename",
@@ -57,9 +63,16 @@ class FileBrowser {
             click: () => {
                 const newName = prompt("New file name", name);
                 if (newName) {
-                    WsClient.send("ren", {
-                        src: `${this._cd}/${name}`,
-                        dest: `${this._cd}/${newName}`,
+                    const dest = `${this._cd}/${newName}`;
+                    this.checkExist(dest).then(r => {
+                        if (r) {
+                            alert(`${newName} already exist!`);
+                            return;
+                        }
+                        return WsClient.send("ren", {
+                            src: `${this._cd}/${name}`,
+                            dest: `${this._cd}/${newName}`,
+                        });
                     }).then(()=> {
                         this.refresh();
                     });
