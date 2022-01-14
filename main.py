@@ -34,11 +34,11 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             self.session._attach(self)
         except RuntimeError:
             self.session = None
-        logging.info("WS Opened")
+        logging.info(f'({self.request.host_name}) -- WS Opened')
     
     def on_close(self):
         if self.session is not None: self.session._detach()
-        logging.info("WS Closed")
+        logging.info(f'({self.request.host_name}) -- WS Closed')
     
     def __send_message(self, _id, msg, param=None):
         if param is None:
@@ -46,6 +46,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
         param["result"] = _id
         param["message"] = msg
+        logging.info(f'({self.request.host_name}) << {_id}: {msg}')        
         msg = json.dumps(param, cls=Encoder)
         logging.debug(f'<<{msg}')
         self.write_message(msg)
@@ -66,7 +67,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 if not "action" in msg:
                     session.out.invalid()
                     return
-                logging.info(f'>> {msg["action"]}')
+                logging.info(f'({self.request.host_name}) >> {msg["action"]}')
                 action = msg["action"]
                 if action=="ping":
                     session.out.finished("OK")
@@ -74,7 +75,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                     del msg["action"]
                     fileio = FileIO(self)
                     tpe.submit(getattr(fileio, action), **msg)
-                elif action in ["load", "run", "result", "dump"]:
+                elif action in ["load", "run", "result", "dump", "export"]:
                     del msg["action"]
                     tpe.submit(getattr(self.session, action), **msg)
                 else:
