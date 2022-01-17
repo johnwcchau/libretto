@@ -1,11 +1,13 @@
-import WsClient from "./WsClient.mjs";
+import { WsClient } from "./WsClient.mjs";
 import { Parent } from "./BaseBlock.mjs";
 import { Block } from "./BaseBlock.mjs";
+import { LogPanel } from "./LogPanel.mjs";
 import FileBrowser from "./FileBrowser.mjs";
 import pyimport from "./pyjs.mjs";
 import TabView from "./TabView.mjs";
 
-class Session {
+export class Session {
+
     warnBeforeLoad() {
         if (this.model && this.model._blocks && this.model._blocks.length) {
             return confirm("Overwrite existing receipe?");
@@ -15,7 +17,7 @@ class Session {
     load() {
         if (!this.warnBeforeLoad()) return null; 
         return new Promise((res, rej) => {
-            WsClient.send("dump").then(r => {
+            this.WsClient.send("dump").then(r => {
                 const receipe = pyimport(r.receipe);
                 if (!receipe || receipe.length == 0) {
                     this.reset();
@@ -36,7 +38,7 @@ class Session {
         const model = this.model;
         if (!model || !model.export) return;
         const receipe = model.export();
-        return WsClient.send("load", {dump: receipe}).then(r=>{
+        return this.WsClient.send("load", {dump: receipe}).then(r=>{
             this.model.model_changed = false;
         });
     }
@@ -102,6 +104,7 @@ class Session {
             default:
                 mode = "PREVIEW";
         }
+        this.model.clearMarkups();
         return new Promise((res, rej) => {
             if (this.model.model_changed) {
                 if (!confirm("Receipe not in sync with runtime, sync now?"))
@@ -115,15 +118,18 @@ class Session {
                 res();
             }
         }).then(r => {
-            return WsClient.send("run", {
+            $('<div class="blockage">').appendTo(this.$receipe);
+            return this.WsClient.send("run", {
                 mode: mode,
                 upto: (upto && upto.name) ? upto.name : null,
             });
         }).then((r) => {
-            return WsClient.send("result", {usage: usage});
+            return this.WsClient.send("result", {usage: usage});
         }).catch((ex)=> {
             alert("See log for error message");
             return null;
+        }).finally(()=>{
+            this.$receipe.find(".blockage").remove();
         });
     }
     static encode(s) {
@@ -149,7 +155,7 @@ class Session {
         const blob = new Blob([Session.encode(JSON.stringify(this.model.export(), null, 4))], {
             type: 'application/octet-stream'
         });
-        WsClient.uploadBlob(blob, `${FileBrowser._cd}/${this.model.name}.skll.json`).then(r=>{
+        this.WsClient.uploadBlob(blob, `${FileBrowser._cd}/${this.model.name}.skll.json`).then(r=>{
             FileBrowser.refresh();
         });
     }
@@ -165,7 +171,7 @@ class Session {
         const name = `${FileBrowser._cd}/${this.model.name}.skll.dump`;
         FileBrowser.checkExist(name).then(exist => {
             if (exist && !confirm(`${name} already exist, overwrite?`)) throw -1;
-            return WsClient.send("export", {
+            return this.WsClient.send("export", {
                 path: name,
                 dropinput: true,
             });
@@ -193,14 +199,46 @@ class Session {
         this.#setReceipe(src);
         this.model.model_changed = true;
     }
-    constructor() {
+    remoteMessage(msg, line) {
+        if (!this.model) return;
+        this.model.clearMarkups();
+        if (!msg)
+            return;
+        if (!line) line = msg["message"] || "Loading";
+        let progress = null;
+        if (msg["progress"]) {
+            progress = {
+                progress: msg["progress"],
+                ellipsed: msg["ellipsed"] || null,
+                remain: msg["remain"] || null,
+                speed: msg["speed"] || null,
+            };
+        }
+        if (msg["atblock"]) {
+            const block = this.model.findBlockByName(msg["atblock"]);
+            if (!block) return;
+            const type = (msg["result"] < 0) ? "error" : "working";
+            block.markup(type, line, progress);
+        }
+    }
+    constructor(session_name) {
         if (Session.instance) {
             return Session.instance;
         }
+        if (!session_name) session_name = "default";
+        this.session_name = session_name;
         this.$dom = $("<div>").addClass("session");
-        this.$receipe = $("<div>").addClass("receipe").appendTo(this.$dom);
-        this.$table = $("<div>").addClass("data").appendTo(this.$dom);
+        const top = $("<div>").addClass("flex-row").appendTo(this.$dom);
+        this.log = new LogPanel(this);
+        this.log.panel.appendTo(this.$dom);
+        this.$receipe = $("<div>").addClass("receipe").appendTo(top);
+        this.$table = $("<div>").addClass("data").appendTo(top);
         this.tabView = new TabView(this.$table);
+        this.WsClient = new WsClient(this);
+        const thiz = this;
+        this.WsClient.messageHandler = (msg, line) => {
+            thiz.remoteMessage(msg, line);
+        }
         this.load();
         Session.instance = this;
     }
@@ -210,5 +248,8 @@ class Session {
     }
 }
 
-const instance = new Session();
-export default instance;
+window.Session = new Session("default");
+
+export default function getCurrentSession() {
+    return window.Session;
+}

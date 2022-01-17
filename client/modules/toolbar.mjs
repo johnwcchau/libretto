@@ -1,4 +1,4 @@
-import Session from "./Session.mjs";
+import getCurrentSession from "./Session.mjs";
 
 export class Toolbar {
     constructor() {
@@ -28,35 +28,35 @@ class MainToolbar extends Toolbar{
             title: "New model",
             icon: "/static/img/clear_black_24dp.svg",
             click: () => {
-                Session.reset();
+                getCurrentSession().reset();
             },
         });
         this.addbtn({
             title: "Read from runtime",
             icon: "/static/img/cloud_download_black_24dp.svg",
             click: () => {
-                Session.load();
+                getCurrentSession().load();
             },
         });
         this.addbtn({
             title: "Upload to runtime",
             icon: "/static/img/cloud_upload_black_24dp.svg",
             click: () => {
-                Session.dump();
+                getCurrentSession().dump();
             }
         });
         this.addbtn({
             title: "Save",
             icon: "/static/img/save_black_24dp.svg",
             click: () => {
-                Session.save();
+                getCurrentSession().save();
             }
         })
         this.addbtn({
             title: "Save local",
             icon: "/static/img/file_download_black_24dp.svg",
             click: () => {
-                Session.saveLocal();
+                getCurrentSession().saveLocal();
             }
         });
         this.addObj($(`
@@ -74,6 +74,7 @@ class MainToolbar extends Toolbar{
                 const runMode = $("#runmode").val();
                 Session.run(runMode, null, "table").then(r=>{
                     if (!r) return;
+                    const Session = getCurrentSession();
                     const data = r.data;
                     const score = r.score;
                     Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data);
@@ -86,7 +87,7 @@ class MainToolbar extends Toolbar{
             title: "Publish",
             icon: "/static/img/local_shipping_black_24dp.svg",
             click: () => {
-                Session.publish();
+                getCurrentSession().publish();
             }
         });
         

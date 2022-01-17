@@ -65,6 +65,11 @@ class RunSpec:
     """
     out:Output = field(default_factory=Output)
 
+@dataclass
+class ErrorAtRun(Exception):
+    exception:Exception
+    at:Block
+    
 class Block:
     """
     Base block which handles all tidy work
@@ -151,27 +156,30 @@ class Block:
         if runspec.mode == RunSpec.RunMode.COLUMNS and runspec.upto == self.name:
             runspec.mode = RunSpec.RunMode.BREAK
             return x, y, id
-        if not runspec.mode in self.disable_mask:
-            runspec.out.working(f'Processing {self.name}...')
-            if x is not None and not isinstance(x, pd.DataFrame):
-                x = pd.DataFrame(x)
-            if x is not None and isinstance(self.column_mask, list) and len(self.column_mask) > 0:
-                thisx = x[self.column_mask]
-                thisx, y, id = self.run(runspec, thisx, y, id)
-                if thisx is not None and self.as_new_columns:
-                    newcolname = {}
-                    for colname in thisx.columns:
-                        newcolname[colname] = f'{colname}_{self.name}'
-                    x = pd.concat([x, thisx.rename(columns=newcolname)], axis='columns')
+        try:
+            if not runspec.mode in self.disable_mask:
+                runspec.out.working(f'Processing {self.name}...', {"atblock": self.name})
+                if x is not None and not isinstance(x, pd.DataFrame):
+                    x = pd.DataFrame(x)
+                if x is not None and isinstance(self.column_mask, list) and len(self.column_mask) > 0:
+                    thisx = x[self.column_mask]
+                    thisx, y, id = self.run(runspec, thisx, y, id)
+                    if thisx is not None and self.as_new_columns:
+                        newcolname = {}
+                        for colname in thisx.columns:
+                            newcolname[colname] = f'{colname}_{self.name}'
+                        x = pd.concat([x, thisx.rename(columns=newcolname)], axis='columns')
+                    else:
+                        x = x.drop(self.column_mask, axis='columns')
+                        if thisx is not None:
+                            x = pd.concat([x, thisx], axis='columns')
                 else:
-                    x = x.drop(self.column_mask, axis='columns')
-                    if thisx is not None:
-                        x = pd.concat([x, thisx], axis='columns')
-            else:
-                x, y, id = self.run(runspec, x, y, id)
-        if runspec.upto == self.name:
-            runspec.mode = RunSpec.RunMode.BREAK
-        return x, y, id
+                    x, y, id = self.run(runspec, x, y, id)
+            if runspec.upto == self.name:
+                runspec.mode = RunSpec.RunMode.BREAK
+            return x, y, id
+        except Exception as e:
+            raise ErrorAtRun(e, self)
 
 class Drop(Block):
     def run(self, runspec: RunSpec, x: pd.DataFrame, y, id) -> tuple:

@@ -1,55 +1,45 @@
 class PlotDialog {
-    static plottype = ["scatter", "line", "bar", "pie", "box", 
-        "histogram", "histogram2d"];
+    static plottype = {
+        "Scatter": ["x", "y", "marker.size"],
+        "bar": ["x", "y"],
+        "pie": ["labels", "values"],
+        "candlestick": ["x", "open", "close", "low", "high"],
+        "ohic": ["x", "open", "close", "low", "high"],
+        "box": ["y"],
+        "histogram": ["x"],
+        "histogram2d": ["x", "y"],
+        "violin": ["x", "y"],
+    }
+    // static plottype = ["scatter", "line", "bar", "pie", "box", 
+    //     "histogram", "histogram2d"];
+    
     static dialog_html = `
-<dialog id="plot_dialog" class="modal plot-dialog">
+<div id="plot_dialog" class="plot-dialog">
     <div class="toolbar">
         <a href="#" id="plot_plot">Plot</a>
         <a href="#" id="plot_reset">Reset</a>
+        <a href="#" id="plot_add_trace">+</a>
     </div>
-    <div id="plot_layout_param">
-        <span>
-            <label for="plot_barmode">Barmode</label>
-            <select name="plot_barmode" id="plot_barmode">
-                <option value="">-</option>
-                <option value="group">group</option>
-                <option value="stack">stack</option>
-                <option value="overlay">overlay</option>
-            </select>
-        </span>
-        <span>
-            <label for="plot_title">Title</label>
-            <input name="plot_title" id="plot_title"/>
-        </span>
-        <span>
-            <input type="checkbox" name="plot_showlegend" id="plot_showlegend"/>
-            <label for="plot_showlegend">Show Legend</label>
-        </span>
+    <span>
+        <label for="plot_barmode">Barmode</label>
+        <select name="plot_barmode" id="plot_barmode">
+            <option value="">-</option>
+            <option value="group">group</option>
+            <option value="stack">stack</option>
+            <option value="overlay">overlay</option>
+        </select>
+    </span>
+    <span>
+        <label for="plot_title">Title</label>
+        <input name="plot_title" id="plot_title"/>
+    </span>
+    <span>
+        <input type="checkbox" name="plot_showlegend" id="plot_showlegend"/>
+        <label for="plot_showlegend">Show Legend</label>
+    </span>
+    <div class="plot-traces">
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>type</th>
-                <th>X</th>
-                <th>Y</th>
-                <th>+</th>
-                <th>-</th>
-            </tr>
-        </thead>
-        <tbody id="plot_traces">
-
-        </tbody>
-    </table>
-</dialog>
-    `;
-    static trace_html = `
-<tr>
-    <td class="plot_trace_type"></td>
-    <td class="plot_trace_X"></td>
-    <td class="plot_trace_Y"></td>
-    <td><a href="#" class="plot_trace_add">+</a></td>
-    <td><a href="#" class="plot_trace_rm">-</a></td>
-</tr>
+</div>
     `;
     static onPlotClicked(e) {
         const thiz = e.data.thiz;
@@ -58,19 +48,29 @@ class PlotDialog {
         const barmode = dialog.find("#plot_barmode").val();
         const title = dialog.find("#plot_title").val();
         const showlegend = dialog.find("#plot_showlegend").prop("checked");
-        thiz._traces.find("tr").each((i, v) => {
-            const t = $(v).find(".plot_trace_type_selector").val();
-            const xid = $(v).find(".plot_trace_X_selector").val();
-            const yid = $(v).find(".plot_trace_Y_selector").val();
-            const x = (xid == -1) ? null : thiz.table.dt.column(xid).data().toArray();
-            const y = (yid == -1) ? null : thiz.table.dt.column(yid).data().toArray();
-            data.push({
-                x: x,
-                y: y,
-                type: (t == "line") ? "scatter" : t,
-                mode: (t == "line") ? "lines+markers" : (t=="scatter") ? "markers" : null,
-                opacity: 0.5
-            })
+        let tracecnt = 0;
+        thiz._traces.find(".plot-traceline").each((i, v) => {
+            const typename = $(v).find(".plot-trace-type-selector").val();
+            const type = PlotDialog.plottype[typename];
+            if (!type || !type.length) return;
+            let datum = {
+                type: typename,
+                opacity: 0.5,
+            };
+            $(v).find(".plot-trace-selector").each((i,v)=>{
+                const val = $(v).find("select").val();
+                if (val=="-1") return;
+                const key = $(v).find("label").html().split(".");
+                let layer = datum;
+                for (let idx = 0; idx < key.length - 1; idx++) {
+                    if (!layer[key[idx]]) layer[key[idx]] = {};
+                    layer = layer[key[idx]];
+                }
+                layer[key.pop()] = thiz.table.dt.column(val).data().toArray();
+            });
+            if (typename=="Scatter") datum["mode"] = "markers";
+            datum["name"] = `trace ${++tracecnt}`;
+            data.push(datum);
         });
         const layout = {
             title: title,
@@ -81,27 +81,52 @@ class PlotDialog {
         const id=thiz.tabView.addTab(title, "/static/img/show_chart_black_24dp.svg", $div); 
         $.modal.close();
         setTimeout(()=>{
-            Plotly.newPlot(id, data, layout);
+            Plotly.newPlot(id, data, layout, {editable:true, responsive: true});
         }, 10);
     }
     static onResetClicked(e) {
         e.data.thiz.reset();
     }
+    static onAddTraceClicked(e) {
+        e.data.thiz.addtraceline();
+    }
+    static onPlotTypeChanged(e) {
+        const val = $(e.delegateTarget).val();
+        const type = PlotDialog.plottype[val];
+        const cnt = type ? type.length: 0;
+        const thiz = e.data.thiz;
+        let exist = e.data.row.find(".plot-trace-selector").length;
+        while (exist > cnt) {
+            e.data.row.find(".plot-trace-selector:last").remove();
+            exist--;
+        }
+        while (exist < cnt) {
+            const line = $('<span class="plot-trace-selector">').appendTo(e.data.row);
+            $('<label class="plot-trace-selector-label">').appendTo(line);
+            $(thiz._column_selector_html)
+                .appendTo(line);
+            exist++;
+        }
+        e.data.row.find(".plot-trace-selector>label").each((i, v) => {
+            $(v).html(type[i]);
+        })
+    }
     removetraceline(row) {
-        if (this._dialog.find("tbody tr").length == 1) return;
+        if (this._dialog.find(".plot-traceline").length == 1) return;
         row.remove();
     }
     addtraceline() {
-        const traceline = $(PlotDialog.trace_html).appendTo(this._traces);
-        $(PlotDialog._plottype_selector_html).addClass("plot_trace_type_selector").appendTo(traceline.find(".plot_trace_type"));
-        $(this._column_selector_html).addClass("plot_trace_X_selector").appendTo(traceline.find(".plot_trace_X"));
-        $(this._column_selector_html).addClass("plot_trace_Y_selector").appendTo(traceline.find(".plot_trace_Y"));
-        traceline.find(".plot_trace_add").on("click", {thiz: this}, (e)=>{
-            e.data.thiz.addtraceline();
-        });
-        traceline.find(".plot_trace_rm").on("click", {thiz: this, row: traceline}, (e)=>{
-            e.data.thiz.removetraceline(row);
-        });
+        const traceline = $('<span class="plot-traceline">').appendTo(this._traces);
+        $('<a href="#" class="plot-trace-rm">remove trace</a>')
+            .on("click", {thiz: this, row: traceline}, (e)=>{
+                e.data.thiz.removetraceline(e.data.row);
+            })
+            .appendTo(traceline);
+        const selector = $(PlotDialog._plottype_selector_html);
+        selector.addClass("plot-trace-type-selector")
+            .on("change", {thiz: this, row: traceline}, PlotDialog.onPlotTypeChanged)
+            .appendTo(traceline);
+        selector.trigger("change");
         return traceline;
     }
     reset() {
@@ -118,29 +143,32 @@ class PlotDialog {
         this.addtraceline();
     }
     default() {
-        const selectedcolumns = this.table.selectedcolumns;
-        const columns = this.columns;
-        if (!Object.keys(selectedcolumns).length) return;
-        let yid = null;
-        Object.keys(columns).forEach(i => {
-            if (columns[i] == "__Y__")
-                yid = i;
-        })
-        if (!yid) return;
-        this._traces.html("");
-        Object.keys(selectedcolumns).forEach(i => {
-            if (i == yid) return;
-            const line = this.addtraceline();
-            line.find(".plot_trace_X_selector").val(i);
-            line.find(".plot_trace_Y_selector").val(yid);
-        });
+        // const selectedcolumns = this.table.selectedcolumns;
+        // const columns = this.columns;
+        // if (!Object.keys(selectedcolumns).length) return;
+        // let yid = null;
+        // Object.keys(columns).forEach(i => {
+        //     if (columns[i] == "__Y__")
+        //         yid = i;
+        // })
+        // if (!yid) return;
+        // this._traces.html("");
+        // Object.keys(selectedcolumns).forEach(i => {
+        //     if (i == yid) return;
+        //     const line = this.addtraceline();
+        //     line.find(".plot_trace_X_selector").val(i);
+        //     line.find(".plot_trace_Y_selector").val(yid);
+        // });
     }
     render(table, tabView) {
+        if (!this.container) return;
         this.table = table;
         this.columns = table.columns;
         this.tabView = tabView;
         this.reset();
         this.default();
+        this.dialog.appendTo(this.container);
+        this.container.data("tabView").showTab(this.container.attr("id"));
         return this.dialog;
     }
     
@@ -148,10 +176,12 @@ class PlotDialog {
         if (PlotDialog.instance) {
             return PlotDialog.instance;
         }
+        this.container = null;
         this._dialog = $(PlotDialog.dialog_html);
-        this._traces = this._dialog.find("#plot_traces");
+        this._traces = this._dialog.find(".plot-traces");
         this._dialog.find("#plot_plot").on("click", {thiz:this}, PlotDialog.onPlotClicked);
         this._dialog.find("#plot_reset").on("click", {thiz:this}, PlotDialog.onResetClicked);
+        this._dialog.find("#plot_add_trace").on("click", {thiz:this}, PlotDialog.onAddTraceClicked);
         PlotDialog.instance = this;
     }
     get dialog() {
@@ -160,7 +190,7 @@ class PlotDialog {
 }
 
 let types = [];
-PlotDialog.plottype.forEach(v => {
+Object.keys(PlotDialog.plottype).forEach(v => {
     types.push(`<option value="${v}">${v}</option>`);
 });
 PlotDialog._plottype_selector_html = "<select>" + types.join() + "</select>";

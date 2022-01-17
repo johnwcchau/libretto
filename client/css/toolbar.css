@@ -21,6 +21,10 @@
 #toolbar li.no-border:hover {
     background: unset;
 }
+#toolbar li a {
+    text-decoration: none;
+    color: #000;
+}
 #toolbar li a img {
     vertical-align: middle;
 }

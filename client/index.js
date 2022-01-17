@@ -1,16 +1,15 @@
 import {Trash} from './modules/BaseBlock.mjs';
-import {} from "./modules/pyjs.mjs";
-import Log from "./modules/Log.mjs";
+import { LogPanel } from './modules/LogPanel.mjs';
+import TabView from "./modules/TabView.mjs";
 import EditDialog from "./modules/EditDialog.mjs";
 import FileBrowser from "./modules/FileBrowser.mjs";
 import MethodBrowser from "./modules/MethodBrowser.mjs";
-import MainToolbar from './modules/toolbar.mjs';
-import Session from "./modules/Session.mjs";
+import getCurrentSession from "./modules/Session.mjs";
+import MainToolbar from './modules/Toolbar.mjs';
 import PlotDialog from "./modules/PlotDialog.mjs";
-import TabView from "./modules/TabView.mjs";
+import {} from "./modules/pyjs.mjs";
 import plugin_css from "/plugin/plugins.mjs";
 
-window.Session = Session;
 
 // const dropzones = () => {
 //     const ondragexit = (e) => {
@@ -71,13 +70,13 @@ const init = () => {
     toolbox.panel.attr("id", "toolbox").appendTo("#main-pane");
     toolbox.addTab("Files", "/static/img/attachment_black_24dp.svg", FileBrowser.panel, false);
     toolbox.addTab("Blocks", "/static/img/functions_black_24dp.svg", MethodBrowser.refresh().panel, false);
-    toolbox.addTab("Options", "/static/img/settings_black_24dp.svg", EditDialog.dialog, false);
+    const container = $('<div id="option-container" class="option-container">').data("tabView", toolbox);
+    toolbox.addTab("Options", "/static/img/settings_black_24dp.svg", container, false);
+    EditDialog.container = container;
+    PlotDialog.container = container;
     toolbox.showTab(FileBrowser.panel.attr("id"));
-    
-    Log.panel.appendTo("#root");
-    Log.prompt.appendTo("body");
-    PlotDialog.dialog.appendTo("body");
-    Session.panel.appendTo(".flex-row");
+
+    getCurrentSession().panel.appendTo(".flex-row");
     setTimeout(()=>{
         $("#tb_methods").click();
         $("#tb_files").click();
@@ -85,6 +84,7 @@ const init = () => {
     
     new Trash().render().appendTo("body");
 
+    $(document).trigger("plugin.load");
 }
 
 $(document).ready(() => {

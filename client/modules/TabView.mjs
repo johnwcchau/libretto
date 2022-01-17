@@ -66,7 +66,7 @@ export default class TabView {
             }
         ];
         this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, scores, columns, (table) => {
-            PlotDialog.render(table, this).modal()
+            PlotDialog.render(table, this);
         }).table);
     }
     addDataTable(name, data) {
@@ -89,7 +89,7 @@ export default class TabView {
             }
         });
         this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, data, columns, (table) => {
-            PlotDialog.render(table, this).modal()
+            PlotDialog.render(table, this);
         }).table);
     }
 }

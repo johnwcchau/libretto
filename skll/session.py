@@ -1,7 +1,7 @@
 import traceback
-from skll.block.baseblock import Block, Parent, RunSpec
+from skll.block.baseblock import Block, ErrorAtRun, Parent, RunSpec
 from skll.inout import Output
-from skll.plugin import dispatch
+from skll.plugin import dispatch, find_plugin
 import pandas as pd
 import numpy as np
 import logging
@@ -15,14 +15,15 @@ class Session:
         if name not in Session.__sessions:
             logging.info(f'Creating new session {name}')
             s = object.__new__(Session)
-            s.__init()
+            s.__init(name)
             Session.__sessions[name] = s
-            dispatch(lambda _, obj: obj.new_session(name) if obj.new_session is not None else None)
+            dispatch(lambda _, obj: getattr(obj, "__new_session")(name) if hasattr(obj, "__new_session") else None)
         else:
             s = Session.__sessions[name]
         return s
 
-    def __init(self) -> None:
+    def __init(self, name:str) -> None:
+        self.name = name
         self.rootblock:Block = None
         self.out:Output = Output()
         self.runspec:RunSpec = None
@@ -36,6 +37,24 @@ class Session:
     def _detach(self):
         self.out.ws = None
 
+    def plugin_invoke(self, plugin:str, action:str, **params):
+        try:
+            if action.startswith("__"):
+                self.out.invalid()
+                return
+            plugin = find_plugin(plugin)
+            if plugin is None or not hasattr(plugin, action):
+                self.out.invalid()
+                return
+            action = getattr(plugin, action)
+            if not callable(action):
+                self.out.invalid()
+                return
+            action(session=self.name, writer=self.out, **params)
+        except Exception as e:
+            logging.err(repr(e))
+            self.out.error(repr(e))
+
     def run(self, mode:str, upto:str, **kwargs)->None:
         try:
             if self.rootblock is None:
@@ -44,6 +63,9 @@ class Session:
             self.runspec = RunSpec(mode=RunSpec.RunMode[mode.upper()], upto=upto, out=self.out)
             self._result = self.rootblock(self.runspec, None)
             self.out.finished("Finished")
+        except ErrorAtRun as e:
+            traceback.print_tb(e.exception.__traceback__)
+            self.out.error(repr(e.exception), {"atblock": e.at.name})
         except Exception as e:
             traceback.print_exc()
             self.out.error(repr(e))
@@ -134,14 +156,14 @@ class Session:
                 self.out.error(f'{path} is not valid')
                 return
             
-            if dropinput:
-                def disableinput(block:Block):
-                    if hasattr(block, "_is_input") and block._is_input:
-                        block._original_disable_mask = block.disable_mask
-                        block.disable_mask = [RunSpec.RunMode.RUN]
-                    if isinstance(block, Parent):
-                        [disableinput(child) for child in block.child.values()]
-                disableinput(self.rootblock)
+            # if dropinput:
+            #     def disableinput(block:Block):
+            #         if hasattr(block, "_is_input") and block._is_input:
+            #             block._original_disable_mask = block.disable_mask
+            #             block.disable_mask = [RunSpec.RunMode.RUN]
+            #         if isinstance(block, Parent):
+            #             [disableinput(child) for child in block.child.values()]
+            #     disableinput(self.rootblock)
             with open(vpath, "wb") as f:
                 joblib.dump(self.rootblock, f)
             self.out.finished(f'Exported to {vpath}')
@@ -149,11 +171,12 @@ class Session:
             traceback.print_exc()
             self.out.error(f'Export failed: {repr(e)}')
         finally:
-            def reenableinput(block:Block):
-                if hasattr(block, "_original_disable_mask"):
-                    block.disable_mask = block._original_disable_mask
-                    del block._original_disable_mask
-                if isinstance(block, Parent):
-                    [reenableinput(child) for child in block.child]
-            reenableinput(self.rootblock)
+            # def reenableinput(block:Block):
+            #     if hasattr(block, "_original_disable_mask"):
+            #         block.disable_mask = block._original_disable_mask
+            #         del block._original_disable_mask
+            #     if isinstance(block, Parent):
+            #         [reenableinput(child) for child in block.child]
+            # reenableinput(self.rootblock)
+            pass
 # %%

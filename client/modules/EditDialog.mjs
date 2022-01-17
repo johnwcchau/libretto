@@ -121,8 +121,7 @@ class EditDialog {
         return $("<div>").addClass("toolbar");
     }
     async #resolveColumnNames(layer) {
-        const Session = (await import("./Session.mjs")).default;
-        Session.run("COLUMNS", layer, "columns").then((r) => {
+        layer.session.run("COLUMNS", layer, "columns").then((r) => {
             this.colsels.forEach(v => {
                 v.render(r.columns);
             });
@@ -216,13 +215,17 @@ class EditDialog {
         dialog._dialog.html("");
         layer.onEditApplied();
     }
+    cancel() {
+        this.dialog.html("").detach();
+    }
     createEditDialog(layer) {
+        if (!this.container) return;
         const $dialog = this._dialog.html("").data("layer", layer);
         const $toolbar = this.createToolbar().appendTo($dialog);
         this.colsels = [];
         $("<a href='#'>").addClass("edit-apply").html("Apply").on("click", {thiz: layer, dialog: this}, EditDialog.#applyHandler).appendTo($toolbar);
         $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
-             e.data.thiz._dialog.html("");
+             e.data.thiz.cancel();
         }).appendTo($toolbar);
         $("<h2>").html(layer.name).appendTo($dialog);
         $("<h3>").html(layer._typename ? layer._typename : layer._type).appendTo($dialog);
@@ -264,15 +267,15 @@ class EditDialog {
         if (this.colsels.length) {
             this.#resolveColumnNames(layer);
         }
-
-        $dialog.parents("#toolbox").data("thiz").showTab($dialog.attr("id"));
+        $dialog.appendTo(this.container);
+        this.container.data("tabView").showTab(this.container.attr("id"));
         return $dialog;
     }
     constructor() {
         if (EditDialog.instance) {
             return EditDialog.instance;
         }
-
+        this.container = null;
         this.colsels = [];
         this._dialog = $("<div>").addClass("edit-dialog");
         EditDialog.instance = this;

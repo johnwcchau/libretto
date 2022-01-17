@@ -164,7 +164,7 @@ body {
 }
 .session {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 1;
     overflow: auto;
     align-items: stretch;
@@ -184,6 +184,15 @@ body {
 .session .receipe.droptarget {
     border: 1px solid #cee;
     background: #dff;
+}
+.blockage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    z-index: 99;
+    top: 0;
+    background: #000;
 }
 .modal {
     z-index: 100;

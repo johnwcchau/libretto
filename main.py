@@ -69,7 +69,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                     session.out.invalid()
                     return
                 logging.info(f'({self.request.host_name}) >> {msg["action"]}')
-                action = msg["action"]
+                action:str = msg["action"]
                 if action=="ping":
                     session.out.finished("OK")
                 elif action in ["ls", "exist", "put", "mkdir", "rm", "ren"]:
@@ -80,7 +80,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                     del msg["action"]
                     tpe.submit(getattr(self.session, action), **msg)
                 else:
-                    session.out.invalid("Unknown command")
+                    # try let plugin handle command
+                    action = action.split("::")
+                    if len(action) > 1:
+                        msg["plugin"] = action[0]
+                        msg["action"] = action[1]
+                        tpe.submit(self.session.plugin_invoke, **msg)
+                    else:
+                        session.out.invalid("Unknown command")
         except Exception as e:
             traceback.print_exc()
             if session and session.out:
@@ -131,6 +138,7 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.DEBUG)
     
     plugin.init()
+    plugin.plugin_mjs()
 
     logging.info("SKll started!")
     app = tornado.web.Application([

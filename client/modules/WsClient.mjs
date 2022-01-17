@@ -1,7 +1,10 @@
-import Log from "./Log.mjs"
+export class WsClient {
 
-class WsClient {
-
+    emitMsgHandler(msg, line) {
+        if (this.messageHandler) {
+            this.messageHandler(msg, line);
+        }
+    }
     #start() {
         if (this._current) {
             return;
@@ -17,7 +20,7 @@ class WsClient {
         const action = this._current.action;
         const res = this._current.res;
         const rej = this._current.rej;
-        const self = this;
+        const thiz = this;
 
         this.ws.onmessage = (e) => {
             function _(res, rej) {
@@ -25,47 +28,48 @@ class WsClient {
                 try {
                     msg = JSON.parse(e.data);
                 } catch (ex) {
-                    Log.err("Invalid response from remote");
+                    thiz.log.err("Invalid response from remote");
                     rej({});
                     return true;
                 }
-                let progress = msg["progress"];
-                var pval = false;
-                if (progress) 
-                    pval = progress;
                 const result = msg["result"];
                 if (result < 0) {
-                    Log.hideDialog();
                     if (msg["message"]) 
-                        Log.err("Remote: " + msg["message"]);
+                        thiz.log.err(`Remote: ${msg["message"]}`);
+                    if (msg["atblock"])
+                        thiz.emitMsgHandler(msg);
+                    else
+                        thiz.emitMsgHandler(null);
                     rej(msg);
                     return true;
                 } else if ((result == 0)||(result==4)) { //completed | continue
-                    if (result == 0) Log.hideDialog();
-                    if (msg["message"]) {
-                        Log.log("stream0", "Remote: " + msg["message"]);
-                        if (result == 4)
-                            Log.dialog(msg["message"], progress);
+                    if (result == 0) thiz.log.hideDialog();
+                    if (msg["message"])
+                        thiz.log.log("stream0", `Remote: ${msg["message"]}`);
+                    if (result == 0) {
+                        thiz.emitMsgHandler(null);
+                    } else if (result == 4) {
+                        thiz.emitMsgHandler(msg);
                     }
                     res(msg);
                     return true;
                 } else if (result == 1) { 
-                    //1:info, 4:Logger
-                    Log.dialog(msg["message"]);
-                    Log.log("stream1", "Remote: " + msg["message"]);
+                    //1:info, 4:logger
+                    thiz.log.log("stream1", `Remote: ${msg["message"]}`);
+                    thiz.emitMsgHandler(msg);
                     return false;
                 } else if ((result == 2)||(result == 3)) { 
                     //2: stdout, 3: stderr
                     stream = "stream" + result;
-                    lastline = Log.write(stream, msg["message"]);
-                    if (lastline != "") Log.dialog(oldmsg, pval);
+                    lastline = thiz.log.write(stream, msg["message"]);
+                    if (lastline != "") thiz.emitMsgHandler(msg, lastline);
                     return false;
                 }
             }
             if (_(res, rej)) {
                 this._current = null;
                 setTimeout(() => {
-                    self.#start();
+                    thiz.#start();
                 }, 1);
             }
         }
@@ -170,33 +174,39 @@ class WsClient {
         });
     }
 
-    constructor() {
-        const self = this;
+    /**
+     * 
+     * @param {Session} session
+     * @param {LogPanel} log 
+     * @returns 
+     */
+    constructor(session) {
+        const thiz = this;
         if (WsClient.instance) {
             return WsClient.instance;
         }
+        this.log = session.log;
         this._workqueue = [];
         this._current = null;
-        this.ws = new WebSocket('ws://' + location.host + '/ws/default');
+        this.session = session;
+        const session_name = session.session_name;
+        this.ws = new WebSocket(`ws://${location.host}/ws/${session_name}`);
         this.ws.onopen = function() {
-            Log.log("msg", 'Connected.');
+            thiz.log.log("msg", 'Connected.');
             setTimeout(() => {
-                self.#start()
+                thiz.#start()
             }, 1);
         };
         this.ws.onerror = function() {
-            Log.err("Websocket error occured.");
+            thiz.log.err('Websocket error occured.');
         }
         this.ws.onclose = function(e) {
-            Log.err('Connection closed with code ' + e.code);
-            Log.dialog("Connection closed, please refresh browser to reconnect.")
+            thiz.log.err(`Connection closed with code ${e.code}`);
+            $('<div class="blockage">').appendTo(thiz.session.panel);
+            //thiz.log.dialog('Connection closed, please refresh browser to reconnect.');
         };
         this.send("ping");
         //this.ws.onmessage = this.#onwsmessage;
         WsClient.instance = this;
     }
 }
-
-const instance = new WsClient();
-Object.seal(instance);
-export default instance;

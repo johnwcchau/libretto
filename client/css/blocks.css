@@ -79,9 +79,25 @@
     color: #888;
     font-size: 0.8em;
 }
-/* .rootblock {
-    height: 100%;
-} */
+.markup {
+    border-radius: 0.5em;
+    width: 80%;
+    color: #fff;
+    margin: 0.3em 10%;
+}
+.error-block {
+    border: 3px solid #f22;
+}
+.error-block .markup {
+    background: #f22;
+}
+.working-block {
+    border: 3px solid #8af;
+    z-index: 100;
+}
+.working-block .markup {
+    background: #8af;
+}
 .droppos {
     position:absolute;
     display: block;

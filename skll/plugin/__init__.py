@@ -1,11 +1,15 @@
+import logging
+from typing import Callable
+
 __plugins = {}
 
 def plugin_mjs():
     from glob import glob
     with open("skll/plugin/plugins.mjs", "w") as file:
-        for name in glob("skll/plugin/**/__init__.mjs"):
-            name = name[4:].replace("\\", "/")
-            file.write(f'import _ from "{name}";\n');
+        for path in glob("skll/plugin/**/__init__.mjs"):
+            path = path[4:].replace("\\", "/")
+            name = path.split('/')[-2]
+            file.write(f'import {{}} from "{path}";\n');
         file.write("""
 export default function plugin_css() { 
 """)
@@ -30,13 +34,17 @@ def init():
         logging.info(f'Discovered plugin {name}')
         try:
             lib = import_module(f'{name}.__init__')
-            if lib.init_plugin is not None:
-                lib.init_plugin()
+            if hasattr(lib, "__init_plugin"):
+                getattr(lib, "__init_plugin")()
                 __plugins[name] = lib
         except Exception as e:
             logging.error(repr(e))
-    plugin_mjs()
 
-def dispatch(lamda):
+def dispatch(lamda:Callable[[str, object], None]):
+    global __plugins
     for name, plugin in __plugins.items():
         lamda(name, plugin)
+
+def find_plugin(plugin:str):
+    global __plugins
+    return __plugins[plugin] if plugin in __plugins else None

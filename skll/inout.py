@@ -9,8 +9,8 @@ class Output:
     def msg(self, status:int=-1000, msg:str=None, param:dict=None)->None:
         if self.ws:
             self.ws.send_message(status, msg, param)
-    def working(self, msg:str=None)->None:
-        self.msg(1, msg)
+    def working(self, msg:str=None, param:dict=None)->None:
+        self.msg(1, msg, param)
     def progress(self, msg:str=None, progress=0)->None:
         if isinstance(progress, float) or isinstance(progress, int):
             self.msg(2, msg, {"progress": progress})

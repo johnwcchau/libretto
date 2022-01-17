@@ -1,7 +1,6 @@
-import WsClient from './WsClient.mjs';
 import {Block, File} from './BaseBlock.mjs';
 import ContextMenu from './ContextMenu.mjs';
-import Session from './Session.mjs';
+import getCurrentSession from './Session.mjs';
 
 class FileBrowser {
     static _dragTimer = null;
@@ -37,7 +36,7 @@ class FileBrowser {
                     if (!confirm(`File with same name already exists in ${this.dropTarget.html()}, overwrite?`))
                         return;
                 }
-                WsClient.send("ren", {
+                getCurrentSession().WsClient.send("ren", {
                     src: filename,
                     dest: target,
                     overwrite: true
@@ -49,7 +48,7 @@ class FileBrowser {
     }
 
     checkExist(name) {
-        return WsClient.send("exist", {
+        return getCurrentSession().WsClient.send("exist", {
             "path": name,
         }).then(r => {
             return r.exist;
@@ -69,7 +68,7 @@ class FileBrowser {
                             alert(`${newName} already exist!`);
                             return;
                         }
-                        return WsClient.send("ren", {
+                        return getCurrentSession().WsClient.send("ren", {
                             src: `${this._cd}/${name}`,
                             dest: `${this._cd}/${newName}`,
                         });
@@ -86,7 +85,7 @@ class FileBrowser {
             icon: "/static/img/delete_forever_black_24dp.svg",
             click: () => {
                 if (confirm(`Delete ${name}?`)) {
-                    WsClient.send("rm", {
+                    getCurrentSession().WsClient.send("rm", {
                         path: `${this._cd}/${name}`,
                     }).then(()=> {
                         this.refresh();
@@ -98,7 +97,7 @@ class FileBrowser {
 
 
     refresh() {
-        WsClient.send("ls", {path: this._cd}).then(r => {
+        getCurrentSession().WsClient.send("ls", {path: this._cd}).then(r => {
             this._filelist.html("");
             this._cd = r["cd"];
             r.objs.forEach(v => {
@@ -130,7 +129,7 @@ class FileBrowser {
                     const filename = `${this._cd}/${$(e.delegateTarget).html()}`;
                     let promise;
                     if (filename.endsWith(".skll.json")) {
-                        promise = window.Session.readRemote(filename);
+                        promise = getCurrentSession().readRemote(filename);
                     } else {
                         promise = new Promise(res => {
                             res(new File({
@@ -143,6 +142,17 @@ class FileBrowser {
                         layer.$div.addClass("newobj").appendTo($("body"));
                         layer.__filename = filename;
                         layer.begindrag();
+                    }).catch(e => {
+                        let msg = "Unknown error";
+                        switch (typeof(e)) {
+                            case "array":
+                            case "object":
+                                if (e["message"]) msg = e["message"];
+                                break;
+                            default:
+                                msg = e;
+                        }
+                        alert(`Cannot load ${filename}: ${msg}`);
                     });
                 }, 150);
             }).on("mouseup", (e) => {
@@ -174,7 +184,7 @@ class FileBrowser {
                         title: "Load as receipe",
                         icon: "/static/img/open_in_browser_black_24dp.svg",
                         click: () => {
-                            Session.loadRemote(`${this._cd}/${name}`);
+                            getCurrentSession().loadRemote(`${this._cd}/${name}`);
                         }
                     })
                 }
@@ -191,16 +201,16 @@ class FileBrowser {
             const name = file.name;
             const fullname = `${this._cd}/${name}`;
             promises.push(new Promise((resolve, reject) => {
-                WsClient.send("exist", {path: fullname})
+                getCurrentSession().WsClient.send("exist", {path: fullname})
                 .then((r)=> {
                     const exist = r.exist;
                     if (!exist) {
-                        WsClient.upload(file, fullname).then((r)=>{
+                        getCurrentSession().WsClient.upload(file, fullname).then((r)=>{
                             resolve(r);
                         });
                     } else {
                         const v = confirm(`Overwrite ${name}?`)
-                        if (v) WsClient.upload(file, fullname).then((r)=>{
+                        if (v) getCurrentSession().WsClient.upload(file, fullname).then((r)=>{
                             resolve(r);
                         });
                         else reject({});
@@ -217,7 +227,7 @@ class FileBrowser {
         const dir = prompt("Name of new directory");
         if (!dir) return;
         const fullname = `${this._cd}/${dir}`;
-        WsClient.send("mkdir", {path: fullname})
+        getCurrentSession().WsClient.send("mkdir", {path: fullname})
         .then(()=> {
             thiz.refresh();
         });

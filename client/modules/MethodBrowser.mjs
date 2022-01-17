@@ -1,4 +1,4 @@
-import { Block, BlockTypes } from "./BaseBlock.mjs";
+import { BlockTypes } from "./BaseBlock.mjs";
 
 class MethodBrowser {
     static _dragTimer = null;

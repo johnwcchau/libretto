@@ -140,6 +140,7 @@ if __name__ == "__main__":
         exit()
     
     plugin.init()
+    plugin.dispatch(lambda _, plugin: getattr(plugin, "__new_session")("__runtime__") if hasattr(plugin, "__new_session") else None)
 
     try:
         import joblib

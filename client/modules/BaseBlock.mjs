@@ -1,6 +1,5 @@
 import EditDialog from './EditDialog.mjs';
 import UUID from './UUID.mjs';
-import Log from "./Log.mjs";
 import ContextMenu from "./ContextMenu.mjs";
 
 /**
@@ -184,6 +183,27 @@ export class Block {
         else this.createDomElement();
         return this.$div;
     }
+    markup(type, msg, progress) {
+        switch(type) {
+            case "working":
+                this.$div.addClass("working-block");
+                break;
+            case "error":
+                this.$div.addClass("error-block");
+                break;
+        }
+        if (msg || progress) {
+            const markup = $('<div class="markup">').prependTo(this.$div);
+            if (msg) $(`<span>${msg}</span>`).appendTo(markup);
+            if (progress) {
+                //TODO add progress
+            }
+        }
+    }
+    clearMarkups() {
+        this.$div.removeClass("marked-block working-block error-block");
+        this.$div.find(".markup").remove();
+    }
     export() {
         let result = {};
         Object.entries(this._properties).forEach(([i, v]) => {
@@ -200,9 +220,74 @@ export class Block {
         });
         return result;
     }
+    findBlockByName(name) {
+        if (name == this.name) return this;
+        return null;
+    }
+    
+    getInputColumns() {
+        if (!this.session) return;
+        this.session.run("COLUMNS", this, "columns").then((r)=>{
+            const columns = r.columns;
+            //const dialog = TableDialog.render(data);
+            setTimeout(()=> {
+                dialog.modal();
+            }, 1);
+        });
+    }
+    runto(mode) {
+        if (!this.session) return;
+        this.session.run(mode, this, "table").then((r)=>{
+            if (!r) return;
+            this.session.tabView.addDataTable(`${this.name}_${mode}`, r.data);
+        });
+    }
+    makeContextMenu() {
+        return [
+            {
+                title: "Preview block",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    this.runto("PREVIEW");
+                }
+            },
+            {
+                title: "Train upto block",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    this.runto("TRAIN");
+                }
+            },
+            {
+                title: "Dataset stat",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    if (!this.session) return;
+                    this.session.run("TRAIN", this, "stat").then((r)=>{
+                        if (!r) return;
+                        this.session.tabView.addDataTable(`${this.name}_Stats`, r.stat);
+                    });
+                }
+            },
+            {
+                title: "Edit",
+                icon: "/static/img/open_in_new_black_24dp.svg",
+                click: () => {
+                    this.onEditClicked();
+                }
+            },
+        ];
+    }
+
     remove(obj) {}
     append(obj, at) {}
     prepend(obj, at) {}
+
+    resetDropTarget() {
+        this._droptype = null;
+        $(".droppos").remove();
+        this.$div.removeClass("droptarget");
+    }
     childdroptypes(dragsrc) {return [];}
     istype(type) {
         if (type == this._jstype) return true;
@@ -387,64 +472,6 @@ export class Block {
             .appendTo(this.$div);
         }
     }
-    resetDropTarget() {
-        this._droptype = null;
-        $(".droppos").remove();
-        this.$div.removeClass("droptarget");
-    }
-    getInputColumns() {
-        if (!this.session) return;
-        this.session.run("COLUMNS", this, "columns").then((r)=>{
-            const columns = r.columns;
-            //const dialog = TableDialog.render(data);
-            setTimeout(()=> {
-                dialog.modal();
-            }, 1);
-        });
-    }
-    runto(mode) {
-        if (!this.session) return;
-        this.session.run(mode, this, "table").then((r)=>{
-            if (!r) return;
-            this.session.tabView.addDataTable(`${this.name}_${mode}`, r.data);
-        });
-    }
-    makeContextMenu() {
-        return [
-            {
-                title: "Preview block",
-                icon: "/static/img/open_in_new_black_24dp.svg",
-                click: () => {
-                    this.runto("PREVIEW");
-                }
-            },
-            {
-                title: "Train upto block",
-                icon: "/static/img/open_in_new_black_24dp.svg",
-                click: () => {
-                    this.runto("TRAIN");
-                }
-            },
-            {
-                title: "Dataset stat",
-                icon: "/static/img/open_in_new_black_24dp.svg",
-                click: () => {
-                    if (!this.session) return;
-                    this.session.run("TRAIN", this, "stat").then((r)=>{
-                        if (!r) return;
-                        this.session.tabView.addDataTable(`${this.name}_Stats`, r.stat);
-                    });
-                }
-            },
-            {
-                title: "Edit",
-                icon: "/static/img/open_in_new_black_24dp.svg",
-                click: () => {
-                    this.onEditClicked();
-                }
-            },
-        ];
-    }
 
     static onmouseover(e) {
         const dragsrc = $(document).data("dragsource");
@@ -569,6 +596,22 @@ export class Parent extends Block {
     childdroptypes(dragsrc) {
         if (!this.childtypematch(dragsrc)) return [];
         return ["dropbefore", "dropafter"];
+    }
+    findBlockByName(name) {
+        if (name == this.name) return this;
+        let result = null;
+        const keys = Object.keys(this._blocks);
+        for (let i = 0; i < keys.length; i++) {
+            const r = this._blocks[keys[i]].findBlockByName(name);
+            if (r) return r;
+        }
+        return null;
+    }
+    clearMarkups() {
+        super.clearMarkups();
+        this._blocks.forEach(v => {
+            v.clearMarkups();
+        })
     }
     remove(obj) {
         let idx = this._blocks.indexOf(obj);

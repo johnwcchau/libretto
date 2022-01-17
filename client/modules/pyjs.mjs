@@ -1,5 +1,4 @@
 import { Parent, Block, BlockTypes } from "./BaseBlock.mjs";
-import Log from "./Log.mjs";
 
 new BlockTypes().add({
     "skll.block.baseblock.Parent": {
@@ -39,6 +38,9 @@ new BlockTypes().add({
                 desc: "Name of input file",
                 type: "file",
             }
+        },
+        defaults: {
+            "disable_mask": ["run"],
         },
         events: {
             onFileDropped: (thiz, src, type) => {
@@ -156,6 +158,7 @@ export default function pyimport(py) {
         }
         return new cls(py);
     } catch (ex) {
-        Log.err(ex);
+        console.log(`import ${py.name}: ${ex}`);
+        throw ex;
     }
 }
