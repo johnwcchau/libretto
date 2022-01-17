@@ -1,3 +1,6 @@
+"""
+Sk-ll plugin init module
+"""
 import logging
 from importlib import import_module
 import os
@@ -10,7 +13,7 @@ VALID_PACKAGES = [
     "gtda"
 ]
 
-def checkExist(package):
+def __checkExist(package):
     try:
         import_module(package)
         if os.path.isfile(f'./skll/plugin/sklearn/{package}.mjs'):
@@ -23,7 +26,7 @@ def checkExist(package):
         logging.info(f'Python package {package} not exists or load with error')
         return False
 
-def init_plugin():
+def __init_plugin():
     """
     global initialization of plugin
     """
@@ -33,7 +36,7 @@ def init_plugin():
         pass
     available = []
     for package in VALID_PACKAGES:
-        if checkExist(package):
+        if __checkExist(package):
             available.append(package)
     if len(available) == 0:
         logging.warn('No package available, this plugin will not be loaded')
@@ -70,9 +73,10 @@ addToBts(baseObjects);
                     f.write(f"""addToBts({package});
 """)
 
-def new_session(name:str):
+def __new_session(name:str):
     """
-    called when a new session is created
+    invoked when a new session is created, note that runtime-mode contains only one session
+    called "runtime"
 
     Parameters
     ----------
@@ -81,13 +85,14 @@ def new_session(name:str):
     """
     pass
 
-def destroy_session(name: str):
-    """
-    called should a session is destroyed
+# def __destroy_session(name: str):
+#     """
+#     invoked should a session is destroyed, note that "runtime" session will never be 
+#     destroyed
 
-    Parameters
-    ----------
-    name: str
-        unique name of the session
-    """
-    pass
+#     Parameters
+#     ----------
+#     name: str
+#         unique name of the session
+#     """
+#     pass
