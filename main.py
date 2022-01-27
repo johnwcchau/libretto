@@ -1,3 +1,6 @@
+"""
+Entry point of SK-ll interactive mode
+"""
 from __future__ import annotations
 from datetime import timedelta
 
@@ -5,56 +8,83 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 from tornado.web import StaticFileHandler
-from skll.tpe import TPE
 
-import signal
-import sys
 import json
 import traceback
-import re
 
 import logging
 
 from skll.fileio import FileIO
 from skll.session import Session
 from skll.jsoncodec import Encoder, json_decode
+from skll.tpe import TPE
 
 from skll import plugin
 
 tpe = TPE().executor
 
-class WebSocketHandler(tornado.websocket.WebSocketHandler):
+ioloop:tornado.ioloop = None
 
+class WebSocketHandler(tornado.websocket.WebSocketHandler):
+    """
+    WebSocket handler for all server-client communication
+    One WebSocket for each session (possibly multiple session for each client)
+    """
     def __init__(self, application: tornado.web.Application, request, **kwargs) -> None:
         super().__init__(application, request, **kwargs)
         self.session:Session = None
 
-    def open(self, name="default"):
+    def open(self, name:str="default"):
+        logging.info(f'({self.request.host_name}) -- WS Opened')
         try:
+            # Retrieve (or create) session by name specified in request URL
+            # 
             self.session = Session(name)
             self.session._attach(self)
         except RuntimeError:
             self.session = None
-        logging.info(f'({self.request.host_name}) -- WS Opened')
+            self.send_message(-1, f'Session {name} is in use by other client')
+            logging.warn(f'Session {name} is in use by other client')
     
     def on_close(self):
         if self.session is not None: self.session._detach()
         logging.info(f'({self.request.host_name}) -- WS Closed')
     
-    def __send_message(self, _id, msg, param=None):
+    def __send_message(self, code:int, msg:str, param:dict=None):
+        """
+        Write message to client, this should never be called directly but rather 
+        through public send_message method for possible multi-threading safety
+        """
         if param is None:
             param = {}
 
-        param["result"] = _id
+        param["result"] = code
         param["message"] = msg
-        logging.info(f'({self.request.host_name}) << {_id}: {msg}')        
+        logging.info(f'({self.request.host_name}) << {code}: {msg}')        
         msg = json.dumps(param, cls=Encoder)
         logging.debug(f'<<{msg}')
         self.write_message(msg)
 
-    def send_message(self, status=-1000, msg=None, param=None):
+    def send_message(self, code:int=-1000, msg:str=None, param:dict=None):
+        """
+        Write response to client, normal user should instead use Output.write provided 
+        by Session (or simple param "output" in case of plugin method) for correct 
+        response formatting
+
+        Parameters
+        ----------
+        code: int
+            response code
+        msg: str, Optional
+            response message
+        param: dict, Optional
+            response extra data
+        """
+        #
+        # Possibly no use but let's push this call into ioloop queue 
+        #
         global ioloop
-        ioloop.add_callback(self.__send_message, status, msg, param)
+        ioloop.add_callback(self.__send_message, code, msg, param)
 
     def on_message(self, msg):
         session = self.session
@@ -80,9 +110,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                     del msg["action"]
                     tpe.submit(getattr(self.session, action), **msg)
                 else:
-                    # try let plugin handle command
+                    # is it a plugin method? 
                     action = action.split("::")
                     if len(action) > 1:
+                        # let plugin handle command
                         msg["plugin"] = action[0]
                         msg["action"] = action[1]
                         tpe.submit(self.session.plugin_invoke, **msg)
@@ -95,7 +126,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
 class MyStaticFileHandler(StaticFileHandler):
     """
-    Override StaticFileHandler to correctly return Content-Type for js
+    Override StaticFileHandler to force Content-Type for js and mjs
+    (a necessity for es6 modules to work)
     """
     def get_content_type(self) -> str:
         if self.absolute_path[-4:] == ".mjs":
@@ -105,6 +137,9 @@ class MyStaticFileHandler(StaticFileHandler):
         return super().get_content_type()
 
 class PluginStaticFileHandler(MyStaticFileHandler):
+    """
+    Override StaticFileHandler to mask out python files from client
+    """
     async def get(self, path:str, include_body:bool = True):
         ext = path.lower().split(".")[-1]
         if ext in ["py", "pyc"]:
@@ -117,28 +152,50 @@ class IndexHandler(tornado.web.RequestHandler):
         self.render("client/index.html")
 
 def set_ping(ioloop, timeout):
+    """
+    Regular interval to unblock the ioloop (for external interrupts)
+    """
     ioloop.add_timeout(timeout, lambda: set_ping(ioloop, timeout))
 
 def open_browser(port:int):
     import webbrowser
     webbrowser.open('http://localhost:%d' % port, new=2)
 
-if __name__ == "__main__":
+def __main():
+    """
+    main entry point (obviously)
+    """
+    global ioloop
+    #
+    # Ensure storage directory exists
+    #
     from os import makedirs
     makedirs("./storage", exist_ok=True)
 
-    import argparse
-    parser = argparse.ArgumentParser(description="SK-ll")
-    parser.add_argument("-port", type=int, default=6789, help="Port to listen to")
-    parser.add_argument("-debug", nargs='?', const=True, default=False, help="Debug flag")
-    parser.add_argument("-model", type=open, help="Model file for runtime mode")
-    args = parser.parse_args()
+    # #
+    # # regular argparse
+    # # TODO read config file instead of using arguments
+    # #
+    # import argparse
+    # parser = argparse.ArgumentParser(description="SK-ll")
+    # parser.add_argument("-port", type=int, default=6789, help="Port to listen to")
+    # parser.add_argument("-debug", nargs='?', const=True, default=False, help="Debug flag")
+    # args = parser.parse_args()
 
-    if args.debug:
+    # config parser
+    from configparser import ConfigParser
+    config = ConfigParser()
+    config.read("config.ini")
+
+    debug = config.getboolean("Interactive", "debug", fallback=False)
+    if debug:
         logging.basicConfig(level=logging.DEBUG)
     
-    plugin.init()
-    plugin.plugin_mjs()
+    #
+    # discover and initialize plugins
+    #
+    plugin.init(config)
+    plugin.plugin_mjs(config)
 
     logging.info("SKll started!")
     app = tornado.web.Application([
@@ -148,13 +205,20 @@ if __name__ == "__main__":
         (r"/storage/(.*)", MyStaticFileHandler, {"path":"./storage"}),
         (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./skll/plugin"}),
         (r"/ws/(.*)", WebSocketHandler),
-    ], debug=args.debug)
+    ], debug=debug)
 
-    app.listen(args.port)
-    tpe.submit(open_browser, args.port)
+    port = config.getint("Interactive", "port", fallback=6789)
+    app.listen(port)
+    tpe.submit(open_browser, port)
 
     ioloop = tornado.ioloop.IOLoop.instance()
     set_ping(ioloop, timedelta(seconds=2))
     ioloop.start()
+
+
+
+
+if __name__ == "__main__":
+    __main()
 
 # %%

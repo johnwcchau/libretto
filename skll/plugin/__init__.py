@@ -1,12 +1,19 @@
 import logging
+from configparser import ConfigParser
 from typing import Callable
+
 
 __plugins = {}
 
-def plugin_mjs():
+def plugin_disabled(config, path):
+    name = '.'.join(path.replace('/', '.').replace('\\', '.').split('.')[:-2])
+    return config.getboolean(name, "disabled", fallback=False)
+
+def plugin_mjs(config):
     from glob import glob
     with open("skll/plugin/plugins.mjs", "w") as file:
         for path in glob("skll/plugin/**/__init__.mjs"):
+            if plugin_disabled(config, path): continue
             path = path[4:].replace("\\", "/")
             name = path.split('/')[-2]
             file.write(f'import {{}} from "{path}";\n');
@@ -21,7 +28,7 @@ export default function plugin_css() {
         file.write("""
 }""")
 
-def init():
+def init(config):
     from importlib import import_module
     from os import path
     import logging
@@ -29,9 +36,12 @@ def init():
 
     global __plugins
 
-    for name in glob("skll/plugin/**/__init__.py"):
-        name = '.'.join(name.replace('/', '.').replace('\\', '.').split('.')[:-2])
+    for path in glob("skll/plugin/**/__init__.py"):
+        name = '.'.join(path.replace('/', '.').replace('\\', '.').split('.')[:-2])
         logging.info(f'Discovered plugin {name}')
+        if plugin_disabled(config, path): 
+            logging.info(f'{name}: Disabled in config and not loaded')
+            continue
         try:
             lib = import_module(f'{name}.__init__')
             if hasattr(lib, "__init_plugin"):

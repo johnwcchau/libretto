@@ -1,3 +1,12 @@
+"""
+Entry point for SK-ll runtime mode
+
+Runtime mode is unattended mode for "one-click" model deployment
+"""
+from __future__ import annotations
+from typing import Union
+
+from dataclasses import dataclass
 from datetime import timedelta
 import logging
 import json
@@ -10,17 +19,38 @@ import pandas as pd
 
 from skll import plugin
 from skll.inout import Output
-from skll.block.baseblock import Block, Parent, RunSpec
+from skll.baseblock import Block, Parent, RunSpec
 from skll.jsoncodec import Encoder, json_decode
 
 from skll.tpe import TPE
 
-class NullOut(Output):
-    def msg(self, status: int = -1000, msg: str = None, param: dict = None) -> None:
-        print(msg)
-        pass
+ioloop:tornado.ioloop.IOLoop
+
+@dataclass
+class MaskedOutput(Output):
+    sender:Union[WsHandler, RestHandler]
+
+    """
+    A masked output class to disable log-to-client output
+    
+    In runtime mode everything is unattended and the only output should be 
+    the final result of the receipe (unless error)
+    """
+    def msg(self, code: int = -1000, msg: str = None, param: dict = None) -> None:
+        if code > 0:
+            return
+        if param is None:
+            param = {}
+        param["result"] = code
+        param["message"] = msg
+        logging.info(f'({self.sender.hostname()}) << {code}: {msg}')
+        msg = json.dumps(param, cls=Encoder)
+        self.sender.msg(msg)
 
 class Runtime:
+    """
+    Singleton class holding the receipe and abstracting I/O from protocols
+    """
     instance = None
 
     def __new__(cls):
@@ -31,62 +61,55 @@ class Runtime:
         Runtime.instance = r
         return r
     
-    def msg(self, sender, _id, msg, param=None):
-        if param is None:
-            param = {}
-        param["result"] = _id
-        param["message"] = msg
-        logging.info(f'({sender.hostname()}) << {_id}: {msg}')
-        msg = json.dumps(param, cls=Encoder)
-        sender.msg(msg)
-
-    def error(self, sender, msg:str=None)->None:
-        self.msg(sender, -998, msg)
-    def finished(self, sender, msg:str=None, param:dict=None)->None:
-        self.msg(sender, 0, msg, param)
-
-    async def handle(self, body, sender):
+    async def handle(self, body:str, sender:Union[WsHandler, RestHandler]):
+        """
+        Handle request from client, only "ping" and "run" is supported
+        """
         try:
+            output = MaskedOutput(sender)
             msg = json.loads(body, object_hook=json_decode)
             if not "action" in msg:
-                self.error(sender, "Invalid input")
+                output.error("Invalid input")
                 return
             action = msg["action"]
             logging.info(f'({sender.hostname()}) >> {action}')
             if action=="ping":
-                self.finished(sender, "OK")
+                output.finished("OK")
             elif action=="run":
-                await ioloop.run_in_executor(TPE().executor, self.run, msg["input"], sender)
+                await ioloop.run_in_executor(TPE().executor, self.run, msg["input"], output)
             else:
-                self.error(sender, "no action performed")
+                output.error(sender, "no action performed")
         except Exception as e:
             logging.error(repr(e))
-            self.error(sender, 'Server internal error')
+            output.error(sender, 'Server internal error')
         
-    def run(self, x, sender)->None:
+    def run(self, x, output:Output)->None:
+        """
+        Cook the receipe and reponse to client
+        """
         try:
             if Runtime().rootblock is None:
                 logging.error("No receipe")
-                self.error(sender, "Server internal error")
+                output.error("Server internal error")
                 return
             
             try:
                 x = pd.DataFrame(x)
             except ValueError:
-                self.error(sender, "Invalid input")
+                output.error("Invalid input")
             if x is None or len(x) < 1:
-                self.error(sender, "No input")
+                output.error("No input")
                 return
-            runspec = RunSpec(mode=RunSpec.RunMode.RUN, out=NullOut())
+            runspec = RunSpec(mode=RunSpec.RunMode.RUN, out=output)
             _result = Runtime().rootblock(runspec, x)
             result = _result[0]
             if _result[2] is not None:
                 result["__ID__"] = _result[2].values
-            self.finished(sender, param={"data": result.where(pd.notnull(result), None).to_dict(orient="records")})
+            output.finished("OK", param={"data": result.where(pd.notnull(result), None).to_dict(orient="records")})
 
         except Exception as e:
             logging.error(repr(e))
-            self.error(sender, 'Server internal error')
+            output.error('Server internal error')
 
 class WsHandler(tornado.websocket.WebSocketHandler):
     def msg(self, msg:str):
@@ -119,35 +142,56 @@ class RestHandler(tornado.web.RequestHandler):
         await Runtime().handle(self.request.body, self)
 
 def set_ping(ioloop, timeout):
+    """
+    Regular interval to unblock the ioloop (for external interrupts)
+    """
     ioloop.add_timeout(timeout, lambda: set_ping(ioloop, timeout))
 
-if __name__ == "__main__":
-
+def __main():
+    """
+    main entry point (obviously)
+    """
+    #
+    # regular argparse
+    #
     import argparse
     parser = argparse.ArgumentParser(description="SK-ll Runtime")
-    parser.add_argument("model", type=str, help="Model dump")
-    parser.add_argument("-name", default="default", help="Instance name")
-    parser.add_argument("-port", type=int, default=9876, help="Listening port")
-    parser.add_argument("-norest", nargs='?', const=True, default=False, help="Disable REST")
-    parser.add_argument("-nows", nargs='?', const=True, default=False, help="Disable WebSocket")
+    parser.add_argument("-name", help="Instance name")
     args = parser.parse_args()
+    instance_name = args.name if "name" in args else None
+    instance_name = f'Runtime.{instance_name}' if instance_name else 'Runtime'
 
-    logging.basicConfig(level=logging.DEBUG)
+    from configparser import ConfigParser
+    config = ConfigParser()
+    config.read("config.ini")
 
-    instance_name = args.name
-    if args.norest and args.nows:
+    norest = config.getboolean(instance_name, "rest", fallback=False)
+    nows = config.getboolean(instance_name, "websocket", fallback=False)
+    port = config.getInt(instance_name, "port", fallback=9876)
+    model = config.get(instance_name, "model", fallback=None)
+    if not model:
+        logging.error("No model specified")
+        exit()
+    if norest and nows:
         logging.error("You cannot disable both REST and WebSocket")
         exit()
     
-    plugin.init()
+    #
+    # discover and initialize plugins
+    # also announce the only session "__runtime__" is created
+    #
+    plugin.init(config)
     plugin.dispatch(lambda _, plugin: getattr(plugin, "__new_session")("__runtime__") if hasattr(plugin, "__new_session") else None)
 
+    #
+    # Load the receipe with trained parameters
+    #
     try:
         import joblib
-        with open(args.model, "rb") as f:
+        with open(model, "rb") as f:
             rootblock = joblib.load(f)
         if not isinstance(rootblock, Parent):
-            logging.error(f'{args.model} is not a valid model')
+            logging.error(f'{model} is not a valid model')
             exit()
         Runtime().rootblock = rootblock
     except Exception as e:
@@ -156,14 +200,20 @@ if __name__ == "__main__":
 
     logging.info("SK-ll runtime started.")
     
+    #
+    # Create tornado webapp and start
+    #
     handlers = []
-    if not args.norest:
+    if not norest:
         handlers.append((rf"/rest/{instance_name}", RestHandler))
-    if not args.nows:
+    if not nows:
         handlers.append((rf"/ws/{instance_name}", WsHandler))
     app = tornado.web.Application(handlers)
-    app.listen(args.port)
+    app.listen(port)
 
     ioloop = tornado.ioloop.IOLoop.instance()
     set_ping(ioloop, timedelta(seconds=1))
     ioloop.start()
+
+if __name__ == "__main__":
+    __main()
