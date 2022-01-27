@@ -1,0 +1,120 @@
+{
+    "name": "kaggle_breast_cancer",
+    "_pytype": "skll.baseblock.Parent",
+    "_jstype": "skll.baseblock.Parent",
+    "disable_mask": [],
+    "column_mask": [],
+    "as_new_rows": false,
+    "_children": {
+        "0": {
+            "_pytype": "skll.baseblock.Placeholder",
+            "_jstype": "skll.baseblock.Placeholder",
+            "comment": "###Breast cancer example\n- This is a simple demonstration of SK-ll pipeline\n- Using dataset from [https://www.kaggle.com/yasserh/breast-cancer-dataset]"
+        },
+        "1": {
+            "name": "Input",
+            "_pytype": "skll.plugin.tabular.tabular.FileInput",
+            "_jstype": "skll.plugin.tabular.FileInput",
+            "disable_mask": [
+                "run"
+            ],
+            "as_new_rows": false,
+            "filename": "/examples/kaggle_breast_cancer.csv"
+        },
+        "2": {
+            "name": "OneHotEncoder-8945",
+            "_pytype": "skll.plugin.sklearn.block.SklClass",
+            "_jstype": "sklearn.preprocessing.OneHotEncoder",
+            "disable_mask": [],
+            "column_mask": [
+                "diagnosis"
+            ],
+            "as_new_rows": false,
+            "cls": "sklearn.preprocessing.OneHotEncoder",
+            "trainmethod": "fit_transform",
+            "testmethod": "transform",
+            "initargs": [],
+            "initkargs": {
+                "drop": "first"
+            }
+        },
+        "3": {
+            "name": "Extract Y/ID Column-3af8",
+            "_pytype": "skll.plugin.tabular.tabular.XyidSplit",
+            "_jstype": "skll.plugin.tabular.XyidSplit",
+            "disable_mask": [],
+            "column_mask": [],
+            "as_new_rows": false,
+            "ycol": "diagnosis",
+            "idcol": "id"
+        },
+        "4": {
+            "name": "MinMaxScaler-de35",
+            "_pytype": "skll.plugin.sklearn.block.SklClass",
+            "_jstype": "sklearn.preprocessing.MinMaxScaler",
+            "disable_mask": [],
+            "as_new_rows": false,
+            "cls": "sklearn.preprocessing.MinMaxScaler",
+            "trainmethod": "fit_transform",
+            "testmethod": "transform",
+            "initargs": [],
+            "initkargs": {}
+        },
+        "5": {
+            "name": "Drop-46d5",
+            "_pytype": "skll.plugin.tabular.tabular.Drop",
+            "_jstype": "skll.plugin.tabular.Drop",
+            "disable_mask": [],
+            "column_mask": [
+                "fractal_dimension_mean",
+                "texture_se",
+                "smoothness_se",
+                "symmetry_se",
+                "fractal_dimension_se"
+            ],
+            "as_new_columns": false,
+            "as_new_rows": false
+        },
+        "6": {
+            "name": "KFold-2175",
+            "_pytype": "skll.plugin.sklearn.block.SklSplitter",
+            "_jstype": "sklearn.model_selection.KFold",
+            "disable_mask": [],
+            "as_new_rows": false,
+            "output_type": "last",
+            "cls": "sklearn.model_selection.KFold",
+            "initargs": [],
+            "initkargs": {},
+            "_children": {
+                "0": {
+                    "name": "XGBClassifier-51b9",
+                    "_pytype": "skll.plugin.sklearn.block.SklClass",
+                    "_jstype": "xgboost.XGBClassifier",
+                    "disable_mask": [],
+                    "as_new_rows": false,
+                    "cls": "xgboost.XGBClassifier",
+                    "trainmethod": "fit+test",
+                    "testmethod": "predict",
+                    "scoremethod": "score",
+                    "initargs": [],
+                    "initkargs": {}
+                },
+                "1": {
+                    "name": "accuracy_score-1e7c",
+                    "_pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+                    "_jstype": "sklearn.metrics.accuracy_score",
+                    "disable_mask": [],
+                    "as_new_rows": false,
+                    "method": "sklearn.metrics.accuracy_score",
+                    "xname": "y_pred",
+                    "yname": "y_true",
+                    "args": [],
+                    "kargs": {
+                        "y_pred": null,
+                        "y_true": null
+                    }
+                }
+            }
+        }
+    }
+}
