@@ -223,9 +223,11 @@ class EditDialog {
         const $dialog = this._dialog.html("").data("layer", layer);
         const $toolbar = this.createToolbar().appendTo($dialog);
         this.colsels = [];
+        layer.displaySelected();
         $("<a href='#'>").addClass("edit-apply").html("Apply").on("click", {thiz: layer, dialog: this}, EditDialog.#applyHandler).appendTo($toolbar);
         $("<a href='#'>").addClass("edit-cancel").html("Cancel").on("click", {thiz: this}, (e)=> {
-             e.data.thiz.cancel();
+            layer.displayUnselected(null);
+            e.data.thiz.cancel();
         }).appendTo($toolbar);
         $("<h2>").html(layer.name).appendTo($dialog);
         $("<h3>").html(layer._typename ? layer._typename : layer._type).appendTo($dialog);

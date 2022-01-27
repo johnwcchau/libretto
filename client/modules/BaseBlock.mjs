@@ -1,6 +1,7 @@
 import EditDialog from './EditDialog.mjs';
 import UUID from './UUID.mjs';
 import ContextMenu from "./ContextMenu.mjs";
+import snackdown from "./external/snarkdown.mjs";
 
 /**
  * 
@@ -360,6 +361,16 @@ export class Block {
         if (this.root) this.root.model_changed = true;
     }
 
+    displaySelected() {
+        this.root.$div.find(".select-block").removeClass("select-block");
+        this.$div.addClass("select-block");
+    }
+    displayUnselected() {
+        this.$div.removeClass("select-block");
+    }
+    onclick() {
+        if (this.canEdit) this.onEditClicked();
+    }
     static dragTimer = null;
     static onmousedown(e) {
         if (e.originalEvent.button != 0) return;
@@ -368,11 +379,13 @@ export class Block {
         e.preventDefault();
         e.stopPropagation();
         if (Block.dragTimer) clearTimeout(Block.dragTimer);
-        thiz.$div.on("mouseup", () => {
+        thiz.$div.on("mouseup", (e) => {
+            if (e.originalEvent.button != 0) return;
             if (Block.dragTimer) {
                 clearTimeout(Block.dragTimer);
                 Block.dragTimer = null;
             }
+            thiz.onclick();
             thiz.$div.off("mouseup");
         });
         Block.dragTimer = setTimeout(() => {
@@ -579,7 +592,7 @@ export class Parent extends Block {
         return copy;
     }
     get desc() {
-        if (this._jstype == "skll.block.baseblock.Parent")
+        if (this._jstype == "skll.baseblock.Parent")
             return "";
         return super.desc;
     }
@@ -686,6 +699,51 @@ export class Parent extends Block {
 }
 
 /**
+ * Comment block special render function
+ */
+export class Comment extends Block {
+    static onCommentChange(e) {
+        const thiz = e.data.thiz;
+        thiz.comment = thiz.$comment.val();
+    }
+    static onCommentBlur(e) {
+        const thiz = e.data.thiz;
+        thiz.comment = thiz.$comment.val();
+        thiz.redraw();
+        thiz.registerEvents();
+        thiz.$comment = null;
+    }
+    onclick() {
+        this.$div.html("");
+        this.$comment = $("<textarea>").addClass("comment").val(this.comment).appendTo(this.$div);
+        this.$comment.on("blur", {thiz:this}, Comment.onCommentBlur).focus();
+        this.$div.off("mousedown")
+        .off("mouseenter")
+        .off("mouseleave")
+        .off("contextmenu").on("mousedown", (e)=>{
+            e.stopPropagation();
+            return true;
+        }).on("contextmenu", (e)=> {
+            e.stopPropagation();
+            return true;
+        });
+    }
+    redraw() {
+        this.$div.html("");
+        if (this.comment) {
+            const html = snackdown(this.comment);
+            $(html).appendTo(this.$div);
+        }
+    }
+    createDomElement() {
+        if (!this.$div) {
+            this.$div = $("<div>").addClass("block comment-block");
+            this.registerEvents();
+        } 
+        this.redraw();
+    }
+}
+/**
  * Hacking block for file drag and drop
  */
 export class File extends Block {
@@ -706,7 +764,7 @@ export class File extends Block {
 }
 
 blockTypes.add({
-    "skll.block.baseblock.Block": {
+    "skll.baseblock.Block": {
         cls: Block,
         typename: "Passthrough",
         desc: "A block that simply pass-though data and do nothing",
@@ -732,7 +790,34 @@ blockTypes.add({
             "as_new_columns": {
                 desc: "Append result instead of overwrite",
                 type: "boolean",
+            },
+            "row_filter": {
+                desc: "row filter formula",
+                type: "string"
+            },
+            "as_new_rows": {
+                desc: "whether results are append to original dataset or replace filtered rows",
+                type: "boolean",
             }
+        },
+    },
+    "skll.baseblock.Placeholder": {
+        cls: Comment,
+        typename: "Comment",
+        desc: "Place for comments",
+        properties: {
+            "_pytype": {
+                hidden: true,
+            },
+            "_jstype": {
+                hidden: true,
+            },
+            "comment": {
+                type: "string",
+            }
+        },
+        defaults: {
+            "canEdit": false,
         },
     },
     ".parent": {
@@ -749,4 +834,48 @@ blockTypes.add({
             },
         },
     },
+    "skll.baseblock.Parent": {
+        cls: Parent,
+        typename: "Group",
+        desc: "Group of blocks",
+        childof: "skll.baseblock.Block",
+        properties: {
+        },
+    },
+    "skll.baseblock.Loop": {
+        cls: Parent,
+        hidden: true,
+        childof: "skll.baseblock.Block",
+        properties: {
+            output_type: {
+                desc: "Specifies output only last iteration or all iteration",
+                type: "option(all,last)",
+                default: "all",
+            },
+        },
+    },
 });
+
+export default function pyimport(py) {
+    if (!py) return;
+    try {
+        const blockTypes = new BlockTypes();
+        const type = py._jstype;
+        const blktype = blockTypes.get(type);
+        if (!blktype) throw `Unknown type ${type}, are you missing a plugin?`;
+        const cls = blktype.cls;
+        if (!cls) throw `Unknown type ${type}, are you missing a plugin?`;
+        if (py._children) {
+            let children = [];
+            Object.entries(py._children).forEach(([i, v]) => {
+                children[i] = pyimport(v);
+            });
+            py["children"] = children;
+            delete py._children;
+        }
+        return new cls(py);
+    } catch (ex) {
+        console.log(`import ${py.name}: ${ex}`);
+        throw ex;
+    }
+}

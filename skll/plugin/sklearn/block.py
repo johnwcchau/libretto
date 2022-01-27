@@ -1,6 +1,6 @@
 # %%
 from typing import Generator
-from skll.block.baseblock import Block, Loop, RunSpec, import_load
+from skll.baseblock import Block, Loop, RunSpec, import_load
 from importlib import import_module
 import pandas as pd
 import logging

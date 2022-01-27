@@ -1,7 +1,7 @@
 from json.encoder import JSONEncoder
 
 import numpy as np
-from skll.block.baseblock import RunSpec
+from .baseblock import RunSpec
 import numpy as np
 
 class Encoder(JSONEncoder):

@@ -3,7 +3,7 @@ import { Parent } from "./BaseBlock.mjs";
 import { Block } from "./BaseBlock.mjs";
 import { LogPanel } from "./LogPanel.mjs";
 import FileBrowser from "./FileBrowser.mjs";
-import pyimport from "./pyjs.mjs";
+import pyimport from "./BaseBlock.mjs";
 import TabView from "./TabView.mjs";
 
 export class Session {
@@ -79,9 +79,9 @@ export class Session {
     }
     reset() {
         if (!this.warnBeforeLoad()) return null; 
-        const parent = new Parent({name: "Untitled", _jstype: "skll.block.baseblock.Parent"});
-        const input = new Block({name: "Input", _jstype: "skll.block.input.FileInput"});
-        parent.append(input, 0);
+        const parent = new Parent({name: "Untitled", _jstype: "skll.baseblock.Parent"});
+        //const input = new Block({name: "Input", _jstype: "skll.block.input.FileInput"});
+        //parent.append(input, 0);
         this.#setReceipe(parent);
         this.model._model_changed = true;
     }
@@ -107,8 +107,8 @@ export class Session {
         this.model.clearMarkups();
         return new Promise((res, rej) => {
             if (this.model.model_changed) {
-                if (!confirm("Receipe not in sync with runtime, sync now?"))
-                    rej("Receipe not in sync");
+                // if (!confirm("Receipe not in sync with runtime, sync now?"))
+                //     rej("Receipe not in sync");
                 this.dump().then(r=>{
                     res(r);
                 }).catch((ex)=>{
@@ -161,9 +161,7 @@ export class Session {
     }
     publish() {
         //TODO create publish dialog and ask for
-        //  1. how should the runtime run (Rest/WebSocket)
         //  2. instance name, port, etc
-        //  3. should input block automatically disabled
         //TODO Create dockerfile and package everything for deployment
         //
         if (!confirm('Please make sure the receipe is fully "cooked" and all input blocks are configured for runtime accordingly')) 
@@ -173,7 +171,6 @@ export class Session {
             if (exist && !confirm(`${name} already exist, overwrite?`)) throw -1;
             return this.WsClient.send("export", {
                 path: name,
-                dropinput: true,
             });
         }).then(() => {
             alert(`Receipe exported to ${name}`);

@@ -22,10 +22,24 @@ def __new_session(name:str):
     """
     logging.info(f'Hello new session "{name}" from example plugin')
 
+def __destroy_session(name: str):
+    """
+    invoked should a session is destroyed, note that "runtime" session will never be 
+    destroyed
+    (nor any other sessions as of current version)
+
+    Parameters
+    ----------
+    name: str
+        unique name of the session
+    """
+    pass
+
 """
 Belows are custom functions which can be invoked in client side
 Invoke by (in javascript):
-    getCurrentSession().WsClient.send("<plugin full name>::<method>", {param:value,...})
+    getCurrentSession().WsClient.send("<plugin fqdn>::<method>", {param:value,...})
+    and in this case fqdn of this plugin is "skll.plugin.example"
 """
 def call_server_side(session:str, writer:Output, **kwargs:dict):
     writer.working("Example plugin is working...")

@@ -1,6 +1,5 @@
 from __future__ import annotations
 import base64
-import shutil
 from skll.inout import Output
 import os
 import base64

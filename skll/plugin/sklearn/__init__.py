@@ -1,10 +1,17 @@
 """
-Sk-ll plugin init module
+This is a plugin to provide functions Sk-learn (and related frameworks)
+
+This is only the init and functions script, for receipe see block.py
 """
 import logging
 from importlib import import_module
 import os
+from .block import *
 
+"""
+Add name here to scan for additional frameworks
+(provided that client-side definitions exist)
+"""
 VALID_PACKAGES = [
     "sklearn", 
     "hdbscan", 
@@ -13,7 +20,10 @@ VALID_PACKAGES = [
     "gtda"
 ]
 
-def __checkExist(package):
+def __checkExist(package:str):
+    """
+    Return True if python package exists and so does it's client-side definitions
+    """
     try:
         import_module(package)
         if os.path.isfile(f'./skll/plugin/sklearn/{package}.mjs'):
@@ -29,6 +39,7 @@ def __checkExist(package):
 def __init_plugin():
     """
     global initialization of plugin
+    This automatically generates __init__.mjs to include receipe blocks of valid packages
     """
     try:
         os.remove("./skll/plugin/sklearn/__init__.mjs")
@@ -85,14 +96,15 @@ def __new_session(name:str):
     """
     pass
 
-# def __destroy_session(name: str):
-#     """
-#     invoked should a session is destroyed, note that "runtime" session will never be 
-#     destroyed
+def __destroy_session(name: str):
+    """
+    invoked should a session is destroyed, note that "runtime" session will never be 
+    destroyed
+    (nor any other sessions as of current version)
 
-#     Parameters
-#     ----------
-#     name: str
-#         unique name of the session
-#     """
-#     pass
+    Parameters
+    ----------
+    name: str
+        unique name of the session
+    """
+    pass

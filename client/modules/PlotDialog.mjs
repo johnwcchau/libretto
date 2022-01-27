@@ -8,7 +8,7 @@ class PlotDialog {
         "box": ["y"],
         "histogram": ["x"],
         "histogram2d": ["x", "y"],
-        "violin": ["x", "y"],
+        "violin": ["y"],
     }
     // static plottype = ["scatter", "line", "bar", "pie", "box", 
     //     "histogram", "histogram2d"];
@@ -19,6 +19,7 @@ class PlotDialog {
         <a href="#" id="plot_plot">Plot</a>
         <a href="#" id="plot_reset">Reset</a>
         <a href="#" id="plot_add_trace">+</a>
+        <a href="#" id="plot_cancel">Cancel</a>
     </div>
     <span>
         <label for="plot_barmode">Barmode</label>
@@ -111,6 +112,9 @@ class PlotDialog {
             $(v).html(type[i]);
         })
     }
+    static onCancel(e) {
+        e.data.thiz.dialog.detach();
+    }
     removetraceline(row) {
         if (this._dialog.find(".plot-traceline").length == 1) return;
         row.remove();
@@ -167,6 +171,7 @@ class PlotDialog {
         this.tabView = tabView;
         this.reset();
         this.default();
+        this.container.html("");
         this.dialog.appendTo(this.container);
         this.container.data("tabView").showTab(this.container.attr("id"));
         return this.dialog;
@@ -182,6 +187,7 @@ class PlotDialog {
         this._dialog.find("#plot_plot").on("click", {thiz:this}, PlotDialog.onPlotClicked);
         this._dialog.find("#plot_reset").on("click", {thiz:this}, PlotDialog.onResetClicked);
         this._dialog.find("#plot_add_trace").on("click", {thiz:this}, PlotDialog.onAddTraceClicked);
+        this._dialog.find("#plot_cancel").on("click", {thiz:this}, PlotDialog.onCancel);
         PlotDialog.instance = this;
     }
     get dialog() {

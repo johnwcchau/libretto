@@ -1,7 +1,7 @@
 import traceback
-from skll.block.baseblock import Block, ErrorAtRun, Parent, RunSpec
-from skll.inout import Output
-from skll.plugin import dispatch, find_plugin
+from .baseblock import Block, ErrorAtRun, RunSpec
+from .inout import Output
+from .plugin import dispatch, find_plugin
 import pandas as pd
 import numpy as np
 import logging
@@ -141,7 +141,7 @@ class Session:
             traceback.print_exc()
             self.out.error(f'Receipe load error: {repr(e)}')
 
-    def export(self, path:str=None, dropinput:bool=True, **kwargs)->None:
+    def export(self, path:str=None, **kwargs)->None:
         if not path:
             self.out.invalid()
             return
@@ -156,27 +156,10 @@ class Session:
                 self.out.error(f'{path} is not valid')
                 return
             
-            # if dropinput:
-            #     def disableinput(block:Block):
-            #         if hasattr(block, "_is_input") and block._is_input:
-            #             block._original_disable_mask = block.disable_mask
-            #             block.disable_mask = [RunSpec.RunMode.RUN]
-            #         if isinstance(block, Parent):
-            #             [disableinput(child) for child in block.child.values()]
-            #     disableinput(self.rootblock)
             with open(vpath, "wb") as f:
                 joblib.dump(self.rootblock, f)
             self.out.finished(f'Exported to {vpath}')
         except Exception as e:
             traceback.print_exc()
             self.out.error(f'Export failed: {repr(e)}')
-        finally:
-            # def reenableinput(block:Block):
-            #     if hasattr(block, "_original_disable_mask"):
-            #         block.disable_mask = block._original_disable_mask
-            #         del block._original_disable_mask
-            #     if isinstance(block, Parent):
-            #         [reenableinput(child) for child in block.child]
-            # reenableinput(self.rootblock)
-            pass
 # %%

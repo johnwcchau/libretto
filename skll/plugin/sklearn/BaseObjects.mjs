@@ -12,7 +12,7 @@ const baseObjects = {
         typename: "SklClass",
         group: "sklearn.(generics)",
         desc: "Sklearn transformer or estimator class",
-        childof: "skll.block.baseblock.Block",
+        childof: "skll.baseblock.Block",
         properties: {
             "cls": {
                 desc: "class name",
@@ -36,11 +36,11 @@ const baseObjects = {
             },
             "initargs": {
                 desc: "fixed positional init arguments",
-                type: "list(text)",
+                type: "list(string)",
             },
             "initkargs": {
                 desc: "fixed named init arguments",
-                type: "dict(text,text)",
+                type: "dict(string,string)",
             }
         }
     },
@@ -49,7 +49,7 @@ const baseObjects = {
         typename: "Method",
         group: "sklearn.(generics)",
         desc: "Any python method applying 1-to-1 transformations",
-        childof: "skll.block.baseblock.Block",
+        childof: "skll.baseblock.Block",
         properties: {
             "method": {
                 desc: "method name",
@@ -65,11 +65,11 @@ const baseObjects = {
             },
             "args": {
                 desc: "fixed positional arguments",
-                type: "list(text)",
+                type: "list(string)",
             },
             "kargs": {
                 desc: "fixed named arguments",
-                type: "dict(text,text)",
+                type: "dict(string,string)",
             }
         }
     },
@@ -85,7 +85,7 @@ const baseObjects = {
         typename: "SklSplitter",
         group: "sklearn.(generics)",
         desc: "Scoring splitters e.g. Kfold",
-        childof: "skll.block.baseblock.Loop",
+        childof: "skll.baseblock.Loop",
         properties: {
             "cls": {
                 desc: "class name",
@@ -93,11 +93,11 @@ const baseObjects = {
             },
             "initargs": {
                 desc: "fixed positional init arguments",
-                type: "list(text)",
+                type: "list(string)",
             },
             "initkargs": {
                 desc: "fixed named init arguments",
-                type: "dict(text,text)",
+                type: "dict(string,string)",
             }
         }
     },

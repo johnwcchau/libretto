@@ -79,11 +79,24 @@
     color: #888;
     font-size: 0.8em;
 }
+.block.comment-block {
+    text-align: left;
+    background: none;
+    padding: 0 5px;
+}
+.block.comment-block .comment {
+    font-family: monospace, monospace;
+    border: none;
+}
 .markup {
     border-radius: 0.5em;
     width: 80%;
     color: #fff;
     margin: 0.3em 10%;
+}
+.select-block {
+    background: #eff;
+    border: 1px solid #cee;
 }
 .error-block {
     border: 3px solid #f22;

@@ -191,7 +191,6 @@ body {
     height: 100%;
     opacity: 0.6;
     z-index: 99;
-    top: 0;
     background: #000;
 }
 .modal {

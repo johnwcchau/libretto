@@ -37,6 +37,7 @@
     transition: height 0.2s;
 }
 .methodBrowser .method-obj:hover .method-desc {
-    height: auto;
+    min-height: 3em;
     overflow: unset;
+    height: auto;
 }
