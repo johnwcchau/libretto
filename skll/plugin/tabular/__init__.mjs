@@ -195,16 +195,20 @@ new BlockTypes().add({
             }
         },
     },
-    "skll.plugin.tabular.GroupBy": {
+    "skll.plugin.tabular.Subset": {
         cls: Parent,
-        typename: "GroupBy",
-        group: "tabular data",
-        desc: "Seperate dataset into groups and process one-at-a-time",
+        typename: "Subset Method",
+        group: "tabular data.subsets",
+        desc: "Group data into subsets and process one-at-a-time",
         childof: "skll.baseblock.Loop",
         properties: {
-            columns: {
-                desc: "Columns to group by",
-                type: "list(column)",
+            method: {
+                desc: "method name",
+                type: "string",
+            },
+            kargs: {
+                desc: "parameters",
+                type: "dict(string,string)",
             },
         },
     },
@@ -259,7 +263,7 @@ new BlockTypes().add({
         "pytype": "skll.plugin.tabular.Method",
         "group": "tabular data.methods",
         "properties": {
-            "method": {
+            "_method": {
                 "hidden": true
             },
             "kargs": {
@@ -275,7 +279,7 @@ new BlockTypes().add({
             },
         },
         "defaults": {
-            "method": "fillna",
+            "_method": "fillna",
             "transpose": false,
         }
     },
@@ -287,7 +291,7 @@ new BlockTypes().add({
         "pytype": "skll.plugin.tabular.Method",
         "group": "tabular data.methods",
         "properties": {
-            "method": {
+            "_method": {
                 "hidden": true
             },
             "kargs": {
@@ -303,7 +307,7 @@ new BlockTypes().add({
             },
         },
         "defaults": {
-            "method": "apply",
+            "_method": "apply",
             "kargs": {
                 "axis": 1
             },
@@ -318,7 +322,7 @@ new BlockTypes().add({
         "pytype": "skll.plugin.tabular.Method",
         "group": "tabular data.methods",
         "properties": {
-            "method": {
+            "_method": {
                 "hidden": true
             },
             "kargs": {
@@ -334,11 +338,165 @@ new BlockTypes().add({
             },
         },
         "defaults": {
-            "method": "agg",
+            "_method": "agg",
             "kargs": {
                 "axis": 0,
             },
             "transpose": true,
+        }
+    },
+    "skll.plugin.tabular.groupby": {
+        "cls": Parent,
+        "typename": "Groupby",
+        "desc": "Group DataFrame using a mapper or by a Series of columns.",
+        "childof": "skll.plugin.tabular.Subset",
+        "pytype": "skll.plugin.tabular.Subset",
+        "group": "tabular data.subsets",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+            "kargs": {
+                "hidden": true
+            },
+            "by": {
+                "type": "list(column)",
+                "desc": "columns to group'",
+                "dictKeyOf": "kargs"
+            },
+        },
+        "defaults": {
+            "_method": "groupby",
+        }
+    },
+    "skll.plugin.tabular.rolling": {
+        "cls": Parent,
+        "typename": "Rolling",
+        "desc": "Provide rolling window calculations.",
+        "childof": "skll.plugin.tabular.Subset",
+        "pytype": "skll.plugin.tabular.Subset",
+        "group": "tabular data.subsets",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+            "kargs": {
+                "hidden": true
+            },
+            "window": {
+                "type": "number",
+                "desc": "Size of moving window",
+                "dictKeyOf": "kargs"
+            },
+            "center": {
+                "type": "boolean",
+                "desc": "set the window labels as the center or the right edge of the window index",
+                "dictKeyOf": "kargs",
+            },
+            "win_type": {
+                "type": "string",
+                "desc": "scipy.window function, or None for equally weighted points",
+                "dictKeyOf": "kargs",
+                "default": "None",
+            },
+            "on": {
+                "type": "column",
+                "desc": "column label on which to calculate the rolling window",
+                "dictKeyOf": "kargs",
+            },
+        },
+        "defaults": {
+            "_method": "rolling",
+        }
+    },
+    "skll.plugin.tabular.expanding": {
+        "cls": Parent,
+        "typename": "Expanding",
+        "desc": "Provide expanding window calculations.",
+        "childof": "skll.plugin.tabular.Subset",
+        "pytype": "skll.plugin.tabular.Subset",
+        "group": "tabular data.subsets",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+            "kargs": {
+                "hidden": true
+            },
+            "min_periods": {
+                "type": "number",
+                "desc": "Minimum number of observations in window required to have a value",
+                "dictKeyOf": "kargs",
+                "default": 1,
+            },
+            "center": {
+                "type": "boolean",
+                "desc": "set the window labels as the center or the right edge of the window index",
+                "dictKeyOf": "kargs",
+            },
+        },
+        "defaults": {
+            "_method": "expanding",
+        }
+    },
+    "skll.plugin.tabular.ewm": {
+        "cls": Parent,
+        "typename": "ewm",
+        "desc": "Provide exponentially weighted (EW) calculations. Exactly one parameter: com, span, halflife, or alpha must be provided.",
+        "childof": "skll.plugin.tabular.Subset",
+        "pytype": "skll.plugin.tabular.Subset",
+        "group": "tabular data.subsets",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+            "kargs": {
+                "hidden": true
+            },
+            "com": {
+                "type": "number",
+                "desc": "Specify decay in terms of center of mass",
+                "dictKeyOf": "kargs"
+            },
+            "span": {
+                "type": "number",
+                "desc": "Specify decay in terms of span",
+                "dictKeyOf": "kargs"
+            },
+            "halflife": {
+                "type": "number",
+                "desc": "Specify decay in terms of half-life",
+                "dictKeyOf": "kargs"
+            },
+            "alpha": {
+                "type": "number",
+                "desc": "Specify smoothing factor directly 0<alpha<1",
+                "dictKeyOf": "kargs"
+            },
+            "min_periods": {
+                "type": "number",
+                "desc": "Minimum number of observations in window required to have a value",
+                "dictKeyOf": "kargs",
+                "default": 1,
+            },
+            "adjust": {
+                "type": "boolean",
+                "desc": "Divide by decaying adjustment factor in beginning periods to account for imbalance in relative weightings (viewing EWMA as a moving average).",
+                "dictKeyOf": "kargs",
+            },
+            "ignore_na": {
+                "type": "boolean",
+                "desc": "Divide by decaying adjustment factor in beginning periods to account for imbalance in relative weightings (viewing EWMA as a moving average).",
+                "dictKeyOf": "kargs",
+            },
+            "on": {
+                "type": "column",
+                "desc": "column label on which to calculate the rolling window",
+                "dictKeyOf": "kargs",
+            },
+        },
+        "defaults": {
+            "_method": "ewm",
         }
     },
 });

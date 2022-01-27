@@ -169,34 +169,21 @@ class SQLOutput(FileOutput):
         r["schema"] = self.schema
         return r
 
-# class Impute(Block):
-#     """
-#     Impute (fill in missing values) with a constant or formula
-#     """
-#     def __init__(self, formula:str="", **kwargs: dict) -> None:
-#         super().__init__(**kwargs)
-#         self.formula = formula
-
-#     def dump(self) -> dict:
-#         r = super().dump()
-#         r["formula"] = self.formula
-#         return r
-    
-#     def run(self, runspec: RunSpec, x, y=None, id=None) -> tuple:
-#         if not isinstance(x, pd.DataFrame):
-#             x = pd.DataFrame(x)
-#         x = x.fillna(eval(self.formula, globals(), x))
-#         return x, y, id
-
 class Method(Block):
     """
     Calls table method
+
+    Parameters
+    ----------
+    method : string
+        method
+    kargs : dict(string, string)
+        arguments to method
     """
-    def __init__(self, method:str=None, kargs:dict=None, transpose:bool=False, **kwargs):
+    def __init__(self, _method:str=None, kargs:dict=None, transpose:bool=False, **kwargs):
         super().__init__(**kwargs)
         
-        self.method = method
-        self.func = None
+        self.method = _method
         self.funckargs = kargs if kargs else {}
         self.transpose = transpose
 
@@ -316,40 +303,44 @@ class ColumnWise(Parent):
             return [[]], y, id
         return pd.DataFrame(results), y, id
 
-class GroupBy(Loop):
+class Subset(Loop):
     """
-    Group data to sets and loop over each
+    Create subset from dataset and process
+
+    Parameters
+    ----------
+    method : string
+        method
+    kargs : dict(string, string)
+        arguments to method
     """
-    def __init__(self, columns:list=None, **kwargs: dict) -> None:
+    def __init__(self, _method:str=None, kargs:dict=None, **kwargs: dict) -> None:
         super().__init__(**kwargs)
-        self.columns = columns
+        self.method = _method
+        self.funckargs = kargs if kargs else {}
     
+    def loadmethod(self, x):
+        func = getattr(x, self.method)
+        if not callable(func):
+            raise AttributeError(f'{self.method} is not a method')
+        return func
+
     def loop(self, runspec: RunSpec, x:pd.DataFrame, y, id) -> Generator[tuple, None, None]:
-        if not self.columns:
+        if not self.method:
             yield x, y, id
             return
-        for group in x.groupby(self.columns):
-            thisx = group[1]
-            idx = group[1].index
+        func = self.loadmethod(x)
+
+        for group in func(**self.funckargs):
+            if isinstance(group, tuple):
+                thisx = group[1]
+            else:
+                thisx = group
+            idx = thisx.index
             thisy = y.loc[idx] if y is not None else None
             thisid = id.loc[idx] if id is not None else None
             yield thisx, thisy, thisid
 
-# class Aggregate(Block):
-#     """
-#     Aggregate rows into one
-
-#     Parameters
-#     ----------
-#     funcs: dict[column:string]
-#         column:function mapping for aggregation
-#     """
-#     def __init__(self, funcs:dict=None, **kwargs: dict) -> None:
-#         super().__init__(**kwargs)
-#         self.funcs = funcs
-
-#     def run(self, runspec: RunSpec, x: pd.DataFrame, y=None, id=None) -> tuple:
-#         return x.agg(self.funcs), None, None
 # %%
 if __name__ == "__main__":
     """
@@ -452,4 +443,19 @@ if __name__ == "__main__":
     a = Drop(column_mask=['B'], row_filter='B < 4', as_new_rows=True)
     print(a(RunSpec(), df))
 
+# %%
+
+if __name__ == "__main__":
+    """
+    test Subset
+    """
+    df = pd.DataFrame({"A": [0, 1, 2, 0, 1, 2, 0], "B": [3, 4, 5, 6, 7, 8, 9]})
+    y = pd.Series([10,11,12,13,14,15,16])
+    groupby = Subset("groupby", {"by": ["A"]})
+    print(groupby(RunSpec(), df, y))
+    groupby = Subset("groupby", {"by": ["A"]}, output_type="all")
+    print(groupby(RunSpec(), df, y))
+
+    groupby = Subset("rolling", {"window": 3, "win_type":"gaussian"}, output_type="all")
+    print(groupby(RunSpec(), df))
 # %%
