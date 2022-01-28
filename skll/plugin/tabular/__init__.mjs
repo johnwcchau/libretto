@@ -181,7 +181,7 @@ new BlockTypes().add({
         desc: "Member method call to the datatable",
         childof: "skll.baseblock.Block",
         properties: {
-            method: {
+            "_method": {
                 desc: "method name",
                 type: "string",
             },
@@ -202,7 +202,7 @@ new BlockTypes().add({
         desc: "Group data into subsets and process one-at-a-time",
         childof: "skll.baseblock.Loop",
         properties: {
-            method: {
+            "_method": {
                 desc: "method name",
                 type: "string",
             },
