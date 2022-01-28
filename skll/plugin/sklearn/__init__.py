@@ -36,11 +36,13 @@ def __checkExist(package:str):
         logging.info(f'Python package {package} not exists or load with error')
         return False
 
-def __init_plugin():
+def __init_plugin(config):
     """
     global initialization of plugin
     This automatically generates __init__.mjs to include receipe blocks of valid packages
     """
+    if not config.getboolean("skll.plugin.sklearn", "create_block_definition", fallback=True):
+        return
     try:
         os.remove("./skll/plugin/sklearn/__init__.mjs")
     except FileNotFoundError:

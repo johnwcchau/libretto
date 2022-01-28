@@ -45,7 +45,7 @@ def init(config):
         try:
             lib = import_module(f'{name}.__init__')
             if hasattr(lib, "__init_plugin"):
-                getattr(lib, "__init_plugin")()
+                getattr(lib, "__init_plugin")(config)
                 __plugins[name] = lib
         except Exception as e:
             logging.error(repr(e))

@@ -4,7 +4,7 @@ Example plugin
 import logging
 from skll.inout import Output
 
-def __init_plugin():
+def __init_plugin(config):
     """
     global initialization of plugin
     """
