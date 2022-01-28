@@ -732,7 +732,7 @@ export class Comment extends Block {
         this.$div.html("");
         if (this.comment) {
             const html = snackdown(this.comment);
-            $(html).appendTo(this.$div);
+            $(`<span>${html}</span>`).appendTo(this.$div);
         }
     }
     createDomElement() {
