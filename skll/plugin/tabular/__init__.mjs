@@ -316,8 +316,8 @@ new BlockTypes().add({
     },
     "skll.plugin.tabular.agg": {
         "cls": Block,
-        "typename": "Aggragate",
-        "desc": "Aggragate rows into one signle row",
+        "typename": "Aggregate",
+        "desc": "Aggregate rows into one signle row",
         "childof": "skll.plugin.tabular.Method",
         "pytype": "skll.plugin.tabular.Method",
         "group": "tabular data.methods",

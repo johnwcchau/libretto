@@ -64,10 +64,10 @@ class Session:
             self._result = self.rootblock(self.runspec, None)
             self.out.finished("Finished")
         except ErrorAtRun as e:
-            traceback.print_tb(e.exception.__traceback__)
+            logging.exception(e.exception, exc_info=True)
             self.out.error(repr(e.exception), {"atblock": e.at.name})
         except Exception as e:
-            traceback.print_exc()
+            logging.exception(e, exc_info=True)
             self.out.error(repr(e))
     
     def __genstat(self):

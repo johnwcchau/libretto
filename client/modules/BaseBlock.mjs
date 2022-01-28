@@ -153,29 +153,29 @@ export class Block {
         this.render();
         this.root.model_changed = true;
     }
-    createEditBtn() {
-        return $("<a href='#'>")
-            .addClass("editbtn")
-            .html("✏️");
-    }
+    // createEditBtn() {
+    //     return $("<a href='#'>")
+    //         .addClass("editbtn")
+    //         .html("✏️");
+    // }
     createDomElement() {
         if (!this.$div) {
             this.$div = $("<div>").addClass("block");
             $("<span>").addClass("title").html(this.name).appendTo(this.$div);
             $("<span>").addClass("desc").html(this.desc).appendTo(this.$div);
-            if (this.canEdit)
-                this.$edit_button = this.createEditBtn().appendTo(this.$div);    
+            // if (this.canEdit)
+            //     this.$edit_button = this.createEditBtn().appendTo(this.$div);    
         } 
         else {
             this.$div.children("span.title").html(this.name);
             if (this.desc)
                 this.$div.children("span.desc").html(this.desc);
-            if (this.canEdit && (this.$div.children("a.editbtn").length == 0)) 
-                this.createEditBtn().appendTo(this.$div);
-            else if (!this.canEdit) {
-                this.$div.children("a.editbtn").remove();
-                delete this.$edit_button;
-            }
+            // if (this.canEdit && (this.$div.children("a.editbtn").length == 0)) 
+            //     this.createEditBtn().appendTo(this.$div);
+            // else if (!this.canEdit) {
+            //     this.$div.children("a.editbtn").remove();
+            //     delete this.$edit_button;
+            // }
         }
         this.registerEvents();
     }
@@ -529,10 +529,10 @@ export class Block {
             .on("mouseenter", {"thiz": this}, Block.onmouseover)
             .on("mouseleave", {"thiz": this}, Block.onmouseout)
             .on("contextmenu", {"thiz": this}, Block.oncontextmenu);
-        if (this.canEdit) {
-            this.$edit_button
-                .on("click", {thiz: this}, Block.__onEditClicked);
-        }
+        // if (this.canEdit) {
+        //     this.$edit_button
+        //         .on("click", {thiz: this}, Block.__onEditClicked);
+        // }
     }
 }
 
@@ -832,6 +832,10 @@ blockTypes.add({
                 desc: "Name",
                 type: "string",
             },
+            "isolated": {
+                desc: "whether processing is isolated and result will not be passed further along, useful for interactive analysis",
+                type: "boolean",
+            },
         },
     },
     "skll.baseblock.Parent": {
@@ -840,6 +844,10 @@ blockTypes.add({
         desc: "Group of blocks",
         childof: "skll.baseblock.Block",
         properties: {
+            "isolated": {
+                desc: "whether processing is isolated and result will not be passed further along, useful for interactive analysis",
+                type: "boolean",
+            },
         },
     },
     "skll.baseblock.Loop": {
@@ -851,6 +859,10 @@ blockTypes.add({
                 desc: "Specifies output only last iteration or all iteration",
                 type: "option(all,last)",
                 default: "all",
+            },
+            "isolated": {
+                desc: "whether processing is isolated and result will not be passed further along, useful for interactive analysis",
+                type: "boolean",
             },
         },
     },

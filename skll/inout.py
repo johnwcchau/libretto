@@ -23,8 +23,8 @@ class Output:
         self.msg(0, msg, param)
     def busy(self):
         self.msg(-997, "Model is busy, try again later")
-    def error(self, msg:str=None)->None:
-        self.msg(-998, msg)
+    def error(self, msg:str=None, param:dict=None)->None:
+        self.msg(-998, msg, param)
     def invalid(self, msg:str='Invalid request')->None:
         self.msg(-999, msg)
     def stream(self, stream:int, msg:str)->None:

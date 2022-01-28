@@ -195,7 +195,7 @@ class Method(Block):
 
     def dump(self) -> dict:
         r = super().dump()
-        r["method"] = self.method
+        r["_method"] = self.method
         r["kargs"] = self.funckargs
         return r
 
@@ -325,6 +325,12 @@ class Subset(Loop):
             raise AttributeError(f'{self.method} is not a method')
         return func
 
+    def dump(self) -> dict:
+        r = super().dump()
+        r["_method"] = self.method
+        r["kargs"] = self.funckargs
+        return r
+        
     def loop(self, runspec: RunSpec, x:pd.DataFrame, y, id) -> Generator[tuple, None, None]:
         if not self.method:
             yield x, y, id

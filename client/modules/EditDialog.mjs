@@ -122,6 +122,7 @@ class EditDialog {
     }
     async #resolveColumnNames(layer) {
         layer.session.run("COLUMNS", layer, "columns").then((r) => {
+            if (!r) return;
             this.colsels.forEach(v => {
                 v.render(r.columns);
             });

@@ -135,7 +135,7 @@ class Block:
         return {
             "_jstype": self._jstype if self._jstype else typestr,
             "_pytype": typestr,
-            "_next": self[0].dump() if self[0] else None,
+            #"_next": self[0].dump() if self[0] else None,
             "name": self.name,
             "disable_mask": self.disable_mask,
             "column_mask": self.column_mask,
@@ -163,6 +163,8 @@ class Block:
             runspec.mode = RunSpec.RunMode.BREAK
             return x, y, id
         try:
+            if runspec.mode.PREVIEW in self.disable_mask and runspec.mode == RunSpec.RunMode.COLUMNS:
+                return x, y, id
             if not runspec.mode in self.disable_mask:
                 runspec.out.working(f'Processing {self.name}...', {"atblock": self.name})
                 if x is None:
@@ -209,6 +211,8 @@ class Block:
             if runspec.upto == self.name:
                 runspec.mode = RunSpec.RunMode.BREAK
             return x, y, id
+        except ErrorAtRun as e:
+            raise e
         except Exception as e:
             raise ErrorAtRun(e, self)
 
@@ -329,8 +333,18 @@ class Block:
 #         return results, out_y, out_id
 
 class Parent(Block):
-    def __init__(self, **kwargs: dict)->None:
+    """
+    Representing group of blocks
+
+    Parameters
+    ----------
+    isoloated: boolean, default=False
+        whether processing is isolated and result will not be passed further along, useful for 
+        interactive analysis
+    """
+    def __init__(self, isolated:bool=False, **kwargs: dict)->None:
         super().__init__(**kwargs)
+        self.isolated = isolated
         self.child = {}
     
     def __setitem__(self, key: int, block: Block):
@@ -342,14 +356,20 @@ class Parent(Block):
     def dump(self) -> dict:
         r = super().dump()
         r["_children"] = {i: self.child[i].dump() for i in self.child.keys()}
+        r["isolated"] = self.isolated
         return r
     
     def run(self, runspec: RunSpec, x:pd.DataFrame, y=None, id=None)->tuple:
+        thisx = x
+        thisy = y
+        thisid = id
         for k in sorted(self.child.keys()):
-            x, y, id = self.child[k](runspec, x, y, id)
+            thisx, thisy, thisid = self.child[k](runspec, thisx, thisy, thisid)
             if runspec.mode == RunSpec.RunMode.BREAK:
                 break
-        return x, y, id
+        if self.isolated and runspec.upto != self.name and runspec.mode != RunSpec.RunMode.BREAK:
+            return x, y, id
+        return thisx, thisy, thisid
 
 class Loop(Parent):
     """
