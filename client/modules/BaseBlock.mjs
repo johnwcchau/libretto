@@ -69,8 +69,10 @@ export class Block {
                 this._properties[i] = v;
                 if (v.dictKeyOf && args[v.dictKeyOf] && (args[v.dictKeyOf][i] !== undefined)) {
                     this[i] = args[v.dictKeyOf][i];
+                    delete args[v.dictKeyOf][i];
                 } else if (v.listItemOf && args[v.listItemOf] && (args[v.listItemOf][i] !== undefined)) {
                     this[i] = args[v.listItemOf][i];
+                    delete args[v.listItemOf][i];
                 } else if (args[i] !== undefined) {
                     this[i] = args[i];
                 } 
@@ -81,7 +83,7 @@ export class Block {
         }
         if (cls.defaults) {
             Object.entries(cls.defaults).forEach(([i, v]) => {
-                this[i] = v;
+                this[i] = JSON.parse(JSON.stringify(v));
             })
         }
         if (cls.child_types) {
@@ -206,7 +208,7 @@ export class Block {
         this.$div.find(".markup").remove();
     }
     export() {
-        let result = {};
+        var result = {};
         Object.entries(this._properties).forEach(([i, v]) => {
             if ((this[i] === null)||(this[i] === undefined)) return;
             if (v.dictKeyOf) {
@@ -381,6 +383,7 @@ export class Block {
         if (Block.dragTimer) clearTimeout(Block.dragTimer);
         thiz.$div.on("mouseup", (e) => {
             if (e.originalEvent.button != 0) return;
+            e.stopPropagation();
             if (Block.dragTimer) {
                 clearTimeout(Block.dragTimer);
                 Block.dragTimer = null;
@@ -401,6 +404,7 @@ export class Block {
         if (!thiz) return;
         e.preventDefault();
         e.stopPropagation();
+        console.log(`mouseup ${thiz.name}`)
         $(".trash").removeClass("visible");
         let target = $(document).data("droptarget");
         if (target && target._droptype) {
