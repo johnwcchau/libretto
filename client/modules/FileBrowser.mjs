@@ -100,6 +100,7 @@ class FileBrowser {
         getCurrentSession().WsClient.send("ls", {path: this._cd}).then(r => {
             this._filelist.html("");
             this._cd = r["cd"];
+            this._pwd.html(this._cd);
             r.objs.forEach(v => {
                 const a = $('<a href="#">').html(v[0]);
                 if (v[0] == "..") a.addClass("fileobj_parentdir");
@@ -262,6 +263,7 @@ class FileBrowser {
         this._cd = "";
         this._panel = $("<div>").addClass("fileBrowser");
         this._toolbar = $("<div>").addClass("fileBrowserBar toolbar").appendTo(this._panel);
+        this._pwd = $("<div>").addClass("file-browser-pwd").appendTo(this._panel);
         this._filelist = $("<div>").addClass("fileList list-view").appendTo(this._panel);
         this.#enableFileDrop();
         $('<a href="#"><img src="/static/img/create_new_folder_black_24dp.svg" alt="Mkdir" /></a>').click(() => {

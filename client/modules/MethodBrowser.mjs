@@ -46,6 +46,7 @@ class MethodBrowser {
         a.appendTo(this._methodlist);
     }
     #search() {
+        this._pwd.html(`Search for ${this._filter}`);
         Object.entries(this._blockTypes.cls).forEach(([i, v]) => {
             if (i.toLowerCase().indexOf(this._filter) == -1) return;
             this.#createMethodObj(i, v);
@@ -63,6 +64,7 @@ class MethodBrowser {
         this._methodlist.html("");
         if (this._filter) this.#search();
         else {
+            this._pwd.html(this._cd);
             this.#listgroup();
             this.#listmethods();
         }
@@ -112,6 +114,7 @@ class MethodBrowser {
         this._filter = "";
         this.searchTimeout = null;
         this._panel = $("<div>").addClass("methodBrowser");
+        this._pwd = $("<div>").addClass("file-browser-pwd").appendTo(this._panel);
         $('<input id="method_search" placeholder="search...">')
             //.on("keyup", {thiz: this}, MethodBrowser.onSearchKeyUp)
             .on("keyup", {thiz: this}, MethodBrowser.onSearch)
