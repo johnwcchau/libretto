@@ -22,6 +22,11 @@
             "filename": "/examples/kaggle_breast_cancer.csv"
         },
         "2": {
+            "_pytype": "skll.baseblock.Placeholder",
+            "_jstype": "skll.baseblock.Placeholder",
+            "comment": "###Workflow:\n1. One hot encoding all category columns\n2. Seperate ID and target column from main dataset\n3. Drop unused columns\n4. Perform training with XGBoost"
+        },
+        "3": {
             "name": "OneHotEncoder-8945",
             "_pytype": "skll.plugin.sklearn.block.SklClass",
             "_jstype": "sklearn.preprocessing.OneHotEncoder",
@@ -38,7 +43,7 @@
                 "drop": "first"
             }
         },
-        "3": {
+        "4": {
             "name": "Extract Y/ID Column-3af8",
             "_pytype": "skll.plugin.tabular.tabular.XyidSplit",
             "_jstype": "skll.plugin.tabular.XyidSplit",
@@ -48,7 +53,7 @@
             "ycol": "diagnosis",
             "idcol": "id"
         },
-        "4": {
+        "5": {
             "name": "MinMaxScaler-de35",
             "_pytype": "skll.plugin.sklearn.block.SklClass",
             "_jstype": "sklearn.preprocessing.MinMaxScaler",
@@ -60,7 +65,7 @@
             "initargs": [],
             "initkargs": {}
         },
-        "5": {
+        "6": {
             "name": "Drop-46d5",
             "_pytype": "skll.plugin.tabular.tabular.Drop",
             "_jstype": "skll.plugin.tabular.Drop",
@@ -75,7 +80,12 @@
             "as_new_columns": false,
             "as_new_rows": false
         },
-        "6": {
+        "7": {
+            "_pytype": "skll.baseblock.Placeholder",
+            "_jstype": "skll.baseblock.Placeholder",
+            "comment": "Note: _KFold block will only fold data in __Test__ mode and pass through in other modes_"
+        },
+        "8": {
             "name": "KFold-2175",
             "_pytype": "skll.plugin.sklearn.block.SklSplitter",
             "_jstype": "sklearn.model_selection.KFold",
@@ -115,6 +125,11 @@
                     }
                 }
             }
+        },
+        "9": {
+            "_pytype": "skll.baseblock.Placeholder",
+            "_jstype": "skll.baseblock.Placeholder",
+            "comment": "_After model building, click on the __Publish__ button to output the trained model, which can then be deploy in production system._"
         }
     }
 }
