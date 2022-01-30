@@ -147,6 +147,11 @@ class PluginStaticFileHandler(MyStaticFileHandler):
             return
         await super().get(path, include_body)
 
+class NoCacheStaticFileHandler(MyStaticFileHandler):
+    def set_extra_headers(self, path: str) -> None:
+        super().set_extra_headers(path)
+        self.set_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("client/index.html")
@@ -202,7 +207,7 @@ def __main():
         (r"/", IndexHandler),
         (r'/(favicon\.ico)', StaticFileHandler, {"path": "./client"}),
         (r"/static/(.*)", MyStaticFileHandler, {"path":"./client"}),
-        (r"/storage/(.*)", MyStaticFileHandler, {"path":"./storage"}),
+        (r"/storage/(.*)", NoCacheStaticFileHandler, {"path":"./storage"}),
         (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./skll/plugin"}),
         (r"/ws/(.*)", WebSocketHandler),
     ], debug=debug)
