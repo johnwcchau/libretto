@@ -1,6 +1,6 @@
 # %%
 from typing import Generator
-from skll.baseblock import Block, Loop, RunSpec, import_load
+from libretto.baseblock import Block, Loop, RunSpec, import_load
 from importlib import import_module
 import pandas as pd
 import logging
@@ -380,10 +380,10 @@ if __name__ == "__main__":
 
 # %%
 if __name__ == "__main__":
-    from skll.block.input import Input
+    from libretto.block.input import Input
     input = Input("kaggle_hpp_train.csv")
-    from skll.block.baseblock import Split
-    from skll.block.splitter import XyidSplit
+    from libretto.block.baseblock import Split
+    from libretto.block.splitter import XyidSplit
     input[0] = Split([["MSSubClass", "LotArea", "YrSold", "SalePrice"]], out_y=1)
     input[0][1] = XyidSplit("SalePrice")
     input[0][1][0] = SklClass("sklearn.linear_model.LinearRegression", trainmethod="fit+test", testmethod="predict", scoremethod="score")
@@ -400,7 +400,7 @@ if __name__ == "__main__":
 
 # %%    
 if __name__ == "__main__":
-    from skll.block import FileInput
+    from libretto.block import FileInput
     input = FileInput("kaggle_titanic_train.csv")
     input[0] = RunModeSplit()
     print(input(RunSpec(), None))

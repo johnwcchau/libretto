@@ -1,5 +1,5 @@
 """
-Entry point for SK-ll runtime mode
+Entry point for Libretto runtime mode
 
 Runtime mode is unattended mode for "one-click" model deployment
 """
@@ -17,12 +17,12 @@ import tornado.websocket
 
 import pandas as pd
 
-from skll import plugin
-from skll.inout import Output
-from skll.baseblock import Block, Parent, RunSpec
-from skll.jsoncodec import Encoder, json_decode
+from libretto import plugin
+from libretto.inout import Output
+from libretto.baseblock import Block, Parent, RunSpec
+from libretto.jsoncodec import Encoder, json_decode
 
-from skll.tpe import TPE
+from libretto.tpe import TPE
 
 ioloop:tornado.ioloop.IOLoop
 
@@ -155,7 +155,7 @@ def __main():
     # regular argparse
     #
     import argparse
-    parser = argparse.ArgumentParser(description="SK-ll Runtime")
+    parser = argparse.ArgumentParser(description="Libretto Runtime")
     parser.add_argument("-name", help="Instance name")
     args = parser.parse_args()
     instance_name = args.name if "name" in args else None
@@ -198,7 +198,7 @@ def __main():
         logging.error(repr(e))
         exit()
 
-    logging.info("SK-ll runtime started.")
+    logging.info("Libretto runtime started.")
     
     #
     # Create tornado webapp and start

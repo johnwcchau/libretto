@@ -79,8 +79,8 @@ export class Session {
     }
     reset() {
         if (!this.warnBeforeLoad()) return null; 
-        const parent = new Parent({name: "Untitled", _jstype: "skll.baseblock.Parent"});
-        //const input = new Block({name: "Input", _jstype: "skll.block.input.FileInput"});
+        const parent = new Parent({name: "Untitled", _jstype: "libretto.baseblock.Parent"});
+        //const input = new Block({name: "Input", _jstype: "libretto.block.input.FileInput"});
         //parent.append(input, 0);
         this.#setReceipe(parent);
         this.model._model_changed = true;
@@ -146,7 +146,7 @@ export class Session {
         const url = URL.createObjectURL(blob);
         const link = document.createElement( 'a' );
         link.setAttribute( 'href', url );
-        link.setAttribute( 'download', `${this.model.name}.skll.json` );
+        link.setAttribute( 'download', `${this.model.name}.libretto.json` );
         const event = document.createEvent( 'MouseEvents' );
         event.initMouseEvent( 'click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
         link.dispatchEvent( event );
@@ -155,7 +155,7 @@ export class Session {
         const blob = new Blob([Session.encode(JSON.stringify(this.model.export(), null, 4))], {
             type: 'application/octet-stream'
         });
-        this.WsClient.uploadBlob(blob, `${FileBrowser._cd}/${this.model.name}.skll.json`).then(r=>{
+        this.WsClient.uploadBlob(blob, `${FileBrowser._cd}/${this.model.name}.libretto.json`).then(r=>{
             FileBrowser.refresh();
         });
     }
@@ -166,7 +166,7 @@ export class Session {
         //
         if (!confirm('Please make sure the receipe is fully "cooked" and all input blocks are configured for runtime accordingly')) 
             return;
-        const name = `${FileBrowser._cd}/${this.model.name}.skll.dump`;
+        const name = `${FileBrowser._cd}/${this.model.name}.libretto.dump`;
         FileBrowser.checkExist(name).then(exist => {
             if (exist && !confirm(`${name} already exist, overwrite?`)) throw -1;
             return this.WsClient.send("export", {

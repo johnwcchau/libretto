@@ -12,9 +12,9 @@ Blocks for tabular input manipulation
 
 # %%
 from typing import Generator
-from skll.baseblock import Block, Parent, Loop, RunSpec
+from libretto.baseblock import Block, Parent, Loop, RunSpec
 import pandas as pd
-from skll.fileio import FileIO
+from libretto.fileio import FileIO
 from sqlalchemy import create_engine
 
 class FileInput(Block):
@@ -26,9 +26,11 @@ class FileInput(Block):
     filename : str
         filename relative to storage directory
     """
-    def __init__(self, filename:str = None, **kwargs):
+    def __init__(self, filename:str = None, mode:str="discard", on:str=None, **kwargs):
         super().__init__(**kwargs)
         self.filename = filename
+        self.on = on
+        self.mode = mode
     
     def readin(self):
         fileio = FileIO()
@@ -49,12 +51,19 @@ class FileInput(Block):
     def run(self, runspec: RunSpec, x:pd.DataFrame, y=None, id=None):
         if not hasattr(self, "df") or self.df is None:
             self.readin()
-        runspec.out.working(f'{self.name}: has {self.df.shape[0]} rows and {self.df.shape[1]} columns')
-        if runspec.mode == RunSpec.RunMode.PREVIEW or runspec.mode == RunSpec.RunMode.COLUMNS:
-            runspec.out.working(f'{self.name}: Limiting to 100 rows for preview')
-            return self.df.iloc[:100], None, None
+        if x is None or self.mode == "discard":
+            x = self.df
         else:
-            return self.df, None, None
+            x = x.merge(self.df, how=self.mode, on=self.on)
+        runspec.out.working(f'{self.name}: has {self.df.shape[0]} rows and {self.df.shape[1]} columns')
+        if runspec.mode == runspec.mode == RunSpec.RunMode.COLUMNS:
+            runspec.out.working(f'{self.name}: Limiting to 10 rows for column check')
+            return x.iloc[:10], None, None
+        elif runspec.mode == RunSpec.RunMode.PREVIEW or runspec.mode == RunSpec.RunMode.COLUMNS:
+            runspec.out.working(f'{self.name}: Limiting to 100 rows for preview')
+            return x.iloc[:100], None, None
+        else:
+            return x, None, None
     
     def dump(self) -> dict:
         r = super().dump()

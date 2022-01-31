@@ -101,8 +101,8 @@ def sklclass_to_dict(func:str)->dict:
         'cls': "Block",
         'typename': name,
         'desc': desc,
-        'childof': "skll.plugin.sklearn.block.SklClass",
-        'pytype': "skll.plugin.sklearn.block.SklClass",
+        'childof': "libretto.plugin.sklearn.block.SklClass",
+        'pytype': "libretto.plugin.sklearn.block.SklClass",
         'group': '.'.join(func.split('.')[:-1]),
         "properties": {
             "initkargs": {"hidden": True}, 
@@ -120,8 +120,8 @@ def sklclass_to_dict(func:str)->dict:
     for name in keys:
         if name in ["estimator", "base_estimator", "estimators"]:
             result["cls"] = "Parent"
-            result["childof"] = "skll.plugin.sklearn.block.SklWrappingClass"
-            result["pytype"] = "skll.plugin.sklearn.block.SklWrappingClass"
+            result["childof"] = "libretto.plugin.sklearn.block.SklWrappingClass"
+            result["pytype"] = "libretto.plugin.sklearn.block.SklWrappingClass"
             result["defaults"] = {
                 "cls": func,
                 "estname": name,
@@ -132,8 +132,8 @@ def sklclass_to_dict(func:str)->dict:
         else:
             if name == "n_splits":
                 result["cls"] = "Parent"
-                result["childof"] = "skll.plugin.sklearn.block.SklSplitter"
-                result["pytype"] = "skll.plugin.sklearn.block.SklSplitter"
+                result["childof"] = "libretto.plugin.sklearn.block.SklSplitter"
+                result["pytype"] = "libretto.plugin.sklearn.block.SklSplitter"
             result["properties"][name] = Enumerator.formatSklParam(properties[name])
 
     return result
@@ -146,8 +146,8 @@ def sklmethod_to_dict(func:str)->dict:
         'cls': "Block",
         'typename': name,
         'desc': desc,
-        'childof': "skll.plugin.sklearn.block.SklMethod",
-        'pytype': "skll.plugin.sklearn.block.SklMethod",
+        'childof': "libretto.plugin.sklearn.block.SklMethod",
+        'pytype': "libretto.plugin.sklearn.block.SklMethod",
         'group': '.'.join(func.split('.')[:-1]),
         "properties": {
             "args": {"hidden": True}, 
@@ -163,8 +163,8 @@ def sklmethod_to_dict(func:str)->dict:
     keys = properties.keys()
     for name in keys:
         if name in ["y_true", "y_score", "y_pred", "labels", "labels_true", "labels_pred"]:
-            result['childof'] = "skll.plugin.sklearn.block.SklScoringMethod"
-            result['pytype'] = "skll.plugin.sklearn.block.SklScoringMethod"
+            result['childof'] = "libretto.plugin.sklearn.block.SklScoringMethod"
+            result['pytype'] = "libretto.plugin.sklearn.block.SklScoringMethod"
             if name in ["y_pred", "y_score", "labels_pred"]:
                 result['defaults']['xname'] = name
             else:

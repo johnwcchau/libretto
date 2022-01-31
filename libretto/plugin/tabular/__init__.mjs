@@ -3,23 +3,25 @@ import { Parent, Block, BlockTypes } from "/static/modules/BaseBlock.mjs";
 export default null;
 
 new BlockTypes().add({
-    "skll.plugin.tabular.FileInput": {
+    "libretto.plugin.tabular.FileInput": {
         cls: Block,
         typename: "Input from file",
         group: "tabular data",
         desc: "Tablular data input from a file",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "filename": {
                 desc: "Name of input file",
                 type: "file",
             },
-            "column_mask": {
-                hidden: true,
+            "mode": {
+                desc: "How to merge with existing data, default is discard existing",
+                type: "option(discard,left,right,outer,inner,cross)",
             },
-            "row_filter": {
-                hidden: true,
-            },
+            "on": {
+                desc: "Column for join operation",
+                type: "column",
+            }
         },
         defaults: {
             "disable_mask": ["run"],
@@ -48,12 +50,12 @@ new BlockTypes().add({
             }
         },
     },
-    "skll.plugin.tabular.SQLInput": {
+    "libretto.plugin.tabular.SQLInput": {
         cls: Block,
         typename: "Input from sql",
         group: "tabular data",
         desc: "Tablular data input from database",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "connstr": {
                 desc: "Connection string url",
@@ -94,12 +96,12 @@ new BlockTypes().add({
             }
         },
     },
-    "skll.plugin.tabular.FileOutput": {
+    "libretto.plugin.tabular.FileOutput": {
         cls: Block,
         typename: "File output",
         group: "tabular data",
         desc: "Output result to CSV file, it will append instead of overwrite, without checking for existing data structure",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "filename": {
                 desc: "Name of input file",
@@ -128,12 +130,12 @@ new BlockTypes().add({
             }
         },
     },
-    "skll.plugin.tabular.SQLOutput": {
+    "libretto.plugin.tabular.SQLOutput": {
         cls: Block,
         typename: "Output to sql",
         group: "tabular data",
         desc: "Write result into database",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "connstr": {
                 desc: "Connection string url",
@@ -174,12 +176,12 @@ new BlockTypes().add({
             }
         },
     },
-    "skll.plugin.tabular.Method": {
+    "libretto.plugin.tabular.Method": {
         cls: Parent,
         typename: "Generic Method call",
         group: "tabular data.methods",
         desc: "Member method call to the datatable",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "_method": {
                 desc: "method name",
@@ -195,12 +197,12 @@ new BlockTypes().add({
             }
         },
     },
-    "skll.plugin.tabular.Subset": {
+    "libretto.plugin.tabular.Subset": {
         cls: Parent,
         typename: "Subset Method",
         group: "tabular data.subsets",
         desc: "Group data into subsets and process one-at-a-time",
-        childof: "skll.baseblock.Loop",
+        childof: "libretto.baseblock.Loop",
         properties: {
             "_method": {
                 desc: "method name",
@@ -212,12 +214,12 @@ new BlockTypes().add({
             },
         },
     },
-    "skll.plugin.tabular.Drop": {
+    "libretto.plugin.tabular.Drop": {
         cls: Block,
         typename: "Drop",
         group: "tabular data",
         desc: "Drop columns / rows by simply returning nothing",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             as_new_columns: { hidden: true },
         },
@@ -225,19 +227,19 @@ new BlockTypes().add({
             as_new_columns: false,
         }
     },
-    "skll.plugin.tabular.ColumnWise": {
+    "libretto.plugin.tabular.ColumnWise": {
         cls: Parent,
         typename: "Column Wise Operation",
         group: "tabular data",
         desc: "Transformation for each column",
-        childof: "skll.baseblock.Parent",
+        childof: "libretto.baseblock.Parent",
     },
-    "skll.plugin.tabular.XyidSplit": {
+    "libretto.plugin.tabular.XyidSplit": {
         cls: Block,
         typename: "Extract Y/ID Column",
         group: "tabular data",
         desc: "Specifying column for Y and/or Id",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "ycol": {
                 desc: "name of y column",
@@ -255,12 +257,12 @@ new BlockTypes().add({
  * Method shortcuts
  */
 new BlockTypes().add({
-    "skll.plugin.tabular.fillna": {
+    "libretto.plugin.tabular.fillna": {
         "cls": Block,
         "typename": "Impute missing values",
         "desc": "Missing value impute",
-        "childof": "skll.plugin.tabular.Method",
-        "pytype": "skll.plugin.tabular.Method",
+        "childof": "libretto.plugin.tabular.Method",
+        "pytype": "libretto.plugin.tabular.Method",
         "group": "tabular data.methods",
         "properties": {
             "_method": {
@@ -283,12 +285,12 @@ new BlockTypes().add({
             "transpose": false,
         }
     },
-    "skll.plugin.tabular.apply": {
+    "libretto.plugin.tabular.apply": {
         "cls": Block,
         "typename": "Row-wise formula",
         "desc": "Process data row-by-row and output results as a column",
-        "childof": "skll.plugin.tabular.Method",
-        "pytype": "skll.plugin.tabular.Method",
+        "childof": "libretto.plugin.tabular.Method",
+        "pytype": "libretto.plugin.tabular.Method",
         "group": "tabular data.methods",
         "properties": {
             "_method": {
@@ -314,12 +316,12 @@ new BlockTypes().add({
             "transpose": false,
         }
     },
-    "skll.plugin.tabular.agg": {
+    "libretto.plugin.tabular.agg": {
         "cls": Block,
         "typename": "Aggregate",
         "desc": "Aggregate rows into one signle row",
-        "childof": "skll.plugin.tabular.Method",
-        "pytype": "skll.plugin.tabular.Method",
+        "childof": "libretto.plugin.tabular.Method",
+        "pytype": "libretto.plugin.tabular.Method",
         "group": "tabular data.methods",
         "properties": {
             "_method": {
@@ -345,12 +347,12 @@ new BlockTypes().add({
             "transpose": true,
         }
     },
-    "skll.plugin.tabular.groupby": {
+    "libretto.plugin.tabular.groupby": {
         "cls": Parent,
         "typename": "Groupby",
         "desc": "Group DataFrame using a mapper or by a Series of columns.",
-        "childof": "skll.plugin.tabular.Subset",
-        "pytype": "skll.plugin.tabular.Subset",
+        "childof": "libretto.plugin.tabular.Subset",
+        "pytype": "libretto.plugin.tabular.Subset",
         "group": "tabular data.subsets",
         "properties": {
             "_method": {
@@ -369,12 +371,12 @@ new BlockTypes().add({
             "_method": "groupby",
         }
     },
-    "skll.plugin.tabular.rolling": {
+    "libretto.plugin.tabular.rolling": {
         "cls": Parent,
         "typename": "Rolling",
         "desc": "Provide rolling window calculations.",
-        "childof": "skll.plugin.tabular.Subset",
-        "pytype": "skll.plugin.tabular.Subset",
+        "childof": "libretto.plugin.tabular.Subset",
+        "pytype": "libretto.plugin.tabular.Subset",
         "group": "tabular data.subsets",
         "properties": {
             "_method": {
@@ -409,12 +411,12 @@ new BlockTypes().add({
             "_method": "rolling",
         }
     },
-    "skll.plugin.tabular.expanding": {
+    "libretto.plugin.tabular.expanding": {
         "cls": Parent,
         "typename": "Expanding",
         "desc": "Provide expanding window calculations.",
-        "childof": "skll.plugin.tabular.Subset",
-        "pytype": "skll.plugin.tabular.Subset",
+        "childof": "libretto.plugin.tabular.Subset",
+        "pytype": "libretto.plugin.tabular.Subset",
         "group": "tabular data.subsets",
         "properties": {
             "_method": {
@@ -439,12 +441,12 @@ new BlockTypes().add({
             "_method": "expanding",
         }
     },
-    "skll.plugin.tabular.ewm": {
+    "libretto.plugin.tabular.ewm": {
         "cls": Parent,
         "typename": "ewm",
         "desc": "Provide exponentially weighted (EW) calculations. Exactly one parameter: com, span, halflife, or alpha must be provided.",
-        "childof": "skll.plugin.tabular.Subset",
-        "pytype": "skll.plugin.tabular.Subset",
+        "childof": "libretto.plugin.tabular.Subset",
+        "pytype": "libretto.plugin.tabular.Subset",
         "group": "tabular data.subsets",
         "properties": {
             "_method": {

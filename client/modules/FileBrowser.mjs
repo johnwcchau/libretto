@@ -101,13 +101,31 @@ class FileBrowser {
             this._filelist.html("");
             this._cd = r["cd"];
             this._pwd.html(this._cd);
+            let dirs = [];
+            let files = [];
             r.objs.forEach(v => {
-                const a = $('<a href="#">').html(v[0]);
+                if (v[0] == "..") dirs.push(v);
+                else if (v[1]) dirs.push(v);
+                else files.push(v);
+            })
+            dirs.forEach(v => {
+                const a = $('<a href="#">').html(v[0])
+                    .appendTo(this._filelist);
                 if (v[0] == "..") a.addClass("fileobj_parentdir");
-                if (v[1]) a.addClass("fileobj_dir");
-                else a.addClass("fileobj_file");
-                a.appendTo(this._filelist);
-            });
+                else a.addClass("fileobj_dir");
+            })
+            files.forEach(v => {
+                $('<a href="#">').html(v[0])
+                    .addClass("fileobj_file")
+                    .appendTo(this._filelist);
+            })
+            // r.objs.forEach(v => {
+            //     const a = $('<a href="#">').html(v[0]);
+            //     if (v[0] == "..") a.addClass("fileobj_parentdir");
+            //     if (v[1]) a.addClass("fileobj_dir");
+            //     else a.addClass("fileobj_file");
+            //     a.appendTo(this._filelist);
+            // });
             $(".fileobj_dir").click((e) => {
                 this._cd += "/" + $(e.delegateTarget).html();
                 this.refresh();
@@ -129,7 +147,7 @@ class FileBrowser {
                 FileBrowser._dragTimer = setTimeout(()=>{
                     const filename = `${this._cd}/${$(e.delegateTarget).html()}`;
                     let promise;
-                    if (filename.endsWith(".skll.json")) {
+                    if (filename.endsWith(".libretto.json")) {
                         promise = getCurrentSession().readRemote(filename);
                     } else {
                         promise = new Promise(res => {
@@ -180,7 +198,7 @@ class FileBrowser {
                     this.#makeRenContextMenuOption(thiz.html()),
                     this.#makeDelContextMenuOption(thiz.html()),
                 ];
-                if (name.endsWith(".skll.json")) {
+                if (name.endsWith(".libretto.json")) {
                     contexts.unshift({
                         title: "Load as receipe",
                         icon: "/static/img/open_in_browser_black_24dp.svg",

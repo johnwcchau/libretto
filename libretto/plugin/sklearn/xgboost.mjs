@@ -3,8 +3,8 @@ const xgboost={
         "cls": "Block",
         "typename": "XGBModel",
         "desc": "Implementation of the Scikit-Learn API for XGBoost.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "xgboost",
         "properties": {
             "initkargs": {
@@ -165,7 +165,7 @@ const xgboost={
         "typename": "XGBClassifier",
         "desc": "Implementation of the scikit-learn API for XGBoost classification.",
         "childof": "xgboost.XGBModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "xgboost",
         "defaults": {
             "cls": "xgboost.XGBClassifier"
@@ -176,7 +176,7 @@ const xgboost={
         "typename": "XGBRFClassifier",
         "desc": "scikit-learn API for XGBoost random forest classification.",
         "childof": "xgboost.XGBModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "xgboost",
         "defaults": {
             "cls": "xgboost.XGBRFClassifier"
@@ -187,7 +187,7 @@ const xgboost={
         "typename": "XGBRanker",
         "desc": "Implementation of the Scikit-Learn API for XGBoost Ranking.",
         "childof": "xgboost.XGBModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "xgboost",
         "defaults": {
             "cls": "xgboost.XGBRanker"
@@ -198,7 +198,7 @@ const xgboost={
         "typename": "XGBRFRegressor",
         "desc": "scikit-learn API for XGBoost random forest regression.",
         "childof": "xgboost.XGBModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "xgboost",
         "defaults": {
             "cls": "xgboost.XGBRFRegressor"
@@ -209,7 +209,7 @@ const xgboost={
         "typename": "XGBRegressor",
         "desc": "Implementation of the scikit-learn API for XGBoost regression.",
         "childof": "xgboost.XGBModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "xgboost",
         "defaults": {
             "cls": "xgboost.XGBRegressor"

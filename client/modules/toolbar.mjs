@@ -23,7 +23,7 @@ export class Toolbar {
 class MainToolbar extends Toolbar{
     
     init() {
-        this.addObj($("<h3>SK-ll Editor</h3>"));
+        this.addObj($("<h3>Libretto Editor</h3>"));
         this.addbtn({
             title: "New model",
             icon: "/static/img/clear_black_24dp.svg",

@@ -3,8 +3,8 @@ const gtda={
         "cls": "Block",
         "typename": "Derivative",
         "desc": "Derivatives of multi-channel curves.  A multi-channel (integer sampled) curve is a 2D array of shape ``(n_channels, n_bins)``, where each row represents the y-values in one of the channels. This transformer computes the n-th order derivative of each channel in each multi-channel curve in a collection, by discrete differences. The output is another collection of multi-channel curves.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.curves",
         "properties": {
             "initkargs": {
@@ -46,8 +46,8 @@ const gtda={
         "cls": "Block",
         "typename": "StandardFeatures",
         "desc": "Standard features from multi-channel curves.  A multi-channel (integer sampled) curve is a 2D array of shape ``(n_channels, n_bins)``, where each row represents the y-values in one of the channels. This transformer applies scalar or vector-valued functions channel-wise to extract features from each multi-channel curve in a collection. The output is always a 2D array such that row ``i`` is the concatenation of the outputs of the chosen functions on the channels in the ``i``-th (multi-)curve in the collection.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.curves",
         "properties": {
             "initkargs": {
@@ -95,8 +95,8 @@ const gtda={
         "cls": "Block",
         "typename": "Amplitude",
         "desc": ":ref:`Amplitudes <vectorization_amplitude_and_kernel>` of persistence diagrams.  For each persistence diagram in a collection, a vector of amplitudes or a single scalar amplitude is calculated according to the following steps:      1. The diagram is partitioned into subdiagrams according to homology        dimension.     2. The amplitude of each subdiagram is calculated according to the        parameters `metric` and `metric_params`. This gives a vector of        amplitudes, :math:`\\mathbf{a} = (a_{q_1}, \\ldots, a_{q_n})` where        the :math:`q_i` range over the available homology dimensions.     3. The final result is either :math:`\\mathbf{a}` itself or a norm of        :math:`\\mathbf{a}`, specified by the parameter `order`.  **Important notes**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.     - The shape of outputs of :meth:`transform` depends on the value of the       `order` parameter.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -150,8 +150,8 @@ const gtda={
         "cls": "Block",
         "typename": "BettiCurve",
         "desc": ":ref:`Betti curves <betti_curve>` of persistence diagrams.  Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are considered separately, and their respective Betti curves are obtained by evenly sampling the :ref:`filtration parameter <filtered_complex>`.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -193,8 +193,8 @@ const gtda={
         "cls": "Block",
         "typename": "ComplexPolynomial",
         "desc": "Coefficients of complex polynomials whose roots are obtained from points in persistence diagrams.  Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are first considered separately. For each subdiagram, the polynomial whose roots are complex numbers obtained from its birth-death pairs is computed, and its :attr:`n_coefficients_` highest-degree complex coefficients excluding the top one are stored into a single real vector by concatenating the vector of all real parts with the vector of all imaginary parts [1]_ (if not enough coefficients are available to form a vector of the required length, padding with zeros is performed). Finally, all such vectors coming from different subdiagrams are concatenated to yield a single vector for the diagram.  There are three possibilities for mapping birth-death pairs :math:`(b, d)` to complex polynomial roots. They are:  .. math::    :nowrap:     \\begin{gather*}    R(b, d) = b + \\mathrm{i} d, \\\\    S(b, d) = \\frac{d - b}{\\sqrt{2} r} (b + \\mathrm{i} d), \\\\    T(b, d) = \\frac{d - b}{2} [\\cos{r} - \\sin{r} +        \\mathrm{i}(\\cos{r} + \\sin{r})],    \\end{gather*}  where :math:`r = \\sqrt{b^2 + d^2}`.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -242,8 +242,8 @@ const gtda={
         "cls": "Block",
         "typename": "Filtering",
         "desc": "Filtering of persistence diagrams.  Filtering a diagram means discarding all points [b, d, q] representing non-trivial topological features whose lifetime d - b is less than or equal to a cutoff value. Points on the diagonal (i.e. for which b and d are equal) may still appear in the output for padding purposes, but carry no information.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -285,8 +285,8 @@ const gtda={
         "cls": "Block",
         "typename": "HeatKernel",
         "desc": "Convolution of persistence diagrams with a Gaussian kernel.  Based on ideas in [1]_. Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are considered separately and regarded as sums of Dirac deltas. Then, the convolution with a Gaussian kernel is computed over a rectangular grid of locations evenly sampled from appropriate ranges of the :ref:`filtration parameter <filtered_complex>`. The same is done with the reflected images of the subdiagrams about the diagonal, and the difference between the results of the two convolutions is computed. The result can be thought of as a (multi-channel) raster image.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -333,8 +333,8 @@ const gtda={
         "cls": "Block",
         "typename": "NumberOfPoints",
         "desc": "Number of off-diagonal points in persistence diagrams, per homology dimension.  Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are considered separately, and their respective numbers of off-diagonal points are calculated.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -370,8 +370,8 @@ const gtda={
         "cls": "Block",
         "typename": "PairwiseDistance",
         "desc": ":ref:`Distances <wasserstein_and_bottleneck_distance>` between pairs of persistence diagrams.  Given two collections of persistence diagrams consisting of birth-death-dimension triples [b, d, q], a collection of distance matrices or a single distance matrix between pairs of diagrams is calculated according to the following steps:      1. All diagrams are partitioned into subdiagrams corresponding to        distinct homology dimensions.     2. Pairwise distances between subdiagrams of equal homology        dimension are calculated according to the parameters `metric` and        `metric_params`. This gives a collection of distance matrices,        :math:`\\mathbf{D} = (D_{q_1}, \\ldots, D_{q_n})`.     3. The final result is either :math:`\\mathbf{D}` itself as a        three-dimensional array, or a single distance matrix constructed        by taking norms of the vectors of distances between diagram pairs.  **Important notes**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.     - The shape of outputs of :meth:`transform` depends on the value of the       `order` parameter.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -425,8 +425,8 @@ const gtda={
         "cls": "Block",
         "typename": "PersistenceEntropy",
         "desc": ":ref:`Persistence entropies <persistence_entropy>` of persistence diagrams.  Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are considered separately, and their respective persistence entropies are calculated as the (base 2) Shannon entropies of the collections of differences d - b (\"lifetimes\"), normalized by the sum of all such differences. Optionally, these entropies can be normalized according to a simple heuristic, see `normalize`.  **Important notes**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.     - By default, persistence subdiagrams containing only triples with zero       lifetime will have corresponding (normalized) entropies computed as       ``numpy.nan``. To avoid this, set a value of `nan_fill_value`       different from ``None``.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -474,8 +474,8 @@ const gtda={
         "cls": "Block",
         "typename": "PersistenceImage",
         "desc": ":ref:`Persistence images <TODO>` of persistence diagrams.  Based on ideas in [1]_. Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], the equivalent diagrams of birth-persistence-dimension [b, d-b, q] triples are computed and subdiagrams corresponding to distinct homology dimensions are considered separately and regarded as sums of Dirac deltas. Then, the convolution with a Gaussian kernel is computed over a rectangular grid of locations evenly sampled from appropriate ranges of the :ref:`filtration parameter <filtered_complex>`. The result can be thought of as a (multi-channel) raster image.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -528,8 +528,8 @@ const gtda={
         "cls": "Block",
         "typename": "PersistenceLandscape",
         "desc": ":ref:`Persistence landscapes <persistence_landscape>` of persistence diagrams.  Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are considered separately, and layers of their respective persistence landscapes are obtained by evenly sampling the :ref:`filtration parameter <filtered_complex>`.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -577,8 +577,8 @@ const gtda={
         "cls": "Block",
         "typename": "Scaler",
         "desc": "Linear scaling of persistence diagrams.  A positive scale factor :attr:`scale_` is calculated during :meth:`fit` by considering all available persistence diagrams partitioned according to homology dimensions. During :meth:`transform`, all birth-death pairs are divided by :attr:`scale_`.  The value of :attr:`scale_` depends on two things:      - A way of computing, for each homology dimension, the :ref:`amplitude       <vectorization_amplitude_and_kernel>` in that dimension of a       persistence diagram consisting of birth-death-dimension triples       [b, d, q]. Together, `metric` and `metric_params` define this in the       same way as in :class:`Amplitude`.     - A scalar-valued function which is applied to the resulting       two-dimensional array of amplitudes (one per diagram and homology       dimension) to obtain :attr:`scale_`.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -632,8 +632,8 @@ const gtda={
         "cls": "Block",
         "typename": "Silhouette",
         "desc": ":ref:`Power-weighted silhouettes <weighted_silhouette>` of persistence diagrams.  Based on ideas in [1]_. Given a persistence diagram consisting of birth-death-dimension triples [b, d, q], subdiagrams corresponding to distinct homology dimensions are considered separately, and their respective silhouettes are obtained by sampling the silhouette function over evenly spaced locations from appropriate ranges of the :ref:`filtration parameter <filtered_complex>`.  **Important note**:      - Input collections of persistence diagrams for this transformer must       satisfy certain requirements, see e.g. :meth:`fit`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.diagrams",
         "properties": {
             "initkargs": {
@@ -675,8 +675,8 @@ const gtda={
         "cls": "Block",
         "typename": "GraphGeodesicDistance",
         "desc": "Distance matrices arising from geodesic distances on graphs.  For each (possibly weighted and/or directed) graph in a collection, this transformer calculates the length of the shortest (directed or undirected) path between any two of its vertices, setting it to ``numpy.inf`` when two vertices cannot be connected by a path.  The graphs are represented by their adjacency matrices which can be dense arrays, sparse matrices or masked arrays. The following rules apply:  - In dense arrays of Boolean type, entries which are ``False`` represent   absent edges. - In dense arrays of integer or float type, zero entries represent edges   of length 0. Absent edges must be indicated by ``numpy.inf``. - In sparse matrices, non-stored values represent absent edges. Explicitly   stored zero or ``False`` edges represent edges of length 0.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.graphs",
         "properties": {
             "initkargs": {
@@ -730,8 +730,8 @@ const gtda={
         "cls": "Block",
         "typename": "KNeighborsGraph",
         "desc": "Adjacency matrices of :math:`k`-nearest neighbor graphs.  Given a two-dimensional array of row vectors seen as points in high-dimensional space, the corresponding :math:`k`NN graph is a directed graph with a vertex for every vector in the array, and a directed edge from vertex :math:`i` to vertex :math:`j \\neq i` whenever vector :math:`j` is among the :math:`k` nearest neighbors of vector :math:`i`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.graphs",
         "properties": {
             "initkargs": {
@@ -797,8 +797,8 @@ const gtda={
         "cls": "Block",
         "typename": "TransitionGraph",
         "desc": "Undirected transition graphs from arrays of time-evolving states.  Let A be a two-dimensional array viewed as a time series (along the row axis) of one-dimensional arrays encoding the \"state\" of a system. The corresponding *undirected transition graph* (or *network*) has as vertex set the set of all unique states (rows) in A, and there is an edge between vertex i and vertex j≠i if and only if the state corresponding to vertex j immediately follows the one corresponding to vertex i, somewhere in A.  Given a collection of two-dimensional arrays, this transformer performs two tasks:      1. Optionally, it preprocesses the arrays by applying a function row by        row to them. This can be used e.g. as a \"compression\" step to reduce        the size of the state space.     2. It computes the transition graph of each array as a sparse matrix of        zeros and ones.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.graphs",
         "properties": {
             "initkargs": {
@@ -846,8 +846,8 @@ const gtda={
         "cls": "Block",
         "typename": "CubicalPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from :ref:`filtered cubical complexes <cubical_complex>`.  Given a :ref:`greyscale image <cubical_chains_and_cubical_homology>`, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimensions and at different scales is summarised in the corresponding persistence diagram.  **Important note**:     - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -912,8 +912,8 @@ const gtda={
         "cls": "Block",
         "typename": "EuclideanCechPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from `Cech filtrations <cech_complex_and_cech_persistence>`_.  Given a :ref:`point cloud <distance_matrices_and_point_clouds>` in Euclidean space, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimensions and at different scales is summarised in the corresponding persistence diagram.  **Important note**:      - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -978,8 +978,8 @@ const gtda={
         "cls": "Block",
         "typename": "FlagserPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from :ref:`filtrations <filtered_complex>` of :ref:`directed or undirected flag complexes <clique_and_flag_complexes>` [1]_.  Given a weighted directed or undirected graph, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimension and at different scales is summarised in the corresponding persistence diagram.  **Important note**:      - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -1062,8 +1062,8 @@ const gtda={
         "cls": "Block",
         "typename": "SparseRipsPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from :ref:`Sparse Vietoris–Rips filtrations <vietoris-rips_complex_and_vietoris-rips_persistence>`.  Given a :ref:`point cloud <distance_matrices_and_point_clouds>` in Euclidean space, or an abstract :ref:`metric space <distance_matrices_and_point_clouds>` encoded by a distance matrix, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimensions and at different scales is summarised in the corresponding persistence diagram.  **Important note**:      - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -1140,8 +1140,8 @@ const gtda={
         "cls": "Block",
         "typename": "VietorisRipsPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from :ref:`Vietoris–Rips filtrations <vietoris-rips_complex_and_vietoris-rips_persistence>`.  Given a :ref:`point cloud <distance_matrices_and_point_clouds>` in Euclidean space, an abstract :ref:`metric space <distance_matrices_and_point_clouds>` encoded by a distance matrix, or the adjacency matrix of a weighted undirected graph, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimensions and at different scales is summarised in the corresponding persistence diagram.  **Important note**:      - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -1224,8 +1224,8 @@ const gtda={
         "cls": "Block",
         "typename": "WeakAlphaPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from :ref:`weak alpha filtrations <TODO>`.  Given a :ref:`point cloud <distance_matrices_and_point_clouds>` in Euclidean space, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimensions and at different scales is summarised in the corresponding persistence diagram.  The weak alpha filtration of a point cloud is defined to be the :ref:`Vietoris–Rips filtration <vietoris-rips_complex_and_vietoris-rips_persistence>` of the sparse matrix of Euclidean distances between neighbouring vertices in the Delaunay triangulation of the point cloud. In low dimensions, computing the persistent homology of this filtration can be much faster than computing Vietoris–Rips persistent homology via :class:`VietorisRipsPersistence`.  **Important note**:      - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -1290,8 +1290,8 @@ const gtda={
         "cls": "Block",
         "typename": "WeightedRipsPersistence",
         "desc": ":ref:`Persistence diagrams <persistence_diagram>` resulting from :ref:`weighted Vietoris–Rips filtrations <TODO>` as in [3]_.  Given a :ref:`point cloud <distance_matrices_and_point_clouds>` in Euclidean space, an abstract :ref:`metric space <distance_matrices_and_point_clouds>` encoded by a distance matrix, or the adjacency matrix of a weighted undirected graph, information about the appearance and disappearance of topological features (technically, :ref:`homology classes <homology_and_cohomology>`) of various dimensions and at different scales is summarised in the corresponding persistence diagram.  Weighted (Vietoris–)Rips filtrations can be useful to highlight topological features against outliers and noise. Among them, the distance-to-measure (DTM) filtration is particularly suited to point clouds due to several favourable properties. This implementation follows the general framework described in [3]_. The idea is that, starting from a way to compute vertex weights :math:`\\{w_i\\}_i` from an input point cloud/distance matrix/adjacency matrix, a modified adjacency matrix is determined whose diagonal entries are the :math:`\\{w_i\\}_i`, and whose edge weights are  .. math:: w_{ij} = \\begin{cases} \\max\\{ w_i, w_j \\} &\\text{if }    2\\mathrm{dist}_{ij} \\leq |w_i^p - w_j^p|^{\\frac{1}{p}}, \\\\    t &\\text{otherwise} \\end{cases}  where :math:`t` is the only positive root of  .. math:: 2 \\mathrm{dist}_{ij} = (t^p - w_i^p)^\\frac{1}{p} +    (t^p - w_j^p)^\\frac{1}{p}  and :math:`p` is a parameter (see `metric_params`). The modified adjacency matrices are then treated exactly as in :class:`VietorisRipsPersistence`.  **Important notes**:      - Vertex and edge weights are twice the ones in [3]_ so that the same       results as :class:`VietorisRipsPersistence` are obtained when all       vertex weights are zero.     - Persistence diagrams produced by this class must be interpreted with       care due to the presence of padding triples which carry no       information. See :meth:`transform` for additional information.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.homology",
         "properties": {
             "initkargs": {
@@ -1386,8 +1386,8 @@ const gtda={
         "cls": "Block",
         "typename": "Binarizer",
         "desc": "Binarize all 2D/3D greyscale images in a collection.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1428,8 +1428,8 @@ const gtda={
         "cls": "Block",
         "typename": "DensityFiltration",
         "desc": "Filtrations of 2D/3D binary images based on the number of activated neighboring pixels.  The density filtration assigns to each pixel of a binary image a greyscale value equal to the number of activated pixels within a ball centered around it.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1483,8 +1483,8 @@ const gtda={
         "cls": "Block",
         "typename": "DilationFiltration",
         "desc": "Filtrations of 2D/3D binary images based on the dilation of activated regions.  Binary dilation is a morphological operator commonly used in image processing and relies on the `scipy.ndimage     <https://docs.scipy.org/doc/scipy/reference/ndimage.html>`_ module.  This filtration assigns to each pixel in an image a greyscale value calculated as follows. If the minimum Manhattan distance between the pixel and any activated pixel in the image is less than or equal to the parameter `n_iterations`, the assigned value is this distance – in particular, activated pixels are assigned a value of 0. Otherwise, the assigned greyscale value is the sum of the lengths along all axes of the image – equivalently, it is the maximum Manhattan distance between any two pixels in the image. The name of this filtration comes from the fact that these values can be computed by iteratively dilating activated regions, thickening them by a total amount `n_iterations`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1526,8 +1526,8 @@ const gtda={
         "cls": "Block",
         "typename": "ErosionFiltration",
         "desc": "Filtrations of 2D/3D binary images based on the erosion of activated regions.  Binary erosion is a morphological operator commonly used in image processing and relies on the `scipy.ndimage     <https://docs.scipy.org/doc/scipy/reference/ndimage.html>`_ module.  This filtration assigns to each pixel in an image a greyscale value calculated as follows. If the minimum Manhattan distance between the pixel and any deactivated pixel in the image is less than or equal to the parameter `n_iterations`, the assigned value is this distance – in particular, deactivated pixels are assigned a value of 0. Otherwise, the assigned greyscale value is the sum of the lengths along all axes of the image – equivalently, it is the maximum Manhattan distance between any two pixels in the image. The name of this filtration comes from the fact that these values can be computed by iteratively eroding activated regions, shrinking them by a total amount `n_iterations`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1569,8 +1569,8 @@ const gtda={
         "cls": "Block",
         "typename": "HeightFiltration",
         "desc": "Filtrations of 2D/3D binary images based on distances to lines/planes.  The height filtration assigns to each activated pixel of a binary image a greyscale value equal to the distance between the pixel and the hyperplane defined by a direction vector and the first seen edge of the image following that direction. Deactivated pixels are assigned the value of the maximum distance between any pixel of the image and the hyperplane, plus one.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1611,8 +1611,8 @@ const gtda={
         "cls": "Block",
         "typename": "ImageToPointCloud",
         "desc": "Represent active pixels in 2D/3D binary images as points in 2D/3D space.  The coordinates of each point is calculated as follows. For each activated pixel, assign coordinates that are the pixel index on this image, after flipping the rows and then swapping between rows and columns.  This transformer is meant to transform a collection of images to a collection of point clouds so that persistent homology calculations can be performed.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1648,8 +1648,8 @@ const gtda={
         "cls": "Block",
         "typename": "Inverter",
         "desc": "Invert all 2D/3D images in a collection.  Applies an inversion function to the value of all pixels of all images in the input collection. If the images are binary, the inversion function is defined as the logical NOT function. Otherwise, it is the function :math:`f(x) = M - x`, where `x` is a pixel value and `M` is :attr:`max_value_`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1691,8 +1691,8 @@ const gtda={
         "cls": "Block",
         "typename": "Padder",
         "desc": "Pad all 2D/3D images in a collection.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1740,8 +1740,8 @@ const gtda={
         "cls": "Block",
         "typename": "RadialFiltration",
         "desc": "Filtrations of 2D/3D binary images based on distances to a reference pixel.  The radial filtration assigns to each pixel of a binary image a greyscale value computed as follows in terms of a reference pixel, called the \"center\", and of a \"radius\": if the binary pixel is active and lies within a ball defined by this center and this radius, then the assigned value equals this distance. In all other cases, the assigned value equals the maximum distance between any pixel of the image and the center pixel, plus one.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1801,8 +1801,8 @@ const gtda={
         "cls": "Block",
         "typename": "SignedDistanceFiltration",
         "desc": "Filtrations of 2D/3D binary images based on the dilation and the erosion of activated regions.  This filtration assigns to each pixel in an image a greyscale value calculated as follows. For activated pixels, if the minimum Manhattan distance between the pixel and any deactivated pixel in the image is less than or equal to the parameter `n_iterations`, the assigned value is this distance minus 1. Otherwise, the assigned greyscale value is the sum of the lengths along all axes of the image – equivalently, it is the maximum Manhattan distance between any two pixels in the image, minus 1. For deactivated pixels, if the minimum Manhattan distance between the pixel and any activated pixel in the image is less than or equal to the parameter `n_iterations`, the assigned value is the opposite of this distance. Otherwise, the assigned greyscale value is the opposite of the maximum Manhattan distance between any two pixels in the image.  The name of this filtration comes from the fact that it is a a negatively signed dilation plus a positively signed erosion, minus 1 on the activated pixels. Therefore, pixels the activated pixels at the boundary of the activated regions always have a pixel value of 0.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.images",
         "properties": {
             "initkargs": {
@@ -1844,8 +1844,8 @@ const gtda={
         "cls": "Block",
         "typename": "CubicalCover",
         "desc": "Cover of multi-dimensional data coming from overlapping hypercubes (technically, parallelopipeds) given by taking products of one-dimensional intervals.  In :meth:`fit`, :class:`OneDimensionalCover` objects are fitted independently on each column of the input array, according to the same parameters passed to the constructor. For example, if the :class:`CubicalCover` object is instantiated with ``kind='uniform'``, ``n_intervals=10`` and ``overlap_frac=0.1``, then each column of the input array is used to construct a cover of the real line by 10 equal-length intervals with fractional overlap of 0.1. Each element of the resulting multi-dimensional cover of Euclidean space is of the form :math:`I_{i, \\ldots, k} = I^{(0)}_i \\times \\cdots \\times I^{(d-1)}_k` where :math:`d` is the number of columns in the input array, and :math:`I^{(l)}_j` is the :math:`j`th cover interval constructed for feature dimension :math:`l`. In :meth:`transform`, the cover is applied to a new array `X'` to yield a cover of `X'`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -1893,8 +1893,8 @@ const gtda={
         "cls": "Block",
         "typename": "Eccentricity",
         "desc": "Eccentricities of points in a point cloud or abstract metric space.  Let `D` be a square matrix representing distances between points in a point cloud, or directly defining an abstract metric (or metric-like) space. The eccentricity of point `i` in the point cloud or abstract metric space is the `p`-norm (for some `p`) of row `i` in `D`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -1942,8 +1942,8 @@ const gtda={
         "cls": "Block",
         "typename": "FirstHistogramGap",
         "desc": "Agglomerative clustering with stopping rule given by a histogram-based version of the first gap method, introduced in [1]_.  Given a frequency threshold f and an initial integer k: 1) create a histogram of k equally spaced bins of the number of merges in the dendrogram, as a function of the linkage parameter; 2) the value of linkage at which the tree is to be cut is the first one after which a bin of height no greater than f (i.e. a \"gap\") is observed; 3) if no gap is observed, increase k and repeat 1) and 2) until termination. The algorithm can be partially overridden to ensure that the final number of clusters does not exceed a certain threshold, by passing a parameter `max_fraction`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2009,8 +2009,8 @@ const gtda={
         "cls": "Block",
         "typename": "FirstSimpleGap",
         "desc": "Agglomerative clustering cutting the dendrogram at the first instance of a sufficiently large gap.  A simple threshold is determined as a fraction of the largest linkage value in the full dendrogram. If possible, the dendrogram is cut at the first occurrence of a gap, between the linkage values of successive merges, which exceeds this threshold. Otherwise, a single cluster is returned. The algorithm can be partially overridden to ensure that the final number of clusters does not exceed a certain threshold, by passing a parameter `max_fraction`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2070,8 +2070,8 @@ const gtda={
         "cls": "Block",
         "typename": "MapperInteractivePlotter",
         "desc": "Plot Mapper graphs in a Jupyter session, with interactivity on pipeline parameters.  Provides functionality to interactively update parameters from the cover, clustering and graph construction steps defined in `pipeline`. An interactive widget is produced when calling :meth:`plot`. After interacting with the widget, the current state of all outputs which may have been altered can be retrieved via one of the attributes listed below.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2117,8 +2117,8 @@ const gtda={
         "cls": "Block",
         "typename": "Nerve",
         "desc": "1-skeleton of the nerve of a refined Mapper cover, i.e. the Mapper graph.  This transformer is the final step in the :class:`gtda.mapper.pipeline.MapperPipeline` objects created by :func:`gtda.mapper.make_mapper_pipeline`. It corresponds the last two arrows in `this diagram <../../../../_images/mapper_pipeline.svg>`_.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2166,8 +2166,8 @@ const gtda={
         "cls": "Block",
         "typename": "OneDimensionalCover",
         "desc": "Cover of one-dimensional data coming from open overlapping intervals.  In :meth:`fit`, given a training array `X` representing a collection of real numbers, a cover of the real line by open intervals :math:`I_k = (a_k, b_k)` (:math:`k = 1, \\ldots, n`, :math:`a_k < a_{k+1}`, :math:`b_k < b_{k+1}`) is constructed based on the distribution of values in `X`. In :meth:`transform`, the cover is applied to a new array `X'` to yield a cover of `X'`.  All covers constructed in :meth:`fit` have :math:`a_1 = -\\infty` and :math:`b_n = + \\infty``. Two kinds of cover are currently available: \"uniform\" and \"balanced\". A uniform cover is such that :math:`b_1 - m = b_2 - a_2 = \\cdots = M - a_n` where :math:`m` and :math:`M` are the minimum and maximum values in `X` respectively. A balanced cover is such that approximately the same number of unique values from `X` is contained in each cover interval.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2215,8 +2215,8 @@ const gtda={
         "cls": "Block",
         "typename": "ParallelClustering",
         "desc": "Employ joblib parallelism to cluster different portions of a dataset.  An arbitrary clustering class which stores a ``labels_`` attribute in ``fit`` can be passed to the constructor. Examples are most classes in ``sklearn.cluster``. The input of :meth:`fit` is of the form ``[X_tot, masks]`` where ``X_tot`` is the full dataset, and ``masks`` is a 2D boolean array, each column of which indicates the location of a portion of ``X_tot`` to cluster separately. Parallelism is achieved over the columns of ``masks``.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2263,8 +2263,8 @@ const gtda={
         "cls": "Block",
         "typename": "Projection",
         "desc": "Projection onto specified columns.  In practice, this simply means returning a selection of columns of the data.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper",
         "properties": {
             "initkargs": {
@@ -2300,8 +2300,8 @@ const gtda={
         "cls": "Block",
         "typename": "CubicalCover",
         "desc": "Cover of multi-dimensional data coming from overlapping hypercubes (technically, parallelopipeds) given by taking products of one-dimensional intervals.  In :meth:`fit`, :class:`OneDimensionalCover` objects are fitted independently on each column of the input array, according to the same parameters passed to the constructor. For example, if the :class:`CubicalCover` object is instantiated with ``kind='uniform'``, ``n_intervals=10`` and ``overlap_frac=0.1``, then each column of the input array is used to construct a cover of the real line by 10 equal-length intervals with fractional overlap of 0.1. Each element of the resulting multi-dimensional cover of Euclidean space is of the form :math:`I_{i, \\ldots, k} = I^{(0)}_i \\times \\cdots \\times I^{(d-1)}_k` where :math:`d` is the number of columns in the input array, and :math:`I^{(l)}_j` is the :math:`j`th cover interval constructed for feature dimension :math:`l`. In :meth:`transform`, the cover is applied to a new array `X'` to yield a cover of `X'`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.cover",
         "properties": {
             "initkargs": {
@@ -2349,8 +2349,8 @@ const gtda={
         "cls": "Block",
         "typename": "Interval",
         "desc": "Immutable object implementing an interval.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.cover",
         "properties": {
             "initkargs": {
@@ -2395,8 +2395,8 @@ const gtda={
         "cls": "Block",
         "typename": "OneDimensionalCover",
         "desc": "Cover of one-dimensional data coming from open overlapping intervals.  In :meth:`fit`, given a training array `X` representing a collection of real numbers, a cover of the real line by open intervals :math:`I_k = (a_k, b_k)` (:math:`k = 1, \\ldots, n`, :math:`a_k < a_{k+1}`, :math:`b_k < b_{k+1}`) is constructed based on the distribution of values in `X`. In :meth:`transform`, the cover is applied to a new array `X'` to yield a cover of `X'`.  All covers constructed in :meth:`fit` have :math:`a_1 = -\\infty` and :math:`b_n = + \\infty``. Two kinds of cover are currently available: \"uniform\" and \"balanced\". A uniform cover is such that :math:`b_1 - m = b_2 - a_2 = \\cdots = M - a_n` where :math:`m` and :math:`M` are the minimum and maximum values in `X` respectively. A balanced cover is such that approximately the same number of unique values from `X` is contained in each cover interval.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.cover",
         "properties": {
             "initkargs": {
@@ -2444,8 +2444,8 @@ const gtda={
         "cls": "Block",
         "typename": "Eccentricity",
         "desc": "Eccentricities of points in a point cloud or abstract metric space.  Let `D` be a square matrix representing distances between points in a point cloud, or directly defining an abstract metric (or metric-like) space. The eccentricity of point `i` in the point cloud or abstract metric space is the `p`-norm (for some `p`) of row `i` in `D`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.filter",
         "properties": {
             "initkargs": {
@@ -2493,8 +2493,8 @@ const gtda={
         "cls": "Block",
         "typename": "Projection",
         "desc": "Projection onto specified columns.  In practice, this simply means returning a selection of columns of the data.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.filter",
         "properties": {
             "initkargs": {
@@ -2530,8 +2530,8 @@ const gtda={
         "cls": "Block",
         "typename": "Nerve",
         "desc": "1-skeleton of the nerve of a refined Mapper cover, i.e. the Mapper graph.  This transformer is the final step in the :class:`gtda.mapper.pipeline.MapperPipeline` objects created by :func:`gtda.mapper.make_mapper_pipeline`. It corresponds the last two arrows in `this diagram <../../../../_images/mapper_pipeline.svg>`_.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.nerve",
         "properties": {
             "initkargs": {
@@ -2579,8 +2579,8 @@ const gtda={
         "cls": "Block",
         "typename": "MapperInteractivePlotter",
         "desc": "Plot Mapper graphs in a Jupyter session, with interactivity on pipeline parameters.  Provides functionality to interactively update parameters from the cover, clustering and graph construction steps defined in `pipeline`. An interactive widget is produced when calling :meth:`plot`. After interacting with the widget, the current state of all outputs which may have been altered can be retrieved via one of the attributes listed below.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.mapper.visualization",
         "properties": {
             "initkargs": {
@@ -2626,8 +2626,8 @@ const gtda={
         "cls": "Block",
         "typename": "CollectionTransformer",
         "desc": "Meta-transformer for applying a fit-transformer to each input in a collection.  If `transformer` possesses a ``fit_transform`` method, ``CollectionTransformer(transformer)`` also possesses a :meth:`fit_transform` method which, on each entry in its input ``X``, fit-transforms a clone of `transformer`. A collection (list or ndarray) of outputs is returned.  Note: to have compatibility with scikit-learn and giotto-tda pipelines, a :meth:`transform` method is also present but it is simply an alias for :meth:`fit_transform`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.metaestimators",
         "properties": {
             "initkargs": {
@@ -2679,8 +2679,8 @@ const gtda={
         "cls": "Block",
         "typename": "ConsecutiveRescaling",
         "desc": "Rescaling of distances between consecutive pairs of points by a fixed factor.  The computation during :meth:`transform` depends on the nature of the array `X`. If each entry in `X` along axis 0 represents a distance matrix :math:`D`, then the corresponding entry in the transformed array is the distance matrix :math:`D'_{i,i+1} = \\alpha D_{i,i+1}` where :math:`\\alpha` is a positive factor. If the entries in `X` represent point clouds, their distance matrices are first computed, and then rescaled according to the same formula.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.point_clouds",
         "properties": {
             "initkargs": {
@@ -2734,8 +2734,8 @@ const gtda={
         "cls": "Block",
         "typename": "ConsistentRescaling",
         "desc": "Rescaling of distances between pairs of points by the geometric mean of the distances to the respective :math:`k`-th nearest neighbours.  Based on ideas in [1]_. The computation during :meth:`transform` depends on the nature of the array `X`. If each entry in `X` along axis 0 represents a distance matrix :math:`D`, then the corresponding entry in the transformed array is the distance matrix :math:`D'_{i,j} = D_{i,j}/\\sqrt{D_{i,k_i}D_{j,k_j}}`, where :math:`k_i` is the index of the :math:`k`-th largest value in row :math:`i` (and similarly for :math:`j`). If the entries in `X` represent point clouds, their distance matrices are first computed, and then rescaled according to the same formula.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.point_clouds",
         "properties": {
             "initkargs": {
@@ -2789,8 +2789,8 @@ const gtda={
         "cls": "Block",
         "typename": "ConsecutiveRescaling",
         "desc": "Rescaling of distances between consecutive pairs of points by a fixed factor.  The computation during :meth:`transform` depends on the nature of the array `X`. If each entry in `X` along axis 0 represents a distance matrix :math:`D`, then the corresponding entry in the transformed array is the distance matrix :math:`D'_{i,i+1} = \\alpha D_{i,i+1}` where :math:`\\alpha` is a positive factor. If the entries in `X` represent point clouds, their distance matrices are first computed, and then rescaled according to the same formula.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.point_clouds.rescaling",
         "properties": {
             "initkargs": {
@@ -2844,8 +2844,8 @@ const gtda={
         "cls": "Block",
         "typename": "ConsistentRescaling",
         "desc": "Rescaling of distances between pairs of points by the geometric mean of the distances to the respective :math:`k`-th nearest neighbours.  Based on ideas in [1]_. The computation during :meth:`transform` depends on the nature of the array `X`. If each entry in `X` along axis 0 represents a distance matrix :math:`D`, then the corresponding entry in the transformed array is the distance matrix :math:`D'_{i,j} = D_{i,j}/\\sqrt{D_{i,k_i}D_{j,k_j}}`, where :math:`k_i` is the index of the :math:`k`-th largest value in row :math:`i` (and similarly for :math:`j`). If the entries in `X` represent point clouds, their distance matrices are first computed, and then rescaled according to the same formula.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.point_clouds.rescaling",
         "properties": {
             "initkargs": {
@@ -2899,8 +2899,8 @@ const gtda={
         "cls": "Block",
         "typename": "Interval",
         "desc": "Immutable object implementing an interval.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.point_clouds.rescaling",
         "properties": {
             "initkargs": {
@@ -2945,8 +2945,8 @@ const gtda={
         "cls": "Block",
         "typename": "Parallel",
         "desc": "Helper class for readable parallel mapping.  Read more in the :ref:`User Guide <parallel>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.point_clouds.rescaling",
         "properties": {
             "initkargs": {
@@ -2976,8 +2976,8 @@ const gtda={
         "cls": "Block",
         "typename": "Labeller",
         "desc": "Target creation from sliding windows over a univariate time series.  Useful to define a time series forecasting task in which labels are obtained from future values of the input time series, via the application of a function to time windows.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3037,8 +3037,8 @@ const gtda={
         "cls": "Block",
         "typename": "PearsonDissimilarity",
         "desc": "Pearson dissimilarities from collections of multivariate time series.  The sample Pearson correlation coefficients between pairs of components of an :math:`N`-variate time series form an :math:`N \\times N` matrix :math:`R` with entries  .. math:: R_{ij} = \\frac{ C_{ij} }{ \\sqrt{ C_{ii} C_{jj} } },  where :math:`C` is the covariance matrix. Setting :math:`D_{ij} = (1 - R_{ij})/2` or :math:`D_{ij} = 1 - |R_{ij}|` we obtain a dissimilarity matrix with entries between 0 and 1.  This transformer computes one dissimilarity matrix per multivariate time series in a collection. Examples of such collections are the outputs of :class:`SlidingWindow`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3080,8 +3080,8 @@ const gtda={
         "cls": "Block",
         "typename": "PermutationEntropy",
         "desc": "Entropies from sets of permutations arg-sorting rows in arrays.  Given a two-dimensional array `A`, another array `A'` of the same size is computed by arg-sorting each row in `A`. The permutation entropy [1]_ of `A` is the (base 2) Shannon entropy of the probability distribution given by the relative frequencies of each arg-sorting permutation in `A'`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3117,8 +3117,8 @@ const gtda={
         "cls": "Block",
         "typename": "Resampler",
         "desc": "Time series resampling at regular intervals.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3154,8 +3154,8 @@ const gtda={
         "cls": "Block",
         "typename": "SingleTakensEmbedding",
         "desc": "Representation of a single univariate time series as a point cloud.  Based on a time-delay embedding technique named after F. Takens [1]_ [2]_. Given a discrete time series :math:`(X_0, X_1, \\ldots)` and a sequence of evenly sampled times :math:`t_0, t_1, \\ldots`, one extracts a set of :math:`d`-dimensional vectors of the form :math:`(X_{t_i}, X_{t_i + \\tau}, \\ldots , X_{t_i + (d-1)\\tau})` for :math:`i = 0, 1, \\ldots`. This set is called the :ref:`Takens embedding <takens_embedding>` of the time series and can be interpreted as a point cloud.  The difference between :math:`t_{i+1}` and :math:`t_i` is called the stride, :math:`\\tau` is called the time delay, and :math:`d` is called the (embedding) dimension.  If :math:`d` and :math:`\\tau` are not explicitly set, suitable values are searched for during :meth:`fit` [3]_ [4]_.  To compute time-delay embeddings of several time series simultaneously, use :class:`TakensEmbedding` instead.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3214,8 +3214,8 @@ const gtda={
         "cls": "Block",
         "typename": "SlidingWindow",
         "desc": "Sliding windows onto the data.  Useful in time series analysis to convert a sequence of objects (scalar or array-like) into a sequence of windows on the original sequence. Each window stacks together consecutive objects, and consecutive windows are separated by a constant stride.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3257,8 +3257,8 @@ const gtda={
         "cls": "Block",
         "typename": "Stationarizer",
         "desc": "Methods for stationarizing time series data.  Time series may be stationarized to remove or reduce linear or exponential trends.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3294,8 +3294,8 @@ const gtda={
         "cls": "Block",
         "typename": "TakensEmbedding",
         "desc": "Point clouds from collections of time series via independent Takens embeddings.  This transformer takes collections of (possibly multivariate) time series as input, applies the Takens embedding algorithm described in :class:`SingleTakensEmbedding` to each independently, and returns a corresponding collection of point clouds in Euclidean space (or possibly higher-dimensional structures, see `flatten`).",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series",
         "properties": {
             "initkargs": {
@@ -3355,8 +3355,8 @@ const gtda={
         "cls": "Block",
         "typename": "Interval",
         "desc": "Immutable object implementing an interval.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.embedding",
         "properties": {
             "initkargs": {
@@ -3401,8 +3401,8 @@ const gtda={
         "cls": "Block",
         "typename": "Parallel",
         "desc": "Helper class for readable parallel mapping.  Read more in the :ref:`User Guide <parallel>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.embedding",
         "properties": {
             "initkargs": {
@@ -3432,8 +3432,8 @@ const gtda={
         "cls": "Block",
         "typename": "SingleTakensEmbedding",
         "desc": "Representation of a single univariate time series as a point cloud.  Based on a time-delay embedding technique named after F. Takens [1]_ [2]_. Given a discrete time series :math:`(X_0, X_1, \\ldots)` and a sequence of evenly sampled times :math:`t_0, t_1, \\ldots`, one extracts a set of :math:`d`-dimensional vectors of the form :math:`(X_{t_i}, X_{t_i + \\tau}, \\ldots , X_{t_i + (d-1)\\tau})` for :math:`i = 0, 1, \\ldots`. This set is called the :ref:`Takens embedding <takens_embedding>` of the time series and can be interpreted as a point cloud.  The difference between :math:`t_{i+1}` and :math:`t_i` is called the stride, :math:`\\tau` is called the time delay, and :math:`d` is called the (embedding) dimension.  If :math:`d` and :math:`\\tau` are not explicitly set, suitable values are searched for during :meth:`fit` [3]_ [4]_.  To compute time-delay embeddings of several time series simultaneously, use :class:`TakensEmbedding` instead.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.embedding",
         "properties": {
             "initkargs": {
@@ -3492,8 +3492,8 @@ const gtda={
         "cls": "Block",
         "typename": "SlidingWindow",
         "desc": "Sliding windows onto the data.  Useful in time series analysis to convert a sequence of objects (scalar or array-like) into a sequence of windows on the original sequence. Each window stacks together consecutive objects, and consecutive windows are separated by a constant stride.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.embedding",
         "properties": {
             "initkargs": {
@@ -3535,8 +3535,8 @@ const gtda={
         "cls": "Block",
         "typename": "TakensEmbedding",
         "desc": "Point clouds from collections of time series via independent Takens embeddings.  This transformer takes collections of (possibly multivariate) time series as input, applies the Takens embedding algorithm described in :class:`SingleTakensEmbedding` to each independently, and returns a corresponding collection of point clouds in Euclidean space (or possibly higher-dimensional structures, see `flatten`).",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.embedding",
         "properties": {
             "initkargs": {
@@ -3596,8 +3596,8 @@ const gtda={
         "cls": "Block",
         "typename": "PearsonDissimilarity",
         "desc": "Pearson dissimilarities from collections of multivariate time series.  The sample Pearson correlation coefficients between pairs of components of an :math:`N`-variate time series form an :math:`N \\times N` matrix :math:`R` with entries  .. math:: R_{ij} = \\frac{ C_{ij} }{ \\sqrt{ C_{ii} C_{jj} } },  where :math:`C` is the covariance matrix. Setting :math:`D_{ij} = (1 - R_{ij})/2` or :math:`D_{ij} = 1 - |R_{ij}|` we obtain a dissimilarity matrix with entries between 0 and 1.  This transformer computes one dissimilarity matrix per multivariate time series in a collection. Examples of such collections are the outputs of :class:`SlidingWindow`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.multivariate",
         "properties": {
             "initkargs": {
@@ -3639,8 +3639,8 @@ const gtda={
         "cls": "Block",
         "typename": "Interval",
         "desc": "Immutable object implementing an interval.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.target",
         "properties": {
             "initkargs": {
@@ -3685,8 +3685,8 @@ const gtda={
         "cls": "Block",
         "typename": "Labeller",
         "desc": "Target creation from sliding windows over a univariate time series.  Useful to define a time series forecasting task in which labels are obtained from future values of the input time series, via the application of a function to time windows.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.target",
         "properties": {
             "initkargs": {
@@ -3746,8 +3746,8 @@ const gtda={
         "cls": "Block",
         "typename": "SlidingWindow",
         "desc": "Sliding windows onto the data.  Useful in time series analysis to convert a sequence of objects (scalar or array-like) into a sequence of windows on the original sequence. Each window stacks together consecutive objects, and consecutive windows are separated by a constant stride.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "gtda.time_series.target",
         "properties": {
             "initkargs": {

@@ -9,7 +9,7 @@ from enum import Enum
 import numpy as np
 import pandas as pd
 
-from skll.inout import Output
+from libretto.inout import Output
 
 def import_load(cls:str):
     obj = cls.split(".")

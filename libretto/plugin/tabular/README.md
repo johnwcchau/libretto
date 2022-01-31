@@ -1,6 +1,6 @@
 ### tabular Plugin
 
-This is the core plugin for tabular data manipulation, and is part of the SK-ll core.
+This is the core plugin for tabular data manipulation, and is part of the Libretto core.
 
 ## Supported operation
 - read in csv/xls/sql (pandas.read_?)

@@ -26,11 +26,11 @@ def __checkExist(package:str):
     """
     try:
         import_module(package)
-        if os.path.isfile(f'./skll/plugin/sklearn/{package}.mjs'):
+        if os.path.isfile(f'./libretto/plugin/sklearn/{package}.mjs'):
             logging.info(f'Find python package {package} and it\'s definition.')
             return True
         else:
-            logging.warn(f'Find python package {package} but not it\'s definition, it will not be available in SK-ll.')
+            logging.warn(f'Find python package {package} but not it\'s definition, it will not be available in Libretto.')
             return False
     except Exception:
         logging.info(f'Python package {package} not exists or load with error')
@@ -41,10 +41,10 @@ def __init_plugin(config):
     global initialization of plugin
     This automatically generates __init__.mjs to include receipe blocks of valid packages
     """
-    if not config.getboolean("skll.plugin.sklearn", "create_block_definition", fallback=True):
+    if not config.getboolean("libretto.plugin.sklearn", "create_block_definition", fallback=True):
         return
     try:
-        os.remove("./skll/plugin/sklearn/__init__.mjs")
+        os.remove("./libretto/plugin/sklearn/__init__.mjs")
     except FileNotFoundError:
         pass
     available = []
@@ -54,7 +54,7 @@ def __init_plugin(config):
     if len(available) == 0:
         logging.warn('No package available, this plugin will not be loaded')
         return
-    with open("./skll/plugin/sklearn/__init__.mjs", "w") as f:
+    with open("./libretto/plugin/sklearn/__init__.mjs", "w") as f:
         f.write("""import { Parent, Block, BlockTypes } from "/static/modules/BaseBlock.mjs";
 import baseObjects from "./baseObjects.mjs";
 """)

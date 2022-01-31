@@ -2,11 +2,18 @@
 Example plugin
 """
 import logging
-from skll.inout import Output
+from libretto.inout import Output
 
 def __init_plugin(config):
     """
     global initialization of plugin
+
+    Parameters
+    ----------
+    config : ConfigParser
+        Processed config.ini for arguments, while config is globally public, 
+        plugin is recommanded to use it's own session with FQDN as its name to
+        avoid conflict
     """
     logging.info("Hello from example plugin!")
 
@@ -17,7 +24,7 @@ def __new_session(name:str):
 
     Parameters
     ----------
-    name: str
+    name : str
         unique name of the session
     """
     logging.info(f'Hello new session "{name}" from example plugin')
@@ -30,7 +37,7 @@ def __destroy_session(name: str):
 
     Parameters
     ----------
-    name: str
+    name : str
         unique name of the session
     """
     pass
@@ -39,7 +46,7 @@ def __destroy_session(name: str):
 Belows are custom functions which can be invoked in client side
 Invoke by (in javascript):
     getCurrentSession().WsClient.send("<plugin fqdn>::<method>", {param:value,...})
-    and in this case fqdn of this plugin is "skll.plugin.example"
+    and in this case fqdn of this plugin is "libretto.plugin.example"
 """
 def call_server_side(session:str, writer:Output, **kwargs:dict):
     writer.working("Example plugin is working...")

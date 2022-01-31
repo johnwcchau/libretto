@@ -1,5 +1,5 @@
 """
-Entry point of SK-ll interactive mode
+Entry point of Libretto interactive mode (Libretto Editor)
 """
 from __future__ import annotations
 from datetime import timedelta
@@ -14,12 +14,12 @@ import traceback
 
 import logging
 
-from skll.fileio import FileIO
-from skll.session import Session
-from skll.jsoncodec import Encoder, json_decode
-from skll.tpe import TPE
+from libretto.fileio import FileIO
+from libretto.session import Session
+from libretto.jsoncodec import Encoder, json_decode
+from libretto.tpe import TPE
 
-from skll import plugin
+from libretto import plugin
 
 tpe = TPE().executor
 
@@ -182,7 +182,7 @@ def __main():
     # # TODO read config file instead of using arguments
     # #
     # import argparse
-    # parser = argparse.ArgumentParser(description="SK-ll")
+    # parser = argparse.ArgumentParser(description="Libretto")
     # parser.add_argument("-port", type=int, default=6789, help="Port to listen to")
     # parser.add_argument("-debug", nargs='?', const=True, default=False, help="Debug flag")
     # args = parser.parse_args()
@@ -202,13 +202,13 @@ def __main():
     plugin.init(config)
     plugin.plugin_mjs(config)
 
-    logging.info("SKll started!")
+    logging.info("Libretto started!")
     app = tornado.web.Application([
         (r"/", IndexHandler),
         (r'/(favicon\.ico)', StaticFileHandler, {"path": "./client"}),
         (r"/static/(.*)", MyStaticFileHandler, {"path":"./client"}),
         (r"/storage/(.*)", NoCacheStaticFileHandler, {"path":"./storage"}),
-        (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./skll/plugin"}),
+        (r"/plugin/(.*)", PluginStaticFileHandler, {"path":"./libretto/plugin"}),
         (r"/ws/(.*)", WebSocketHandler),
     ], debug=debug)
 

@@ -3,8 +3,8 @@ const sklearn={
         "cls": "Block",
         "typename": "AffinityPropagation",
         "desc": "Perform Affinity Propagation Clustering of data.  Read more in the :ref:`User Guide <affinity_propagation>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -82,8 +82,8 @@ const sklearn={
         "cls": "Block",
         "typename": "AgglomerativeClustering",
         "desc": "Agglomerative Clustering  Recursively merges the pair of clusters that minimally increases a given linkage distance.  Read more in the :ref:`User Guide <hierarchical_clustering>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -161,8 +161,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Birch",
         "desc": "Implements the BIRCH clustering algorithm.  It is a memory-efficient, online-learning algorithm provided as an alternative to :class:`MiniBatchKMeans`. It constructs a tree data structure with the cluster centroids being read off the leaf. These can be either the final cluster centroids or can be provided as input to another clustering algorithm such as :class:`AgglomerativeClustering`.  Read more in the :ref:`User Guide <birch>`.  .. versionadded:: 0.16",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -222,8 +222,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DBSCAN",
         "desc": "Perform DBSCAN clustering from vector array or distance matrix.  DBSCAN - Density-Based Spatial Clustering of Applications with Noise. Finds core samples of high density and expands clusters from them. Good for data which contains clusters of similar density.  Read more in the :ref:`User Guide <dbscan>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -301,8 +301,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FeatureAgglomeration",
         "desc": "Agglomerate features.  Similar to AgglomerativeClustering, but recursively merges features instead of samples.  Read more in the :ref:`User Guide <hierarchical_clustering>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -386,8 +386,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KMeans",
         "desc": "K-Means clustering.  Read more in the :ref:`User Guide <k_means>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -493,8 +493,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MeanShift",
         "desc": "Mean shift clustering using a flat kernel.  Mean shift clustering aims to discover \"blobs\" in a smooth density of samples. It is a centroid-based algorithm, which works by updating candidates for centroids to be the mean of the points within a given region. These candidates are then filtered in a post-processing stage to eliminate near-duplicates to form the final set of centroids.  Seeding is performed using a binning technique for scalability.  Read more in the :ref:`User Guide <mean_shift>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -566,8 +566,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MiniBatchKMeans",
         "desc": "Mini-Batch K-Means clustering.  Read more in the :ref:`User Guide <mini_batch_kmeans>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -669,8 +669,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OPTICS",
         "desc": "Estimate clustering structure from vector array.  OPTICS (Ordering Points To Identify the Clustering Structure), closely related to DBSCAN, finds core sample of high density and expands clusters from them [1]_. Unlike DBSCAN, keeps cluster hierarchy for a variable neighborhood radius. Better suited for usage on large datasets than the current sklearn implementation of DBSCAN.  Clusters are then extracted using a DBSCAN-like method (cluster_method = 'dbscan') or an automatic technique proposed in [1]_ (cluster_method = 'xi').  This implementation deviates from the original OPTICS by first performing k-nearest-neighborhood searches on all points to identify core sizes, then computing only the distances to unprocessed points when constructing the cluster order. Note that we do not employ a heap to manage the expansion candidates, so the time complexity will be O(n^2).  Read more in the :ref:`User Guide <optics>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -778,8 +778,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SpectralBiclustering",
         "desc": "Spectral biclustering (Kluger, 2003).  Partitions rows and columns under the assumption that the data has an underlying checkerboard structure. For instance, if there are two row partitions and three column partitions, each row will belong to three biclusters, and each column will belong to two biclusters. The outer product of the corresponding row and column label vectors gives this checkerboard structure.  Read more in the :ref:`User Guide <spectral_biclustering>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -875,8 +875,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SpectralClustering",
         "desc": "Apply clustering to a projection of the normalized Laplacian.  In practice Spectral Clustering is very useful when the structure of the individual clusters is highly non-convex, or more generally when a measure of the center and spread of the cluster is not a suitable description of the complete cluster, such as when clusters are nested circles on the 2D plane.  If the affinity matrix is the adjacency matrix of a graph, this method can be used to find normalized graph cuts.  When calling ``fit``, an affinity matrix is constructed using either a kernel function such the Gaussian (aka RBF) kernel with Euclidean distance ``d(X, X)``::          np.exp(-gamma * d(X,X) ** 2)  or a k-nearest neighbors connectivity matrix.  Alternatively, a user-provided affinity matrix can be specified by setting ``affinity='precomputed'``.  Read more in the :ref:`User Guide <spectral_clustering>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -996,8 +996,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SpectralCoclustering",
         "desc": "Spectral Co-Clustering algorithm (Dhillon, 2001).  Clusters rows and columns of an array `X` to solve the relaxed normalized cut of the bipartite graph created from `X` as follows: the edge between row vertex `i` and column vertex `j` has weight `X[i, j]`.  The resulting bicluster structure is block-diagonal, since each row and each column belongs to exactly one bicluster.  Supports sparse matrices, as long as they are nonnegative.  Read more in the :ref:`User Guide <spectral_coclustering>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cluster",
         "properties": {
             "initkargs": {
@@ -1075,8 +1075,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ColumnTransformer",
         "desc": "Applies transformers to columns of an array or pandas DataFrame.  This estimator allows different columns or column subsets of the input to be transformed separately and the features generated by each transformer will be concatenated to form a single feature space. This is useful for heterogeneous or columnar data, to combine several feature extraction mechanisms or transformations into a single transformer.  Read more in the :ref:`User Guide <column_transformer>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.compose",
         "properties": {
             "initkargs": {
@@ -1156,8 +1156,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TransformedTargetRegressor",
         "desc": "Meta-estimator to regress on a transformed target.  Useful for applying a non-linear transformation to the target ``y`` in regression problems. This transformation can be given as a Transformer such as the QuantileTransformer or as a function and its inverse such as ``log`` and ``exp``.  The computation during ``fit`` is::      regressor.fit(X, func(y))  or::      regressor.fit(X, transformer.transform(y))  The computation during ``predict`` is::      inverse_func(regressor.predict(X))  or::      transformer.inverse_transform(regressor.predict(X))  Read more in the :ref:`User Guide <transformed_target_regressor>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.compose",
         "properties": {
             "initkargs": {
@@ -1217,8 +1217,8 @@ const sklearn={
         "cls": "Block",
         "typename": "make_column_selector",
         "desc": "Create a callable to select columns to be used with :class:`ColumnTransformer`.  :func:`make_column_selector` can select columns based on datatype or the columns name with a regex. When using multiple selection criteria, **all** criteria must match for a column to be selected.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.compose",
         "properties": {
             "initkargs": {
@@ -1266,8 +1266,8 @@ const sklearn={
         "cls": "Block",
         "typename": "EllipticEnvelope",
         "desc": "An object for detecting outliers in a Gaussian distributed dataset.  Read more in the :ref:`User Guide <outlier_detection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1327,8 +1327,8 @@ const sklearn={
         "cls": "Block",
         "typename": "EmpiricalCovariance",
         "desc": "Maximum likelihood covariance estimator  Read more in the :ref:`User Guide <covariance>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1370,8 +1370,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GraphicalLasso",
         "desc": "Sparse inverse covariance estimation with an l1-penalized estimator.  Read more in the :ref:`User Guide <sparse_inverse_covariance>`.  .. versionchanged:: v0.20     GraphLasso has been renamed to GraphicalLasso",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1443,8 +1443,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GraphicalLassoCV",
         "desc": "Sparse inverse covariance w/ cross-validated choice of the l1 penalty.  See glossary entry for :term:`cross-validation estimator`.  Read more in the :ref:`User Guide <sparse_inverse_covariance>`.  .. versionchanged:: v0.20     GraphLassoCV has been renamed to GraphicalLassoCV",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1534,8 +1534,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LedoitWolf",
         "desc": "LedoitWolf Estimator  Ledoit-Wolf is a particular form of shrinkage, where the shrinkage coefficient is computed using O. Ledoit and M. Wolf's formula as described in \"A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices\", Ledoit and Wolf, Journal of Multivariate Analysis, Volume 88, Issue 2, February 2004, pages 365-411.  Read more in the :ref:`User Guide <shrunk_covariance>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1583,8 +1583,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MinCovDet",
         "desc": "Minimum Covariance Determinant (MCD): robust estimator of covariance.  The Minimum Covariance Determinant covariance estimator is to be applied on Gaussian-distributed data, but could still be relevant on data drawn from a unimodal, symmetric distribution. It is not meant to be used with multi-modal data (the algorithm used to fit a MinCovDet object is likely to fail in such a case). One should consider projection pursuit methods to deal with multi-modal datasets.  Read more in the :ref:`User Guide <robust_covariance>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1638,8 +1638,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OAS",
         "desc": "Oracle Approximating Shrinkage Estimator  Read more in the :ref:`User Guide <shrunk_covariance>`.  OAS is a particular form of shrinkage described in \"Shrinkage Algorithms for MMSE Covariance Estimation\" Chen et al., IEEE Trans. on Sign. Proc., Volume 58, Issue 10, October 2010.  The formula used here does not correspond to the one given in the article. In the original article, formula (23) states that 2/p is multiplied by Trace(cov*cov) in both the numerator and denominator, but this operation is omitted because for a large p, the value of 2/p is so small that it doesn't affect the value of the estimator.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1681,8 +1681,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ShrunkCovariance",
         "desc": "Covariance estimator with shrinkage  Read more in the :ref:`User Guide <shrunk_covariance>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.covariance",
         "properties": {
             "initkargs": {
@@ -1730,8 +1730,8 @@ const sklearn={
         "cls": "Block",
         "typename": "CCA",
         "desc": "Canonical Correlation Analysis, also known as \"Mode B\" PLS.  Read more in the :ref:`User Guide <cross_decomposition>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cross_decomposition",
         "properties": {
             "initkargs": {
@@ -1791,8 +1791,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PLSCanonical",
         "desc": "Partial Least Squares transformer and regressor.  Read more in the :ref:`User Guide <cross_decomposition>`.  .. versionadded:: 0.8",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cross_decomposition",
         "properties": {
             "initkargs": {
@@ -1858,8 +1858,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PLSRegression",
         "desc": "PLS regression  PLSRegression is also known as PLS2 or PLS1, depending on the number of targets.  Read more in the :ref:`User Guide <cross_decomposition>`.  .. versionadded:: 0.8",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cross_decomposition",
         "properties": {
             "initkargs": {
@@ -1919,8 +1919,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PLSSVD",
         "desc": "Partial Least Square SVD.  This transformer simply performs a SVD on the crosscovariance matrix X'Y. It is able to project both the training data `X` and the targets `Y`. The training data X is projected on the left singular vectors, while the targets are projected on the right singular vectors.  Read more in the :ref:`User Guide <cross_decomposition>`.  .. versionadded:: 0.8",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.cross_decomposition",
         "properties": {
             "initkargs": {
@@ -1968,8 +1968,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DictionaryLearning",
         "desc": "Dictionary learning  Finds a dictionary (a set of atoms) that can best be used to represent data using a sparse code.  Solves the optimization problem::      (U^*,V^*) = argmin 0.5 || X - U V ||_2^2 + alpha * || U ||_1                 (U,V)                 with || V_k ||_2 = 1 for all  0 <= k < n_components  Read more in the :ref:`User Guide <DictionaryLearning>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2101,8 +2101,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FactorAnalysis",
         "desc": "Factor Analysis (FA).  A simple linear generative model with Gaussian latent variables.  The observations are assumed to be caused by a linear transformation of lower dimensional latent factors and added Gaussian noise. Without loss of generality the factors are distributed according to a Gaussian with zero mean and unit covariance. The noise is also zero mean and has an arbitrary diagonal covariance matrix.  If we would restrict the model further, by assuming that the Gaussian noise is even isotropic (all diagonal entries are the same) we would obtain :class:`PPCA`.  FactorAnalysis performs a maximum likelihood estimate of the so-called `loading` matrix, the transformation of the latent variables to the observed ones, using SVD based approach.  Read more in the :ref:`User Guide <FA>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2185,8 +2185,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FastICA",
         "desc": "FastICA: a fast algorithm for Independent Component Analysis.  Read more in the :ref:`User Guide <ICA>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2270,8 +2270,8 @@ const sklearn={
         "cls": "Block",
         "typename": "IncrementalPCA",
         "desc": "Incremental principal components analysis (IPCA).  Linear dimensionality reduction using Singular Value Decomposition of the data, keeping only the most significant singular vectors to project the data to a lower dimensional space. The input data is centered but not scaled for each feature before applying the SVD.  Depending on the size of the input data, this algorithm can be much more memory efficient than a PCA, and allows sparse input.  This algorithm has constant memory complexity, on the order of ``batch_size * n_features``, enabling use of np.memmap files without loading the entire file into memory. For sparse matrices, the input is converted to dense in batches (in order to be able to subtract the mean) which avoids storing the entire dense matrix at any one time.  The computational overhead of each SVD is ``O(batch_size * n_features ** 2)``, but only 2 * batch_size samples remain in memory at a time. There will be ``n_samples / batch_size`` SVD computations to get the principal components, versus 1 large SVD of complexity ``O(n_samples * n_features ** 2)`` for PCA.  Read more in the :ref:`User Guide <IncrementalPCA>`.  .. versionadded:: 0.16",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2325,8 +2325,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KernelPCA",
         "desc": "Kernel Principal component analysis (KPCA).  Non-linear dimensionality reduction through the use of kernels (see :ref:`metrics`).  Read more in the :ref:`User Guide <kernel_PCA>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2446,8 +2446,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LatentDirichletAllocation",
         "desc": "Latent Dirichlet Allocation with online variational Bayes algorithm  .. versionadded:: 0.17  Read more in the :ref:`User Guide <LatentDirichletAllocation>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2573,8 +2573,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MiniBatchDictionaryLearning",
         "desc": "Mini-batch dictionary learning  Finds a dictionary (a set of atoms) that can best be used to represent data using a sparse code.  Solves the optimization problem::     (U^*,V^*) = argmin 0.5 || X - U V ||_2^2 + alpha * || U ||_1                 (U,V)                 with || V_k ||_2 = 1 for all  0 <= k < n_components  Read more in the :ref:`User Guide <DictionaryLearning>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2706,8 +2706,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MiniBatchSparsePCA",
         "desc": "Mini-batch Sparse Principal Components Analysis  Finds the set of sparse components that can optimally reconstruct the data.  The amount of sparseness is controllable by the coefficient of the L1 penalty, given by the parameter alpha.  Read more in the :ref:`User Guide <SparsePCA>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2803,8 +2803,8 @@ const sklearn={
         "cls": "Block",
         "typename": "NMF",
         "desc": "Non-Negative Matrix Factorization (NMF).  Find two non-negative matrices (W, H) whose product approximates the non- negative matrix X. This factorization can be used for example for dimensionality reduction, source separation or topic extraction.  The objective function is:      .. math::          0.5 * ||X - WH||_{loss}^2 + alpha * l1_{ratio} * ||vec(W)||_1          + alpha * l1_{ratio} * ||vec(H)||_1          + 0.5 * alpha * (1 - l1_{ratio}) * ||W||_{Fro}^2          + 0.5 * alpha * (1 - l1_{ratio}) * ||H||_{Fro}^2  Where:  :math:`||A||_{Fro}^2 = \\sum_{i,j} A_{ij}^2` (Frobenius norm)  :math:`||vec(A)||_1 = \\sum_{i,j} abs(A_{ij})` (Elementwise L1 norm)  The generic norm :math:`||X - WH||_{loss}` may represent the Frobenius norm or another supported beta-divergence loss. The choice between options is controlled by the `beta_loss` parameter.  The objective function is minimized with an alternating minimization of W and H.  Read more in the :ref:`User Guide <NMF>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2906,8 +2906,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PCA",
         "desc": "Principal component analysis (PCA).  Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space. The input data is centered but not scaled for each feature before applying the SVD.  It uses the LAPACK implementation of the full SVD or a randomized truncated SVD by the method of Halko et al. 2009, depending on the shape of the input data and the number of components to extract.  It can also use the scipy.sparse.linalg ARPACK implementation of the truncated SVD.  Notice that this class does not support sparse input. See :class:`TruncatedSVD` for an alternative with sparse data.  Read more in the :ref:`User Guide <PCA>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -2979,8 +2979,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SparseCoder",
         "desc": "Sparse coding  Finds a sparse representation of data against a fixed, precomputed dictionary.  Each row of the result is the solution to a sparse coding problem. The goal is to find a sparse array `code` such that::      X ~= code * dictionary  Read more in the :ref:`User Guide <SparseCoder>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -3057,8 +3057,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SparsePCA",
         "desc": "Sparse Principal Components Analysis (SparsePCA).  Finds the set of sparse components that can optimally reconstruct the data.  The amount of sparseness is controllable by the coefficient of the L1 penalty, given by the parameter alpha.  Read more in the :ref:`User Guide <SparsePCA>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -3154,8 +3154,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TruncatedSVD",
         "desc": "Dimensionality reduction using truncated SVD (aka LSA).  This transformer performs linear dimensionality reduction by means of truncated singular value decomposition (SVD). Contrary to PCA, this estimator does not center the data before computing the singular value decomposition. This means it can work with sparse matrices efficiently.  In particular, truncated SVD works on term count/tf-idf matrices as returned by the vectorizers in :mod:`sklearn.feature_extraction.text`. In that context, it is known as latent semantic analysis (LSA).  This estimator supports two algorithms: a fast randomized SVD solver, and a \"naive\" algorithm that uses ARPACK as an eigensolver on `X * X.T` or `X.T * X`, whichever is more efficient.  Read more in the :ref:`User Guide <LSA>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.decomposition",
         "properties": {
             "initkargs": {
@@ -3215,8 +3215,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LinearDiscriminantAnalysis",
         "desc": "Linear Discriminant Analysis  A classifier with a linear decision boundary, generated by fitting class conditional densities to the data and using Bayes' rule.  The model fits a Gaussian density to each class, assuming that all classes share the same covariance matrix.  The fitted model can also be used to reduce the dimensionality of the input by projecting it to the most discriminative directions, using the `transform` method.  .. versionadded:: 0.17    *LinearDiscriminantAnalysis*.  Read more in the :ref:`User Guide <lda_qda>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.discriminant_analysis",
         "properties": {
             "initkargs": {
@@ -3288,8 +3288,8 @@ const sklearn={
         "cls": "Block",
         "typename": "QuadraticDiscriminantAnalysis",
         "desc": "Quadratic Discriminant Analysis  A classifier with a quadratic decision boundary, generated by fitting class conditional densities to the data and using Bayes' rule.  The model fits a Gaussian density to each class.  .. versionadded:: 0.17    *QuadraticDiscriminantAnalysis*  Read more in the :ref:`User Guide <lda_qda>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.discriminant_analysis",
         "properties": {
             "initkargs": {
@@ -3343,8 +3343,8 @@ const sklearn={
         "cls": "Block",
         "typename": "StandardScaler",
         "desc": "Standardize features by removing the mean and scaling to unit variance  The standard score of a sample `x` is calculated as:      z = (x - u) / s  where `u` is the mean of the training samples or zero if `with_mean=False`, and `s` is the standard deviation of the training samples or one if `with_std=False`.  Centering and scaling happen independently on each feature by computing the relevant statistics on the samples in the training set. Mean and standard deviation are then stored to be used on later data using :meth:`transform`.  Standardization of a dataset is a common requirement for many machine learning estimators: they might behave badly if the individual features do not more or less look like standard normally distributed data (e.g. Gaussian with 0 mean and unit variance).  For instance many elements used in the objective function of a learning algorithm (such as the RBF kernel of Support Vector Machines or the L1 and L2 regularizers of linear models) assume that all features are centered around 0 and have variance in the same order. If a feature has a variance that is orders of magnitude larger that others, it might dominate the objective function and make the estimator unable to learn from other features correctly as expected.  This scaler can also be applied to sparse CSR or CSC matrices by passing `with_mean=False` to avoid breaking the sparsity structure of the data.  Read more in the :ref:`User Guide <preprocessing_scaler>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.discriminant_analysis",
         "properties": {
             "initkargs": {
@@ -3392,8 +3392,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DummyClassifier",
         "desc": "DummyClassifier is a classifier that makes predictions using simple rules.  This classifier is useful as a simple baseline to compare with other (real) classifiers. Do not use it for real problems.  Read more in the :ref:`User Guide <dummy_estimators>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.dummy",
         "properties": {
             "initkargs": {
@@ -3440,8 +3440,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DummyRegressor",
         "desc": "DummyRegressor is a regressor that makes predictions using simple rules.  This regressor is useful as a simple baseline to compare with other (real) regressors. Do not use it for real problems.  Read more in the :ref:`User Guide <dummy_estimators>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.dummy",
         "properties": {
             "initkargs": {
@@ -3489,8 +3489,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "AdaBoostClassifier",
         "desc": "An AdaBoost classifier.  An AdaBoost [1] classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on difficult cases.  This class implements the algorithm known as AdaBoost-SAMME [2].  Read more in the :ref:`User Guide <adaboost>`.  .. versionadded:: 0.14",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -3552,8 +3552,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "AdaBoostRegressor",
         "desc": "An AdaBoost regressor.  An AdaBoost [1] regressor is a meta-estimator that begins by fitting a regressor on the original dataset and then fits additional copies of the regressor on the same dataset but where the weights of instances are adjusted according to the error of the current prediction. As such, subsequent regressors focus more on difficult cases.  This class implements the algorithm known as AdaBoost.R2 [2].  Read more in the :ref:`User Guide <adaboost>`.  .. versionadded:: 0.14",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -3615,8 +3615,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "BaggingClassifier",
         "desc": "A Bagging classifier.  A Bagging classifier is an ensemble meta-estimator that fits base classifiers each on random subsets of the original dataset and then aggregate their individual predictions (either by voting or by averaging) to form a final prediction. Such a meta-estimator can typically be used as a way to reduce the variance of a black-box estimator (e.g., a decision tree), by introducing randomization into its construction procedure and then making an ensemble out of it.  This algorithm encompasses several works from the literature. When random subsets of the dataset are drawn as random subsets of the samples, then this algorithm is known as Pasting [1]_. If samples are drawn with replacement, then the method is known as Bagging [2]_. When random subsets of the dataset are drawn as random subsets of the features, then the method is known as Random Subspaces [3]_. Finally, when base estimators are built on subsets of both samples and features, then the method is known as Random Patches [4]_.  Read more in the :ref:`User Guide <bagging>`.  .. versionadded:: 0.15",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -3714,8 +3714,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "BaggingRegressor",
         "desc": "A Bagging regressor.  A Bagging regressor is an ensemble meta-estimator that fits base regressors each on random subsets of the original dataset and then aggregate their individual predictions (either by voting or by averaging) to form a final prediction. Such a meta-estimator can typically be used as a way to reduce the variance of a black-box estimator (e.g., a decision tree), by introducing randomization into its construction procedure and then making an ensemble out of it.  This algorithm encompasses several works from the literature. When random subsets of the dataset are drawn as random subsets of the samples, then this algorithm is known as Pasting [1]_. If samples are drawn with replacement, then the method is known as Bagging [2]_. When random subsets of the dataset are drawn as random subsets of the features, then the method is known as Random Subspaces [3]_. Finally, when base estimators are built on subsets of both samples and features, then the method is known as Random Patches [4]_.  Read more in the :ref:`User Guide <bagging>`.  .. versionadded:: 0.15",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -3813,8 +3813,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "BaseEnsemble",
         "desc": "Base class for all ensemble classes.  Warning: This class should not be used directly. Use derived classes instead.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -3864,8 +3864,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ExtraTreesClassifier",
         "desc": "An extra-trees classifier.  This class implements a meta estimator that fits a number of randomized decision trees (a.k.a. extra-trees) on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.  Read more in the :ref:`User Guide <forest>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4009,8 +4009,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ExtraTreesRegressor",
         "desc": "An extra-trees regressor.  This class implements a meta estimator that fits a number of randomized decision trees (a.k.a. extra-trees) on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.  Read more in the :ref:`User Guide <forest>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4148,8 +4148,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GradientBoostingClassifier",
         "desc": "Gradient Boosting for classification.  GB builds an additive model in a forward stage-wise fashion; it allows for the optimization of arbitrary differentiable loss functions. In each stage ``n_classes_`` regression trees are fit on the negative gradient of the binomial or multinomial deviance loss function. Binary classification is a special case where only a single regression tree is induced.  Read more in the :ref:`User Guide <gradient_boosting>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4305,8 +4305,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GradientBoostingRegressor",
         "desc": "Gradient Boosting for regression.  GB builds an additive model in a forward stage-wise fashion; it allows for the optimization of arbitrary differentiable loss functions. In each stage a regression tree is fit on the negative gradient of the given loss function.  Read more in the :ref:`User Guide <gradient_boosting>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4468,8 +4468,8 @@ const sklearn={
         "cls": "Block",
         "typename": "IsolationForest",
         "desc": "Isolation Forest Algorithm.  Return the anomaly score of each sample using the IsolationForest algorithm  The IsolationForest 'isolates' observations by randomly selecting a feature and then randomly selecting a split value between the maximum and minimum values of the selected feature.  Since recursive partitioning can be represented by a tree structure, the number of splittings required to isolate a sample is equivalent to the path length from the root node to the terminating node.  This path length, averaged over a forest of such random trees, is a measure of normality and our decision function.  Random partitioning produces noticeably shorter paths for anomalies. Hence, when a forest of random trees collectively produce shorter path lengths for particular samples, they are highly likely to be anomalies.  Read more in the :ref:`User Guide <isolation_forest>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4553,8 +4553,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RandomForestClassifier",
         "desc": "A random forest classifier.  A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. The sub-sample size is controlled with the `max_samples` parameter if `bootstrap=True` (default), otherwise the whole dataset is used to build each tree.  Read more in the :ref:`User Guide <forest>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4698,8 +4698,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RandomForestRegressor",
         "desc": "A random forest regressor.  A random forest is a meta estimator that fits a number of classifying decision trees on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. The sub-sample size is controlled with the `max_samples` parameter if `bootstrap=True` (default), otherwise the whole dataset is used to build each tree.  Read more in the :ref:`User Guide <forest>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4837,8 +4837,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RandomTreesEmbedding",
         "desc": "An ensemble of totally random trees.  An unsupervised transformation of a dataset to a high-dimensional sparse representation. A datapoint is coded according to which leaf of each tree it is sorted into. Using a one-hot encoding of the leaves, this leads to a binary coding with as many ones as there are trees in the forest.  The dimensionality of the resulting representation is ``n_out <= n_estimators * max_leaf_nodes``. If ``max_leaf_nodes == None``, the number of leaf nodes is at most ``n_estimators * 2 ** max_depth``.  Read more in the :ref:`User Guide <random_trees_embedding>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -4946,8 +4946,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "StackingClassifier",
         "desc": "Stack of estimators with a final classifier.  Stacked generalization consists in stacking the output of individual estimator and use a classifier to compute the final prediction. Stacking allows to use the strength of each individual estimator by using their output as input of a final estimator.  Note that `estimators_` are fitted on the full `X` while `final_estimator_` is trained using cross-validated predictions of the base estimators using `cross_val_predict`.  Read more in the :ref:`User Guide <stacking>`.  .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -5021,8 +5021,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "StackingRegressor",
         "desc": "Stack of estimators with a final regressor.  Stacked generalization consists in stacking the output of individual estimator and use a regressor to compute the final prediction. Stacking allows to use the strength of each individual estimator by using their output as input of a final estimator.  Note that `estimators_` are fitted on the full `X` while `final_estimator_` is trained using cross-validated predictions of the base estimators using `cross_val_predict`.  Read more in the :ref:`User Guide <stacking>`.  .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -5090,8 +5090,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "VotingClassifier",
         "desc": "Soft Voting/Majority Rule classifier for unfitted estimators.  Read more in the :ref:`User Guide <voting_classifier>`.  .. versionadded:: 0.17",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -5159,8 +5159,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "VotingRegressor",
         "desc": "Prediction voting regressor for unfitted estimators.  A voting regressor is an ensemble meta-estimator that fits several base regressors, each on the whole dataset. Then it averages the individual predictions to form a final prediction.  Read more in the :ref:`User Guide <voting_regressor>`.  .. versionadded:: 0.21",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.ensemble",
         "properties": {
             "initkargs": {
@@ -5216,8 +5216,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DictVectorizer",
         "desc": "Transforms lists of feature-value mappings to vectors.  This transformer turns lists of mappings (dict-like objects) of feature names to feature values into Numpy arrays or scipy.sparse matrices for use with scikit-learn estimators.  When feature values are strings, this transformer will do a binary one-hot (aka one-of-K) coding: one boolean-valued feature is constructed for each of the possible string values that the feature can take on. For instance, a feature \"f\" that can take on the values \"ham\" and \"spam\" will become two features in the output, one signifying \"f=ham\", the other \"f=spam\".  If a feature value is a sequence or set of strings, this transformer will iterate over the values and will count the occurrences of each string value.  However, note that this transformer will only do a binary one-hot encoding when feature values are of type string. If categorical features are represented as numeric values such as int or iterables of strings, the DictVectorizer can be followed by :class:`~sklearn.preprocessing.OneHotEncoder` to complete binary one-hot encoding.  Features that do not occur in a sample (mapping) will have a zero value in the resulting array/matrix.  Read more in the :ref:`User Guide <dict_feature_extraction>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction",
         "properties": {
             "initkargs": {
@@ -5271,8 +5271,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FeatureHasher",
         "desc": "Implements feature hashing, aka the hashing trick.  This class turns sequences of symbolic feature names (strings) into scipy.sparse matrices, using a hash function to compute the matrix column corresponding to a name. The hash function employed is the signed 32-bit version of Murmurhash3.  Feature names of type byte string are used as-is. Unicode strings are converted to UTF-8 first, but no Unicode normalization is done. Feature values must be (finite) numbers.  This class is a low-memory alternative to DictVectorizer and CountVectorizer, intended for large-scale (online) learning and situations where memory is tight, e.g. when running prediction code on embedded devices.  Read more in the :ref:`User Guide <feature_hashing>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction",
         "properties": {
             "initkargs": {
@@ -5326,8 +5326,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PatchExtractor",
         "desc": "Extracts patches from a collection of images  Read more in the :ref:`User Guide <image_feature_extraction>`.  .. versionadded:: 0.9",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction.image",
         "properties": {
             "initkargs": {
@@ -5375,8 +5375,8 @@ const sklearn={
         "cls": "Block",
         "typename": "CountVectorizer",
         "desc": "Convert a collection of text documents to a matrix of token counts  This implementation produces a sparse representation of the counts using scipy.sparse.csr_matrix.  If you do not provide an a-priori dictionary and you do not use an analyzer that does some kind of feature selection then the number of features will be equal to the vocabulary size found by analyzing the data.  Read more in the :ref:`User Guide <text_feature_extraction>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction.text",
         "properties": {
             "initkargs": {
@@ -5508,8 +5508,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FeatureHasher",
         "desc": "Implements feature hashing, aka the hashing trick.  This class turns sequences of symbolic feature names (strings) into scipy.sparse matrices, using a hash function to compute the matrix column corresponding to a name. The hash function employed is the signed 32-bit version of Murmurhash3.  Feature names of type byte string are used as-is. Unicode strings are converted to UTF-8 first, but no Unicode normalization is done. Feature values must be (finite) numbers.  This class is a low-memory alternative to DictVectorizer and CountVectorizer, intended for large-scale (online) learning and situations where memory is tight, e.g. when running prediction code on embedded devices.  Read more in the :ref:`User Guide <feature_hashing>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction.text",
         "properties": {
             "initkargs": {
@@ -5563,8 +5563,8 @@ const sklearn={
         "cls": "Block",
         "typename": "HashingVectorizer",
         "desc": "Convert a collection of text documents to a matrix of token occurrences  It turns a collection of text documents into a scipy.sparse matrix holding token occurrence counts (or binary occurrence information), possibly normalized as token frequencies if norm='l1' or projected on the euclidean unit sphere if norm='l2'.  This text vectorizer implementation uses the hashing trick to find the token string name to feature integer index mapping.  This strategy has several advantages:  - it is very low memory scalable to large datasets as there is no need to   store a vocabulary dictionary in memory  - it is fast to pickle and un-pickle as it holds no state besides the   constructor parameters  - it can be used in a streaming (partial fit) or parallel pipeline as there   is no state computed during fit.  There are also a couple of cons (vs using a CountVectorizer with an in-memory vocabulary):  - there is no way to compute the inverse transform (from feature indices to   string feature names) which can be a problem when trying to introspect   which features are most important to a model.  - there can be collisions: distinct tokens can be mapped to the same   feature index. However in practice this is rarely an issue if n_features   is large enough (e.g. 2 ** 18 for text classification problems).  - no IDF weighting as this would render the transformer stateful.  The hash function employed is the signed 32-bit version of Murmurhash3.  Read more in the :ref:`User Guide <text_feature_extraction>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction.text",
         "properties": {
             "initkargs": {
@@ -5690,8 +5690,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TfidfTransformer",
         "desc": "Transform a count matrix to a normalized tf or tf-idf representation  Tf means term-frequency while tf-idf means term-frequency times inverse document-frequency. This is a common term weighting scheme in information retrieval, that has also found good use in document classification.  The goal of using tf-idf instead of the raw frequencies of occurrence of a token in a given document is to scale down the impact of tokens that occur very frequently in a given corpus and that are hence empirically less informative than features that occur in a small fraction of the training corpus.  The formula that is used to compute the tf-idf for a term t of a document d in a document set is tf-idf(t, d) = tf(t, d) * idf(t), and the idf is computed as idf(t) = log [ n / df(t) ] + 1 (if ``smooth_idf=False``), where n is the total number of documents in the document set and df(t) is the document frequency of t; the document frequency is the number of documents in the document set that contain the term t. The effect of adding \"1\" to the idf in the equation above is that terms with zero idf, i.e., terms that occur in all documents in a training set, will not be entirely ignored. (Note that the idf formula above differs from the standard textbook notation that defines the idf as idf(t) = log [ n / (df(t) + 1) ]).  If ``smooth_idf=True`` (the default), the constant \"1\" is added to the numerator and denominator of the idf as if an extra document was seen containing every term in the collection exactly once, which prevents zero divisions: idf(t) = log [ (1 + n) / (1 + df(t)) ] + 1.  Furthermore, the formulas used to compute tf and idf depend on parameter settings that correspond to the SMART notation used in IR as follows:  Tf is \"n\" (natural) by default, \"l\" (logarithmic) when ``sublinear_tf=True``. Idf is \"t\" when use_idf is given, \"n\" (none) otherwise. Normalization is \"c\" (cosine) when ``norm='l2'``, \"n\" (none) when ``norm=None``.  Read more in the :ref:`User Guide <text_feature_extraction>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction.text",
         "properties": {
             "initkargs": {
@@ -5745,8 +5745,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TfidfVectorizer",
         "desc": "Convert a collection of raw documents to a matrix of TF-IDF features.  Equivalent to :class:`CountVectorizer` followed by :class:`TfidfTransformer`.  Read more in the :ref:`User Guide <text_feature_extraction>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_extraction.text",
         "properties": {
             "initkargs": {
@@ -5902,8 +5902,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GenericUnivariateSelect",
         "desc": "Univariate feature selector with configurable strategy.  Read more in the :ref:`User Guide <univariate_feature_selection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -5951,8 +5951,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RFE",
         "desc": "Feature ranking with recursive feature elimination.  Given an external estimator that assigns weights to features (e.g., the coefficients of a linear model), the goal of recursive feature elimination (RFE) is to select features by recursively considering smaller and smaller sets of features. First, the estimator is trained on the initial set of features and the importance of each feature is obtained either through any specific attribute or callable. Then, the least important features are pruned from current set of features. That procedure is recursively repeated on the pruned set until the desired number of features to select is eventually reached.  Read more in the :ref:`User Guide <rfe>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6014,8 +6014,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RFECV",
         "desc": "Feature ranking with recursive feature elimination and cross-validated selection of the best number of features.  See glossary entry for :term:`cross-validation estimator`.  Read more in the :ref:`User Guide <rfe>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6095,8 +6095,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SelectFdr",
         "desc": "Filter: Select the p-values for an estimated false discovery rate  This uses the Benjamini-Hochberg procedure. ``alpha`` is an upper bound on the expected false discovery rate.  Read more in the :ref:`User Guide <univariate_feature_selection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6138,8 +6138,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SelectFpr",
         "desc": "Filter: Select the pvalues below alpha based on a FPR test.  FPR test stands for False Positive Rate test. It controls the total amount of false detections.  Read more in the :ref:`User Guide <univariate_feature_selection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6181,8 +6181,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "SelectFromModel",
         "desc": "Meta-transformer for selecting features based on importance weights.  .. versionadded:: 0.17  Read more in the :ref:`User Guide <select_from_model>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6250,8 +6250,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SelectFwe",
         "desc": "Filter: Select the p-values corresponding to Family-wise error rate  Read more in the :ref:`User Guide <univariate_feature_selection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6293,8 +6293,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SelectKBest",
         "desc": "Select features according to the k highest scores.  Read more in the :ref:`User Guide <univariate_feature_selection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6336,8 +6336,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SelectPercentile",
         "desc": "Select features according to a percentile of the highest scores.  Read more in the :ref:`User Guide <univariate_feature_selection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6379,8 +6379,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "SequentialFeatureSelector",
         "desc": "Transformer that performs Sequential Feature Selection.  This Sequential Feature Selector adds (forward selection) or removes (backward selection) features to form a feature subset in a greedy fashion. At each stage, this estimator chooses the best feature to add or remove based on the cross-validation score of an estimator.  Read more in the :ref:`User Guide <sequential_feature_selection>`.  .. versionadded:: 0.24",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6448,8 +6448,8 @@ const sklearn={
         "cls": "Block",
         "typename": "VarianceThreshold",
         "desc": "Feature selector that removes all low-variance features.  This feature selection algorithm looks only at the features (X), not the desired outputs (y), and can thus be used for unsupervised learning.  Read more in the :ref:`User Guide <variance_threshold>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.feature_selection",
         "properties": {
             "initkargs": {
@@ -6485,8 +6485,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GaussianProcessClassifier",
         "desc": "Gaussian process classification (GPC) based on Laplace approximation.  The implementation is based on Algorithm 3.1, 3.2, and 5.1 of Gaussian Processes for Machine Learning (GPML) by Rasmussen and Williams.  Internally, the Laplace approximation is used for approximating the non-Gaussian posterior by a Gaussian.  Currently, the implementation is restricted to using the logistic link function. For multi-class classification, several binary one-versus rest classifiers are fitted. Note that this class thus does not implement a true multi-class Laplace approximation.  Read more in the :ref:`User Guide <gaussian_process>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process",
         "properties": {
             "initkargs": {
@@ -6570,8 +6570,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GaussianProcessRegressor",
         "desc": "Gaussian process regression (GPR).  The implementation is based on Algorithm 2.1 of Gaussian Processes for Machine Learning (GPML) by Rasmussen and Williams.  In addition to standard scikit-learn estimator API, GaussianProcessRegressor:     * allows prediction without prior fitting (based on the GP prior)    * provides an additional method sample_y(X), which evaluates samples      drawn from the GPR (prior or posterior) at given inputs    * exposes a method log_marginal_likelihood(theta), which can be used      externally for other ways of selecting hyperparameters, e.g., via      Markov chain Monte Carlo.  Read more in the :ref:`User Guide <gaussian_process>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process",
         "properties": {
             "initkargs": {
@@ -6643,8 +6643,8 @@ const sklearn={
         "cls": "Block",
         "typename": "CompoundKernel",
         "desc": "Kernel which is composed of a set of other kernels.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6679,8 +6679,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ConstantKernel",
         "desc": "Constant kernel.  Can be used as part of a product-kernel where it scales the magnitude of the other factor (kernel) or as part of a sum-kernel, where it modifies the mean of the Gaussian process.  .. math::     k(x_1, x_2) = constant\\_value \\;\\forall\\; x_1, x_2  Adding a constant kernel is equivalent to adding a constant::          kernel = RBF() + ConstantKernel(constant_value=2)  is the same as::          kernel = RBF() + 2   Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6722,8 +6722,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DotProduct",
         "desc": "Dot-Product kernel.  The DotProduct kernel is non-stationary and can be obtained from linear regression by putting :math:`N(0, 1)` priors on the coefficients of :math:`x_d (d = 1, . . . , D)` and a prior of :math:`N(0, \\sigma_0^2)` on the bias. The DotProduct kernel is invariant to a rotation of the coordinates about the origin, but not translations. It is parameterized by a parameter sigma_0 :math:`\\sigma` which controls the inhomogenity of the kernel. For :math:`\\sigma_0^2 =0`, the kernel is called the homogeneous linear kernel, otherwise it is inhomogeneous. The kernel is given by  .. math::     k(x_i, x_j) = \\sigma_0 ^ 2 + x_i \\cdot x_j  The DotProduct kernel is commonly combined with exponentiation.  See [1]_, Chapter 4, Section 4.2, for further details regarding the DotProduct kernel.  Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6765,8 +6765,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ExpSineSquared",
         "desc": "Exp-Sine-Squared kernel (aka periodic kernel).  The ExpSineSquared kernel allows one to model functions which repeat themselves exactly. It is parameterized by a length scale parameter :math:`l>0` and a periodicity parameter :math:`p>0`. Only the isotropic variant where :math:`l` is a scalar is supported at the moment. The kernel is given by:  .. math::     k(x_i, x_j) = \\text{exp}\\left(-     \\frac{ 2\\sin^2(\\pi d(x_i, x_j)/p) }{ l^ 2} \\right)  where :math:`l` is the length scale of the kernel, :math:`p` the periodicity of the kernel and :math:`d(\\\\cdot,\\\\cdot)` is the Euclidean distance.  Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6820,8 +6820,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Exponentiation",
         "desc": "The Exponentiation kernel takes one base kernel and a scalar parameter :math:`p` and combines them via  .. math::     k_{exp}(X, Y) = k(X, Y) ^p  Note that the `__pow__` magic method is overridden, so `Exponentiation(RBF(), 2)` is equivalent to using the ** operator with `RBF() ** 2`.   Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6861,8 +6861,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Matern",
         "desc": "Matern kernel.  The class of Matern kernels is a generalization of the :class:`RBF`. It has an additional parameter :math:`\\nu` which controls the smoothness of the resulting function. The smaller :math:`\\nu`, the less smooth the approximated function is. As :math:`\\nu\\rightarrow\\infty`, the kernel becomes equivalent to the :class:`RBF` kernel. When :math:`\\nu = 1/2`, the Matérn kernel becomes identical to the absolute exponential kernel. Important intermediate values are :math:`\\nu=1.5` (once differentiable functions) and :math:`\\nu=2.5` (twice differentiable functions).  The kernel is given by:  .. math::      k(x_i, x_j) =  \\frac{1}{\\Gamma(\\nu)2^{\\nu-1}}\\Bigg(      \\frac{\\sqrt{2\\nu}}{l} d(x_i , x_j )      \\Bigg)^\\nu K_\\nu\\Bigg(      \\frac{\\sqrt{2\\nu}}{l} d(x_i , x_j )\\Bigg)    where :math:`d(\\cdot,\\cdot)` is the Euclidean distance, :math:`K_{\\nu}(\\cdot)` is a modified Bessel function and :math:`\\Gamma(\\cdot)` is the gamma function. See [1]_, Chapter 4, Section 4.2, for details regarding the different variants of the Matern kernel.  Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6910,8 +6910,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PairwiseKernel",
         "desc": "Wrapper for kernels in sklearn.metrics.pairwise.  A thin wrapper around the functionality of the kernels in sklearn.metrics.pairwise.  Note: Evaluation of eval_gradient is not analytic but numeric and all       kernels support only isotropic distances. The parameter gamma is       considered to be a hyperparameter and may be optimized. The other       kernel parameters are set directly at initialization and are kept       fixed.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -6965,8 +6965,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Product",
         "desc": "The `Product` kernel takes two kernels :math:`k_1` and :math:`k_2` and combines them via  .. math::     k_{prod}(X, Y) = k_1(X, Y) * k_2(X, Y)  Note that the `__mul__` magic method is overridden, so `Product(RBF(), RBF())` is equivalent to using the * operator with `RBF() * RBF()`.  Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -7006,8 +7006,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RBF",
         "desc": "Radial-basis function kernel (aka squared-exponential kernel).  The RBF kernel is a stationary kernel. It is also known as the \"squared exponential\" kernel. It is parameterized by a length scale parameter :math:`l>0`, which can either be a scalar (isotropic variant of the kernel) or a vector with the same number of dimensions as the inputs X (anisotropic variant of the kernel). The kernel is given by:  .. math::     k(x_i, x_j) = \\exp\\left(- \\frac{d(x_i, x_j)^2}{2l^2} \\right)  where :math:`l` is the length scale of the kernel and :math:`d(\\cdot,\\cdot)` is the Euclidean distance. For advice on how to set the length scale parameter, see e.g. [1]_.  This kernel is infinitely differentiable, which implies that GPs with this kernel as covariance function have mean square derivatives of all orders, and are thus very smooth. See [2]_, Chapter 4, Section 4.2, for further details of the RBF kernel.  Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -7049,8 +7049,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RationalQuadratic",
         "desc": "Rational Quadratic kernel.  The RationalQuadratic kernel can be seen as a scale mixture (an infinite sum) of RBF kernels with different characteristic length scales. It is parameterized by a length scale parameter :math:`l>0` and a scale mixture parameter :math:`\\alpha>0`. Only the isotropic variant where length_scale :math:`l` is a scalar is supported at the moment. The kernel is given by:  .. math::     k(x_i, x_j) = \\left(     1 + \\frac{d(x_i, x_j)^2 }{ 2\\alpha  l^2}\\right)^{-\\alpha}  where :math:`\\alpha` is the scale mixture parameter, :math:`l` is the length scale of the kernel and :math:`d(\\cdot,\\cdot)` is the Euclidean distance. For advice on how to set the parameters, see e.g. [1]_.  Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -7104,8 +7104,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Sum",
         "desc": "The `Sum` kernel takes two kernels :math:`k_1` and :math:`k_2` and combines them via  .. math::     k_{sum}(X, Y) = k_1(X, Y) + k_2(X, Y)  Note that the `__add__` magic method is overridden, so `Sum(RBF(), RBF())` is equivalent to using the + operator with `RBF() + RBF()`.   Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -7145,8 +7145,8 @@ const sklearn={
         "cls": "Block",
         "typename": "WhiteKernel",
         "desc": "White kernel.  The main use-case of this kernel is as part of a sum-kernel where it explains the noise of the signal as independently and identically normally-distributed. The parameter noise_level equals the variance of this noise.  .. math::     k(x_1, x_2) = noise\\_level \\text{ if } x_i == x_j \\text{ else } 0   Read more in the :ref:`User Guide <gp_kernels>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.gaussian_process.kernels",
         "properties": {
             "initkargs": {
@@ -7188,8 +7188,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KNNImputer",
         "desc": "Imputation for completing missing values using k-Nearest Neighbors.  Each sample's missing values are imputed using the mean value from `n_neighbors` nearest neighbors found in the training set. Two samples are close if the features that neither is missing are close.  Read more in the :ref:`User Guide <knnimpute>`.  .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.impute",
         "properties": {
             "initkargs": {
@@ -7255,8 +7255,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MissingIndicator",
         "desc": "Binary indicators for missing values.  Note that this component typically should not be used in a vanilla :class:`Pipeline` consisting of transformers and a classifier, but rather could be added using a :class:`FeatureUnion` or :class:`ColumnTransformer`.  Read more in the :ref:`User Guide <impute>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.impute",
         "properties": {
             "initkargs": {
@@ -7310,8 +7310,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SimpleImputer",
         "desc": "Imputation transformer for completing missing values.  Read more in the :ref:`User Guide <impute>`.  .. versionadded:: 0.20    `SimpleImputer` replaces the previous `sklearn.preprocessing.Imputer`    estimator which is now removed.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.impute",
         "properties": {
             "initkargs": {
@@ -7377,8 +7377,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PartialDependenceDisplay",
         "desc": "Partial Dependence Plot (PDP).  This can also display individual partial dependencies which are often referred to as: Individual Condition Expectation (ICE).  It is recommended to use :func:`~sklearn.inspection.plot_partial_dependence` to create a :class:`~sklearn.inspection.PartialDependenceDisplay`. All parameters are stored as attributes.  Read more in :ref:`sphx_glr_auto_examples_miscellaneous_plot_partial_dependence_visualization_api.py` and the :ref:`User Guide <visualizations>`.      .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.inspection",
         "properties": {
             "initkargs": {
@@ -7456,8 +7456,8 @@ const sklearn={
         "cls": "Block",
         "typename": "IsotonicRegression",
         "desc": "Isotonic regression model.  Read more in the :ref:`User Guide <isotonic>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.isotonic",
         "properties": {
             "initkargs": {
@@ -7511,8 +7511,8 @@ const sklearn={
         "cls": "Block",
         "typename": "AdditiveChi2Sampler",
         "desc": "Approximate feature map for additive chi2 kernel.  Uses sampling the fourier transform of the kernel characteristic at regular intervals.  Since the kernel that is to be approximated is additive, the components of the input vectors can be treated separately.  Each entry in the original space is transformed into 2*sample_steps+1 features, where sample_steps is a parameter of the method. Typical values of sample_steps include 1, 2 and 3.  Optimal choices for the sampling interval for certain data ranges can be computed (see the reference). The default values should be reasonable.  Read more in the :ref:`User Guide <additive_chi_kernel_approx>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_approximation",
         "properties": {
             "initkargs": {
@@ -7554,8 +7554,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Nystroem",
         "desc": "Approximate a kernel map using a subset of the training data.  Constructs an approximate feature map for an arbitrary kernel using a subset of the data as basis.  Read more in the :ref:`User Guide <nystroem_kernel_approx>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_approximation",
         "properties": {
             "initkargs": {
@@ -7633,8 +7633,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PolynomialCountSketch",
         "desc": "Polynomial kernel approximation via Tensor Sketch.  Implements Tensor Sketch, which approximates the feature map of the polynomial kernel::      K(X, Y) = (gamma * <X, Y> + coef0)^degree  by efficiently computing a Count Sketch of the outer product of a vector with itself using Fast Fourier Transforms (FFT). Read more in the :ref:`User Guide <polynomial_kernel_approx>`.  .. versionadded:: 0.24",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_approximation",
         "properties": {
             "initkargs": {
@@ -7694,8 +7694,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RBFSampler",
         "desc": "Approximates feature map of an RBF kernel by Monte Carlo approximation of its Fourier transform.  It implements a variant of Random Kitchen Sinks.[1]  Read more in the :ref:`User Guide <rbf_kernel_approx>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_approximation",
         "properties": {
             "initkargs": {
@@ -7743,8 +7743,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SkewedChi2Sampler",
         "desc": "Approximates feature map of the \"skewed chi-squared\" kernel by Monte Carlo approximation of its Fourier transform.  Read more in the :ref:`User Guide <skewed_chi_kernel_approx>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_approximation",
         "properties": {
             "initkargs": {
@@ -7792,8 +7792,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KernelRidge",
         "desc": "Kernel ridge regression.  Kernel ridge regression (KRR) combines ridge regression (linear least squares with l2-norm regularization) with the kernel trick. It thus learns a linear function in the space induced by the respective kernel and the data. For non-linear kernels, this corresponds to a non-linear function in the original space.  The form of the model learned by KRR is identical to support vector regression (SVR). However, different loss functions are used: KRR uses squared error loss while support vector regression uses epsilon-insensitive loss, both combined with l2 regularization. In contrast to SVR, fitting a KRR model can be done in closed-form and is typically faster for medium-sized datasets. On the other hand, the learned model is non-sparse and thus slower than SVR, which learns a sparse model for epsilon > 0, at prediction-time.  This estimator has built-in support for multi-variate regression (i.e., when y is a 2d-array of shape [n_samples, n_targets]).  Read more in the :ref:`User Guide <kernel_ridge>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_ridge",
         "properties": {
             "initkargs": {
@@ -7859,8 +7859,8 @@ const sklearn={
         "cls": "Block",
         "typename": "deprecated",
         "desc": "Decorator to mark a function or class as deprecated.  Issue a warning when the function is called/the class is instantiated and adds a warning to the docstring.  The optional extra argument will be appended to the deprecation message and the docstring. Note: to use this with the default value for extra, put in an empty of parentheses:  >>> from sklearn.utils import deprecated >>> deprecated() <sklearn.utils.deprecation.deprecated object at ...>  >>> @deprecated() ... def some_function(): pass",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.kernel_ridge",
         "properties": {
             "initkargs": {
@@ -7896,8 +7896,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ARDRegression",
         "desc": "Bayesian ARD regression.  Fit the weights of a regression model, using an ARD prior. The weights of the regression model are assumed to be in Gaussian distributions. Also estimate the parameters lambda (precisions of the distributions of the weights) and alpha (precision of the distribution of the noise). The estimation is done by an iterative procedures (Evidence Maximization)  Read more in the :ref:`User Guide <bayesian_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -7999,8 +7999,8 @@ const sklearn={
         "cls": "Block",
         "typename": "BayesianRidge",
         "desc": "Bayesian ridge regression.  Fit a Bayesian ridge model. See the Notes section for details on this implementation and the optimization of the regularization parameters lambda (precision of the weights) and alpha (precision of the noise).  Read more in the :ref:`User Guide <bayesian_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8108,8 +8108,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ElasticNet",
         "desc": "Linear regression with combined L1 and L2 priors as regularizer.  Minimizes the objective function::          1 / (2 * n_samples) * ||y - Xw||^2_2         + alpha * l1_ratio * ||w||_1         + 0.5 * alpha * (1 - l1_ratio) * ||w||^2_2  If you are interested in controlling the L1 and L2 penalty separately, keep in mind that this is equivalent to::          a * ||w||_1 + 0.5 * b * ||w||_2^2  where::          alpha = a + b and l1_ratio = a / (a + b)  The parameter l1_ratio corresponds to alpha in the glmnet R package while alpha corresponds to the lambda parameter in glmnet. Specifically, l1_ratio = 1 is the lasso penalty. Currently, l1_ratio <= 0.01 is not reliable, unless you supply your own sequence of alpha.  Read more in the :ref:`User Guide <elastic_net>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8211,8 +8211,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ElasticNetCV",
         "desc": "Elastic Net model with iterative fitting along a regularization path.  See glossary entry for :term:`cross-validation estimator`.  Read more in the :ref:`User Guide <elastic_net>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8338,8 +8338,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GammaRegressor",
         "desc": "Generalized Linear Model with a Gamma distribution.  This regressor uses the 'log' link function.  Read more in the :ref:`User Guide <Generalized_linear_regression>`.  .. versionadded:: 0.23",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8405,8 +8405,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Hinge",
         "desc": "Hinge loss for binary classification tasks with y in {-1,1}",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8441,8 +8441,8 @@ const sklearn={
         "cls": "Block",
         "typename": "HuberRegressor",
         "desc": "Linear regression model that is robust to outliers.  The Huber Regressor optimizes the squared loss for the samples where ``|(y - X'w) / sigma| < epsilon`` and the absolute loss for the samples where ``|(y - X'w) / sigma| > epsilon``, where w and sigma are parameters to be optimized. The parameter sigma makes sure that if y is scaled up or down by a certain factor, one does not need to rescale epsilon to achieve the same robustness. Note that this does not take into account the fact that the different features of X may be of different scales.  This makes sure that the loss function is not heavily influenced by the outliers while not completely ignoring their effect.  Read more in the :ref:`User Guide <huber_regression>`  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8508,8 +8508,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Lars",
         "desc": "Least Angle Regression model a.k.a. LAR  Read more in the :ref:`User Guide <least_angle_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8599,8 +8599,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LarsCV",
         "desc": "Cross-validated Least Angle Regression model.  See glossary entry for :term:`cross-validation estimator`.  Read more in the :ref:`User Guide <least_angle_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8690,8 +8690,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Lasso",
         "desc": "Linear Model trained with L1 prior as regularizer (aka the Lasso)  The optimization objective for Lasso is::      (1 / (2 * n_samples)) * ||y - Xw||^2_2 + alpha * ||w||_1  Technically the Lasso model is optimizing the same objective function as the Elastic Net with ``l1_ratio=1.0`` (no L2 penalty).  Read more in the :ref:`User Guide <lasso>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8787,8 +8787,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LassoCV",
         "desc": "Lasso linear model with iterative fitting along a regularization path.  See glossary entry for :term:`cross-validation estimator`.  The best model is selected by cross-validation.  The optimization objective for Lasso is::      (1 / (2 * n_samples)) * ||y - Xw||^2_2 + alpha * ||w||_1  Read more in the :ref:`User Guide <lasso>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -8908,8 +8908,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LassoLars",
         "desc": "Lasso model fit with Least Angle Regression a.k.a. Lars  It is a Linear Model trained with an L1 prior as regularizer.  The optimization objective for Lasso is::  (1 / (2 * n_samples)) * ||y - Xw||^2_2 + alpha * ||w||_1  Read more in the :ref:`User Guide <least_angle_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9011,8 +9011,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LassoLarsCV",
         "desc": "Cross-validated Lasso, using the LARS algorithm.  See glossary entry for :term:`cross-validation estimator`.  The optimization objective for Lasso is::  (1 / (2 * n_samples)) * ||y - Xw||^2_2 + alpha * ||w||_1  Read more in the :ref:`User Guide <least_angle_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9108,8 +9108,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LassoLarsIC",
         "desc": "Lasso model fit with Lars using BIC or AIC for model selection  The optimization objective for Lasso is::  (1 / (2 * n_samples)) * ||y - Xw||^2_2 + alpha * ||w||_1  AIC is the Akaike information criterion and BIC is the Bayes Information criterion. Such criteria are useful to select the value of the regularization parameter by making a trade-off between the goodness of fit and the complexity of the model. A good model should explain well the data while being simple.  Read more in the :ref:`User Guide <least_angle_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9193,8 +9193,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LinearRegression",
         "desc": "Ordinary least squares Linear Regression.  LinearRegression fits a linear model with coefficients w = (w1, ..., wp) to minimize the residual sum of squares between the observed targets in the dataset, and the targets predicted by the linear approximation.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9254,8 +9254,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LogisticRegression",
         "desc": "Logistic Regression (aka logit, MaxEnt) classifier.  In the multiclass case, the training algorithm uses the one-vs-rest (OvR) scheme if the 'multi_class' option is set to 'ovr', and uses the cross-entropy loss if the 'multi_class' option is set to 'multinomial'. (Currently the 'multinomial' option is supported only by the 'lbfgs', 'sag', 'saga' and 'newton-cg' solvers.)  This class implements regularized logistic regression using the 'liblinear' library, 'newton-cg', 'sag', 'saga' and 'lbfgs' solvers. **Note that regularization is applied by default**. It can handle both dense and sparse input. Use C-ordered arrays or CSR matrices containing 64-bit floats for optimal performance; any other input format will be converted (and copied).  The 'newton-cg', 'sag', and 'lbfgs' solvers support only L2 regularization with primal formulation, or no regularization. The 'liblinear' solver supports both L1 and L2 regularization, with a dual formulation only for the L2 penalty. The Elastic-Net regularization is only supported by the 'saga' solver.  Read more in the :ref:`User Guide <logistic_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9375,8 +9375,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LogisticRegressionCV",
         "desc": "Logistic Regression CV (aka logit, MaxEnt) classifier.  See glossary entry for :term:`cross-validation estimator`.  This class implements logistic regression using liblinear, newton-cg, sag of lbfgs optimizer. The newton-cg, sag and lbfgs solvers support only L2 regularization with primal formulation. The liblinear solver supports both L1 and L2 regularization, with a dual formulation only for the L2 penalty. Elastic-Net penalty is only supported by the saga solver.  For the grid of `Cs` values and `l1_ratios` values, the best hyperparameter is selected by the cross-validator :class:`~sklearn.model_selection.StratifiedKFold`, but it can be changed using the :term:`cv` parameter. The 'newton-cg', 'sag', 'saga' and 'lbfgs' solvers can warm-start the coefficients (see :term:`Glossary<warm_start>`).  Read more in the :ref:`User Guide <logistic_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9508,8 +9508,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MultiTaskElasticNet",
         "desc": "Multi-task ElasticNet model trained with L1/L2 mixed-norm as regularizer.  The optimization objective for MultiTaskElasticNet is::      (1 / (2 * n_samples)) * ||Y - XW||_Fro^2     + alpha * l1_ratio * ||W||_21     + 0.5 * alpha * (1 - l1_ratio) * ||W||_Fro^2  Where::      ||W||_21 = sum_i sqrt(sum_j W_ij ^ 2)  i.e. the sum of norms of each row.  Read more in the :ref:`User Guide <multi_task_elastic_net>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9599,8 +9599,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MultiTaskElasticNetCV",
         "desc": "Multi-task L1/L2 ElasticNet with built-in cross-validation.  See glossary entry for :term:`cross-validation estimator`.  The optimization objective for MultiTaskElasticNet is::      (1 / (2 * n_samples)) * ||Y - XW||^Fro_2     + alpha * l1_ratio * ||W||_21     + 0.5 * alpha * (1 - l1_ratio) * ||W||_Fro^2  Where::      ||W||_21 = \\sum_i \\sqrt{\\sum_j w_{ij}^2}  i.e. the sum of norm of each row.  Read more in the :ref:`User Guide <multi_task_elastic_net>`.  .. versionadded:: 0.15",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9714,8 +9714,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MultiTaskLasso",
         "desc": "Multi-task Lasso model trained with L1/L2 mixed-norm as regularizer.  The optimization objective for Lasso is::      (1 / (2 * n_samples)) * ||Y - XW||^2_Fro + alpha * ||W||_21  Where::      ||W||_21 = \\sum_i \\sqrt{\\sum_j w_{ij}^2}  i.e. the sum of norm of each row.  Read more in the :ref:`User Guide <multi_task_lasso>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9799,8 +9799,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MultiTaskLassoCV",
         "desc": "Multi-task Lasso model trained with L1/L2 mixed-norm as regularizer.  See glossary entry for :term:`cross-validation estimator`.  The optimization objective for MultiTaskLasso is::      (1 / (2 * n_samples)) * ||Y - XW||^Fro_2 + alpha * ||W||_21  Where::      ||W||_21 = \\sum_i \\sqrt{\\sum_j w_{ij}^2}  i.e. the sum of norm of each row.  Read more in the :ref:`User Guide <multi_task_lasso>`.  .. versionadded:: 0.15",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9908,8 +9908,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OrthogonalMatchingPursuit",
         "desc": "Orthogonal Matching Pursuit model (OMP).  Read more in the :ref:`User Guide <omp>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -9969,8 +9969,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OrthogonalMatchingPursuitCV",
         "desc": "Cross-validated Orthogonal Matching Pursuit model (OMP).  See glossary entry for :term:`cross-validation estimator`.  Read more in the :ref:`User Guide <omp>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10042,8 +10042,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PassiveAggressiveClassifier",
         "desc": "Passive Aggressive Classifier  Read more in the :ref:`User Guide <passive_aggressive>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10163,8 +10163,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PassiveAggressiveRegressor",
         "desc": "Passive Aggressive Regressor  Read more in the :ref:`User Guide <passive_aggressive>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10278,8 +10278,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Perceptron",
         "desc": "Perceptron  Read more in the :ref:`User Guide <perceptron>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10405,8 +10405,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PoissonRegressor",
         "desc": "Generalized Linear Model with a Poisson distribution.  This regressor uses the 'log' link function.  Read more in the :ref:`User Guide <Generalized_linear_regression>`.  .. versionadded:: 0.23",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10472,8 +10472,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RANSACRegressor",
         "desc": "RANSAC (RANdom SAmple Consensus) algorithm.  RANSAC is an iterative algorithm for the robust estimation of parameters from a subset of inliers from the complete data set.  Read more in the :ref:`User Guide <ransac_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10577,8 +10577,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Ridge",
         "desc": "Linear least squares with l2 regularization.  Minimizes the objective function::  ||y - Xw||^2_2 + alpha * ||w||^2_2  This model solves a regression model where the loss function is the linear least squares function and regularization is given by the l2-norm. Also known as Ridge Regression or Tikhonov regularization. This estimator has built-in support for multi-variate regression (i.e., when y is a 2d-array of shape (n_samples, n_targets)).  Read more in the :ref:`User Guide <ridge_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10656,8 +10656,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RidgeCV",
         "desc": "Ridge regression with built-in cross-validation.  See glossary entry for :term:`cross-validation estimator`.  By default, it performs efficient Leave-One-Out Cross-Validation.  Read more in the :ref:`User Guide <ridge_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10735,8 +10735,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RidgeClassifier",
         "desc": "Classifier using Ridge regression.  This classifier first converts the target values into ``{-1, 1}`` and then treats the problem as a regression task (multi-output regression in the multiclass case).  Read more in the :ref:`User Guide <ridge_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10820,8 +10820,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RidgeClassifierCV",
         "desc": "Ridge classifier with built-in cross-validation.  See glossary entry for :term:`cross-validation estimator`.  By default, it performs Leave-One-Out Cross-Validation. Currently, only the n_features > n_samples case is handled efficiently.  Read more in the :ref:`User Guide <ridge_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -10893,8 +10893,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SGDClassifier",
         "desc": "Linear classifiers (SVM, logistic regression, etc.) with SGD training.  This estimator implements regularized linear models with stochastic gradient descent (SGD) learning: the gradient of the loss is estimated each sample at a time and the model is updated along the way with a decreasing strength schedule (aka learning rate). SGD allows minibatch (online/out-of-core) learning via the `partial_fit` method. For best results using the default learning rate schedule, the data should have zero mean and unit variance.  This implementation works with data represented as dense or sparse arrays of floating point values for the features. The model it fits can be controlled with the loss parameter; by default, it fits a linear support vector machine (SVM).  The regularizer is a penalty added to the loss function that shrinks model parameters towards the zero vector using either the squared euclidean norm L2 or the absolute norm L1 or a combination of both (Elastic Net). If the parameter update crosses the 0.0 value because of the regularizer, the update is truncated to 0.0 to allow for learning sparse models and achieve online feature selection.  Read more in the :ref:`User Guide <sgd>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -11050,8 +11050,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SGDRegressor",
         "desc": "Linear model fitted by minimizing a regularized empirical loss with SGD  SGD stands for Stochastic Gradient Descent: the gradient of the loss is estimated each sample at a time and the model is updated along the way with a decreasing strength schedule (aka learning rate).  The regularizer is a penalty added to the loss function that shrinks model parameters towards the zero vector using either the squared euclidean norm L2 or the absolute norm L1 or a combination of both (Elastic Net). If the parameter update crosses the 0.0 value because of the regularizer, the update is truncated to 0.0 to allow for learning sparse models and achieve online feature selection.  This implementation works with data represented as dense numpy arrays of floating point values for the features.  Read more in the :ref:`User Guide <sgd>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -11195,8 +11195,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TheilSenRegressor",
         "desc": "Theil-Sen Estimator: robust multivariate regression model.  The algorithm calculates least square solutions on subsets with size n_subsamples of the samples in X. Any value of n_subsamples between the number of features and samples leads to an estimator with a compromise between robustness and efficiency. Since the number of least square solutions is \"n_samples choose n_subsamples\", it can be extremely large and can therefore be limited with max_subpopulation. If this limit is reached, the subsets are chosen randomly. In a final step, the spatial median (or L1 median) is calculated of all least square solutions.  Read more in the :ref:`User Guide <theil_sen_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -11280,8 +11280,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TweedieRegressor",
         "desc": "Generalized Linear Model with a Tweedie distribution.  This estimator can be used to model different GLMs depending on the ``power`` parameter, which determines the underlying distribution.  Read more in the :ref:`User Guide <Generalized_linear_regression>`.  .. versionadded:: 0.23",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.linear_model",
         "properties": {
             "initkargs": {
@@ -11317,8 +11317,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Isomap",
         "desc": "Isomap Embedding  Non-linear dimensionality reduction through Isometric Mapping  Read more in the :ref:`User Guide <isomap>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.manifold",
         "properties": {
             "initkargs": {
@@ -11414,8 +11414,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LocallyLinearEmbedding",
         "desc": "Locally Linear Embedding  Read more in the :ref:`User Guide <locally_linear_embedding>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.manifold",
         "properties": {
             "initkargs": {
@@ -11527,8 +11527,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MDS",
         "desc": "Multidimensional scaling.  Read more in the :ref:`User Guide <multidimensional_scaling>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.manifold",
         "properties": {
             "initkargs": {
@@ -11612,8 +11612,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SpectralEmbedding",
         "desc": "Spectral embedding for non-linear dimensionality reduction.  Forms an affinity matrix given by the specified function and applies spectral decomposition to the corresponding graph laplacian. The resulting transformation is given by the value of the eigenvectors for each data point.  Note : Laplacian Eigenmaps is the actual algorithm implemented here.  Read more in the :ref:`User Guide <spectral_embedding>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.manifold",
         "properties": {
             "initkargs": {
@@ -11685,8 +11685,8 @@ const sklearn={
         "cls": "Block",
         "typename": "TSNE",
         "desc": "t-distributed Stochastic Neighbor Embedding.  t-SNE [1] is a tool to visualize high-dimensional data. It converts similarities between data points to joint probabilities and tries to minimize the Kullback-Leibler divergence between the joint probabilities of the low-dimensional embedding and the high-dimensional data. t-SNE has a cost function that is not convex, i.e. with different initializations we can get different results.  It is highly recommended to use another dimensionality reduction method (e.g. PCA for dense data or TruncatedSVD for sparse data) to reduce the number of dimensions to a reasonable amount (e.g. 50) if the number of features is very high. This will suppress some noise and speed up the computation of pairwise distances between samples. For more tips see Laurens van der Maaten's FAQ [2].  Read more in the :ref:`User Guide <t_sne>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.manifold",
         "properties": {
             "initkargs": {
@@ -11806,8 +11806,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ConfusionMatrixDisplay",
         "desc": "Confusion Matrix visualization.  It is recommend to use :func:`~sklearn.metrics.plot_confusion_matrix` to create a :class:`ConfusionMatrixDisplay`. All parameters are stored as attributes.  Read more in the :ref:`User Guide <visualizations>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.metrics",
         "properties": {
             "initkargs": {
@@ -11848,8 +11848,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DetCurveDisplay",
         "desc": "DET curve visualization.  It is recommend to use :func:`~sklearn.metrics.plot_det_curve` to create a visualizer. All parameters are stored as attributes.  Read more in the :ref:`User Guide <visualizations>`.  .. versionadded:: 0.24",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.metrics",
         "properties": {
             "initkargs": {
@@ -11901,8 +11901,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PrecisionRecallDisplay",
         "desc": "Precision Recall visualization.  It is recommend to use :func:`~sklearn.metrics.plot_precision_recall_curve` to create a visualizer. All parameters are stored as attributes.  Read more in the :ref:`User Guide <visualizations>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.metrics",
         "properties": {
             "initkargs": {
@@ -11960,8 +11960,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RocCurveDisplay",
         "desc": "ROC Curve visualization.  It is recommend to use :func:`~sklearn.metrics.plot_roc_curve` to create a visualizer. All parameters are stored as attributes.  Read more in the :ref:`User Guide <visualizations>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.metrics",
         "properties": {
             "initkargs": {
@@ -12019,8 +12019,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Parallel",
         "desc": "Helper class for readable parallel mapping.  Read more in the :ref:`User Guide <parallel>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics.pairwise",
         "properties": {
             "args": {
@@ -12047,8 +12047,8 @@ const sklearn={
         "cls": "Block",
         "typename": "BayesianGaussianMixture",
         "desc": "Variational Bayesian estimation of a Gaussian mixture.  This class allows to infer an approximate posterior distribution over the parameters of a Gaussian mixture distribution. The effective number of components can be inferred from the data.  This class implements two types of prior for the weights distribution: a finite mixture model with Dirichlet distribution and an infinite mixture model with the Dirichlet Process. In practice Dirichlet Process inference algorithm is approximated and uses a truncated distribution with a fixed maximum number of components (called the Stick-breaking representation). The number of components actually used almost always depends on the data.  .. versionadded:: 0.18  Read more in the :ref:`User Guide <bgmm>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.mixture",
         "properties": {
             "initkargs": {
@@ -12180,8 +12180,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GaussianMixture",
         "desc": "Gaussian Mixture.  Representation of a Gaussian mixture model probability distribution. This class allows to estimate the parameters of a Gaussian mixture distribution.  Read more in the :ref:`User Guide <gmm>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.mixture",
         "properties": {
             "initkargs": {
@@ -12295,8 +12295,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "GridSearchCV",
         "desc": "Exhaustive search over specified parameter values for an estimator.  Important members are fit, predict.  GridSearchCV implements a \"fit\" and a \"score\" method. It also implements \"score_samples\", \"predict\", \"predict_proba\", \"decision_function\", \"transform\" and \"inverse_transform\" if they are implemented in the estimator used.  The parameters of the estimator used to apply these methods are optimized by cross-validated grid-search over a parameter grid.  Read more in the :ref:`User Guide <grid_search>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12386,8 +12386,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "GroupKFold",
         "desc": "K-fold iterator variant with non-overlapping groups.  The same group will not appear in two different folds (the number of distinct groups has to be at least equal to the number of folds).  The folds are approximately balanced in the sense that the number of distinct groups is approximately the same in each fold.  Read more in the :ref:`User Guide <group_k_fold>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12423,8 +12423,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "GroupShuffleSplit",
         "desc": "Shuffle-Group(s)-Out cross-validation iterator  Provides randomized train/test indices to split data according to a third-party provided group. This group information can be used to encode arbitrary domain specific stratifications of the samples as integers.  For instance the groups could be the year of collection of the samples and thus allow for cross-validation against time-based splits.  The difference between LeavePGroupsOut and GroupShuffleSplit is that the former generates splits using all subsets of size ``p`` unique groups, whereas GroupShuffleSplit generates a user-determined number of random test splits, each with a user-determined fraction of unique groups.  For example, a less computationally intensive alternative to ``LeavePGroupsOut(p=10)`` would be ``GroupShuffleSplit(test_size=10, n_splits=100)``.  Note: The parameters ``test_size`` and ``train_size`` refer to groups, and not to samples, as in ShuffleSplit.  Read more in the :ref:`User Guide <group_shuffle_split>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12478,8 +12478,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "KFold",
         "desc": "K-Folds cross-validator  Provides train/test indices to split data in train/test sets. Split dataset into k consecutive folds (without shuffling by default).  Each fold is then used once as a validation while the k - 1 remaining folds form the training set.  Read more in the :ref:`User Guide <k_fold>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12527,8 +12527,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LeavePGroupsOut",
         "desc": "Leave P Group(s) Out cross-validator  Provides train/test indices to split data according to a third-party provided group. This group information can be used to encode arbitrary domain specific stratifications of the samples as integers.  For instance the groups could be the year of collection of the samples and thus allow for cross-validation against time-based splits.  The difference between LeavePGroupsOut and LeaveOneGroupOut is that the former builds the test sets with all the samples assigned to ``p`` different values of the groups while the latter uses samples all assigned the same groups.  Read more in the :ref:`User Guide <leave_p_groups_out>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12563,8 +12563,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LeavePOut",
         "desc": "Leave-P-Out cross-validator  Provides train/test indices to split data in train/test sets. This results in testing on all distinct samples of size p, while the remaining n - p samples form the training set in each iteration.  Note: ``LeavePOut(p)`` is NOT equivalent to ``KFold(n_splits=n_samples // p)`` which creates non-overlapping test sets.  Due to the high number of iterations which grows combinatorically with the number of samples this cross-validation method can be very costly. For large datasets one should favor :class:`KFold`, :class:`StratifiedKFold` or :class:`ShuffleSplit`.  Read more in the :ref:`User Guide <leave_p_out>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12599,8 +12599,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ParameterGrid",
         "desc": "Grid of parameters with a discrete number of values for each.  Can be used to iterate over parameter value combinations with the Python built-in function iter. The order of the generated parameter combinations is deterministic.  Read more in the :ref:`User Guide <grid_search>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12635,8 +12635,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ParameterSampler",
         "desc": "Generator on parameters sampled from given distributions.  Non-deterministic iterable over random candidate combinations for hyper- parameter search. If all parameters are presented as a list, sampling without replacement is performed. If at least one parameter is given as a distribution, sampling with replacement is used. It is highly recommended to use continuous distributions for continuous parameters.  Read more in the :ref:`User Guide <grid_search>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12682,8 +12682,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RandomizedSearchCV",
         "desc": "Randomized search on hyper parameters.  RandomizedSearchCV implements a \"fit\" and a \"score\" method. It also implements \"score_samples\", \"predict\", \"predict_proba\", \"decision_function\", \"transform\" and \"inverse_transform\" if they are implemented in the estimator used.  The parameters of the estimator used to apply these methods are optimized by cross-validated search over parameter settings.  In contrast to GridSearchCV, not all parameter values are tried out, but rather a fixed number of parameter settings is sampled from the specified distributions. The number of parameter settings that are tried is given by n_iter.  If all parameters are presented as a list, sampling without replacement is performed. If at least one parameter is given as a distribution, sampling with replacement is used. It is highly recommended to use continuous distributions for continuous parameters.  Read more in the :ref:`User Guide <randomized_parameter_search>`.  .. versionadded:: 0.14",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12785,8 +12785,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RepeatedKFold",
         "desc": "Repeated K-Fold cross validator.  Repeats K-Fold n times with different randomization in each repetition.  Read more in the :ref:`User Guide <repeated_k_fold>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12834,8 +12834,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RepeatedStratifiedKFold",
         "desc": "Repeated Stratified K-Fold cross validator.  Repeats Stratified K-Fold n times with different randomization in each repetition.  Read more in the :ref:`User Guide <repeated_k_fold>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12883,8 +12883,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "ShuffleSplit",
         "desc": "Random permutation cross-validator  Yields indices to split data into training and test sets.  Note: contrary to other cross-validation strategies, random splits do not guarantee that all folds will be different, although this is still very likely for sizeable datasets.  Read more in the :ref:`User Guide <ShuffleSplit>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12938,8 +12938,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "StratifiedKFold",
         "desc": "Stratified K-Folds cross-validator.  Provides train/test indices to split data in train/test sets.  This cross-validation object is a variation of KFold that returns stratified folds. The folds are made by preserving the percentage of samples for each class.  Read more in the :ref:`User Guide <stratified_k_fold>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -12987,8 +12987,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "StratifiedShuffleSplit",
         "desc": "Stratified ShuffleSplit cross-validator  Provides train/test indices to split data in train/test sets.  This cross-validation object is a merge of StratifiedKFold and ShuffleSplit, which returns stratified randomized folds. The folds are made by preserving the percentage of samples for each class.  Note: like the ShuffleSplit strategy, stratified random splits do not guarantee that all folds will be different, although this is still very likely for sizeable datasets.  Read more in the :ref:`User Guide <stratified_shuffle_split>`.",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -13042,8 +13042,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "TimeSeriesSplit",
         "desc": "Time Series cross-validator  Provides train/test indices to split time series data samples that are observed at fixed time intervals, in train/test sets. In each split, test indices must be higher than before, and thus shuffling in cross validator is inappropriate.  This cross-validation object is a variation of :class:`KFold`. In the kth split, it returns first k folds as train set and the (k+1)th fold as test set.  Note that unlike standard cross-validation methods, successive training sets are supersets of those that come before them.  Read more in the :ref:`User Guide <time_series_split>`.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklSplitter",
-        "pytype": "skll.plugin.sklearn.block.SklSplitter",
+        "childof": "libretto.plugin.sklearn.block.SklSplitter",
+        "pytype": "libretto.plugin.sklearn.block.SklSplitter",
         "group": "sklearn.model_selection",
         "properties": {
             "initkargs": {
@@ -13097,8 +13097,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LabelBinarizer",
         "desc": "Binarize labels in a one-vs-all fashion.  Several regression and binary classification algorithms are available in scikit-learn. A simple way to extend these algorithms to the multi-class classification case is to use the so-called one-vs-all scheme.  At learning time, this simply consists in learning one regressor or binary classifier per class. In doing so, one needs to convert multi-class labels to binary labels (belong or does not belong to the class). LabelBinarizer makes this process easy with the transform method.  At prediction time, one assigns the class for which the corresponding model gave the greatest confidence. LabelBinarizer makes this easy with the inverse_transform method.  Read more in the :ref:`User Guide <preprocessing_targets>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.multiclass",
         "properties": {
             "initkargs": {
@@ -13146,8 +13146,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "OneVsOneClassifier",
         "desc": "One-vs-one multiclass strategy  This strategy consists in fitting one classifier per class pair. At prediction time, the class which received the most votes is selected. Since it requires to fit `n_classes * (n_classes - 1) / 2` classifiers, this method is usually slower than one-vs-the-rest, due to its O(n_classes^2) complexity. However, this method may be advantageous for algorithms such as kernel algorithms which don't scale well with `n_samples`. This is because each individual learning problem only involves a small subset of the data whereas, with one-vs-the-rest, the complete dataset is used `n_classes` times.  Read more in the :ref:`User Guide <ovo_classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multiclass",
         "properties": {
             "initkargs": {
@@ -13191,8 +13191,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "OneVsRestClassifier",
         "desc": "One-vs-the-rest (OvR) multiclass strategy.  Also known as one-vs-all, this strategy consists in fitting one classifier per class. For each classifier, the class is fitted against all the other classes. In addition to its computational efficiency (only `n_classes` classifiers are needed), one advantage of this approach is its interpretability. Since each class is represented by one and one classifier only, it is possible to gain knowledge about the class by inspecting its corresponding classifier. This is the most commonly used strategy for multiclass classification and is a fair default choice.  OneVsRestClassifier can also be used for multilabel classification. To use this feature, provide an indicator matrix for the target `y` when calling `.fit`. In other words, the target labels should be formatted as a 2D binary (0/1) matrix, where [i, j] == 1 indicates the presence of label j in sample i. This estimator uses the binary relevance method to perform multilabel classification, which involves training one binary classifier independently for each label.  Read more in the :ref:`User Guide <ovr_classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multiclass",
         "properties": {
             "initkargs": {
@@ -13236,8 +13236,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "OutputCodeClassifier",
         "desc": "(Error-Correcting) Output-Code multiclass strategy  Output-code based strategies consist in representing each class with a binary code (an array of 0s and 1s). At fitting time, one binary classifier per bit in the code book is fitted.  At prediction time, the classifiers are used to project new points in the class space and the class closest to the points is chosen. The main advantage of these strategies is that the number of classifiers used can be controlled by the user, either for compressing the model (0 < code_size < 1) or for making the model more robust to errors (code_size > 1). See the documentation for more details.  Read more in the :ref:`User Guide <ecoc>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multiclass",
         "properties": {
             "initkargs": {
@@ -13292,8 +13292,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Parallel",
         "desc": "Helper class for readable parallel mapping.  Read more in the :ref:`User Guide <parallel>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.multiclass",
         "properties": {
             "initkargs": {
@@ -13323,8 +13323,8 @@ const sklearn={
         "cls": "Block",
         "typename": "deprecated",
         "desc": "Decorator to mark a function or class as deprecated.  Issue a warning when the function is called/the class is instantiated and adds a warning to the docstring.  The optional extra argument will be appended to the deprecation message and the docstring. Note: to use this with the default value for extra, put in an empty of parentheses:  >>> from sklearn.utils import deprecated >>> deprecated() <sklearn.utils.deprecation.deprecated object at ...>  >>> @deprecated() ... def some_function(): pass",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.multiclass",
         "properties": {
             "initkargs": {
@@ -13360,8 +13360,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "ClassifierChain",
         "desc": "A multi-label model that arranges binary classifiers into a chain.  Each model makes a prediction in the order specified by the chain using all of the available features provided to the model plus the predictions of models that are earlier in the chain.  Read more in the :ref:`User Guide <classifierchain>`.  .. versionadded:: 0.19",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multioutput",
         "properties": {
             "initkargs": {
@@ -13417,8 +13417,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "MultiOutputClassifier",
         "desc": "Multi target classification  This strategy consists of fitting one classifier per target. This is a simple strategy for extending classifiers that do not natively support multi-target classification",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multioutput",
         "properties": {
             "initkargs": {
@@ -13462,8 +13462,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "MultiOutputRegressor",
         "desc": "Multi target regression  This strategy consists of fitting one regressor per target. This is a simple strategy for extending regressors that do not natively support multi-target regression.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multioutput",
         "properties": {
             "initkargs": {
@@ -13507,8 +13507,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Parallel",
         "desc": "Helper class for readable parallel mapping.  Read more in the :ref:`User Guide <parallel>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.multioutput",
         "properties": {
             "initkargs": {
@@ -13538,8 +13538,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "RegressorChain",
         "desc": "A multi-label model that arranges regressions into a chain.  Each model makes a prediction in the order specified by the chain using all of the available features provided to the model plus the predictions of models that are earlier in the chain.  Read more in the :ref:`User Guide <regressorchain>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.multioutput",
         "properties": {
             "initkargs": {
@@ -13595,8 +13595,8 @@ const sklearn={
         "cls": "Block",
         "typename": "BernoulliNB",
         "desc": "Naive Bayes classifier for multivariate Bernoulli models.  Like MultinomialNB, this classifier is suitable for discrete data. The difference is that while MultinomialNB works with occurrence counts, BernoulliNB is designed for binary/boolean features.  Read more in the :ref:`User Guide <bernoulli_naive_bayes>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13650,8 +13650,8 @@ const sklearn={
         "cls": "Block",
         "typename": "CategoricalNB",
         "desc": "Naive Bayes classifier for categorical features  The categorical Naive Bayes classifier is suitable for classification with discrete features that are categorically distributed. The categories of each feature are drawn from a categorical distribution.  Read more in the :ref:`User Guide <categorical_naive_bayes>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13705,8 +13705,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ComplementNB",
         "desc": "The Complement Naive Bayes classifier described in Rennie et al. (2003).  The Complement Naive Bayes classifier was designed to correct the \"severe assumptions\" made by the standard Multinomial Naive Bayes classifier. It is particularly suited for imbalanced data sets.  Read more in the :ref:`User Guide <complement_naive_bayes>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13760,8 +13760,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GaussianNB",
         "desc": "Gaussian Naive Bayes (GaussianNB)  Can perform online updates to model parameters via :meth:`partial_fit`. For details on algorithm used to update feature means and variance online, see Stanford CS tech report STAN-CS-79-773 by Chan, Golub, and LeVeque:      http://i.stanford.edu/pub/cstr/reports/cs/tr/79/773/CS-TR-79-773.pdf  Read more in the :ref:`User Guide <gaussian_naive_bayes>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13802,8 +13802,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LabelBinarizer",
         "desc": "Binarize labels in a one-vs-all fashion.  Several regression and binary classification algorithms are available in scikit-learn. A simple way to extend these algorithms to the multi-class classification case is to use the so-called one-vs-all scheme.  At learning time, this simply consists in learning one regressor or binary classifier per class. In doing so, one needs to convert multi-class labels to binary labels (belong or does not belong to the class). LabelBinarizer makes this process easy with the transform method.  At prediction time, one assigns the class for which the corresponding model gave the greatest confidence. LabelBinarizer makes this easy with the inverse_transform method.  Read more in the :ref:`User Guide <preprocessing_targets>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13851,8 +13851,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MultinomialNB",
         "desc": "Naive Bayes classifier for multinomial models  The multinomial Naive Bayes classifier is suitable for classification with discrete features (e.g., word counts for text classification). The multinomial distribution normally requires integer feature counts. However, in practice, fractional counts such as tf-idf may also work.  Read more in the :ref:`User Guide <multinomial_naive_bayes>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13900,8 +13900,8 @@ const sklearn={
         "cls": "Block",
         "typename": "deprecated",
         "desc": "Decorator to mark a function or class as deprecated.  Issue a warning when the function is called/the class is instantiated and adds a warning to the docstring.  The optional extra argument will be appended to the deprecation message and the docstring. Note: to use this with the default value for extra, put in an empty of parentheses:  >>> from sklearn.utils import deprecated >>> deprecated() <sklearn.utils.deprecation.deprecated object at ...>  >>> @deprecated() ... def some_function(): pass",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.naive_bayes",
         "properties": {
             "initkargs": {
@@ -13937,8 +13937,8 @@ const sklearn={
         "cls": "Block",
         "typename": "BallTree",
         "desc": "BallTree(X, leaf_size=40, metric='minkowski', **kwargs)  BallTree for fast generalized N-point problems  Read more in the :ref:`User Guide <unsupervised_neighbors>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -13984,8 +13984,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KDTree",
         "desc": "KDTree(X, leaf_size=40, metric='minkowski', **kwargs)  KDTree for fast generalized N-point problems  Read more in the :ref:`User Guide <unsupervised_neighbors>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14031,8 +14031,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KNeighborsClassifier",
         "desc": "Classifier implementing the k-nearest neighbors vote.  Read more in the :ref:`User Guide <classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14110,8 +14110,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KNeighborsRegressor",
         "desc": "Regression based on k-nearest neighbors.  The target is predicted by local interpolation of the targets associated of the nearest neighbors in the training set.  Read more in the :ref:`User Guide <regression>`.  .. versionadded:: 0.9",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14189,8 +14189,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KNeighborsTransformer",
         "desc": "Transform X into a (weighted) graph of k nearest neighbors  The transformed data is a sparse graph as returned by kneighbors_graph.  Read more in the :ref:`User Guide <neighbors_transformer>`.  .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14268,8 +14268,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KernelDensity",
         "desc": "Kernel Density Estimation.  Read more in the :ref:`User Guide <kernel_density>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14353,8 +14353,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LocalOutlierFactor",
         "desc": "Unsupervised Outlier Detection using Local Outlier Factor (LOF)  The anomaly score of each sample is called Local Outlier Factor. It measures the local deviation of density of a given sample with respect to its neighbors. It is local in that the anomaly score depends on how isolated the object is with respect to the surrounding neighborhood. More precisely, locality is given by k-nearest neighbors, whose distance is used to estimate the local density. By comparing the local density of a sample to the local densities of its neighbors, one can identify samples that have a substantially lower density than their neighbors. These are considered outliers.  .. versionadded:: 0.19",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14438,8 +14438,8 @@ const sklearn={
         "cls": "Block",
         "typename": "NearestCentroid",
         "desc": "Nearest centroid classifier.  Each class is represented by its centroid, with test samples classified to the class with the nearest centroid.  Read more in the :ref:`User Guide <nearest_centroid_classifier>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14480,8 +14480,8 @@ const sklearn={
         "cls": "Block",
         "typename": "NearestNeighbors",
         "desc": "Unsupervised learner for implementing neighbor searches.  Read more in the :ref:`User Guide <unsupervised_neighbors>`.  .. versionadded:: 0.9",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14559,8 +14559,8 @@ const sklearn={
         "cls": "Block",
         "typename": "NeighborhoodComponentsAnalysis",
         "desc": "Neighborhood Components Analysis  Neighborhood Component Analysis (NCA) is a machine learning algorithm for metric learning. It learns a linear transformation in a supervised fashion to improve the classification accuracy of a stochastic nearest neighbors rule in the transformed space.  Read more in the :ref:`User Guide <nca>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14638,8 +14638,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RadiusNeighborsClassifier",
         "desc": "Classifier implementing a vote among neighbors within a given radius  Read more in the :ref:`User Guide <classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14723,8 +14723,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RadiusNeighborsRegressor",
         "desc": "Regression based on neighbors within a fixed radius.  The target is predicted by local interpolation of the targets associated of the nearest neighbors in the training set.  Read more in the :ref:`User Guide <regression>`.  .. versionadded:: 0.9",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14802,8 +14802,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RadiusNeighborsTransformer",
         "desc": "Transform X into a (weighted) graph of neighbors nearer than a radius  The transformed data is a sparse graph as returned by radius_neighbors_graph.  Read more in the :ref:`User Guide <neighbors_transformer>`.  .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neighbors",
         "properties": {
             "initkargs": {
@@ -14881,8 +14881,8 @@ const sklearn={
         "cls": "Block",
         "typename": "BernoulliRBM",
         "desc": "Bernoulli Restricted Boltzmann Machine (RBM).  A Restricted Boltzmann Machine with binary visible units and binary hidden units. Parameters are estimated using Stochastic Maximum Likelihood (SML), also known as Persistent Contrastive Divergence (PCD) [2].  The time complexity of this implementation is ``O(d ** 2)`` assuming d ~ n_features ~ n_components.  Read more in the :ref:`User Guide <rbm>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neural_network",
         "properties": {
             "initkargs": {
@@ -14948,8 +14948,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MLPClassifier",
         "desc": "Multi-layer Perceptron classifier.  This model optimizes the log-loss function using LBFGS or stochastic gradient descent.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neural_network",
         "properties": {
             "initkargs": {
@@ -15117,8 +15117,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MLPRegressor",
         "desc": "Multi-layer Perceptron regressor.  This model optimizes the squared-loss using LBFGS or stochastic gradient descent.  .. versionadded:: 0.18",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.neural_network",
         "properties": {
             "initkargs": {
@@ -15286,8 +15286,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FeatureUnion",
         "desc": "Concatenates results of multiple transformer objects.  This estimator applies a list of transformer objects in parallel to the input data, then concatenates the results. This is useful to combine several feature extraction mechanisms into a single transformer.  Parameters of the transformers may be set using its name and the parameter name separated by a '__'. A transformer may be replaced entirely by setting the parameter with its name to another transformer, or removed by setting to 'drop'.  Read more in the :ref:`User Guide <feature_union>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.pipeline",
         "properties": {
             "initkargs": {
@@ -15340,8 +15340,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Parallel",
         "desc": "Helper class for readable parallel mapping.  Read more in the :ref:`User Guide <parallel>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.pipeline",
         "properties": {
             "initkargs": {
@@ -15371,8 +15371,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Pipeline",
         "desc": "Pipeline of transforms with a final estimator.  Sequentially apply a list of transforms and a final estimator. Intermediate steps of the pipeline must be 'transforms', that is, they must implement fit and transform methods. The final estimator only needs to implement fit. The transformers in the pipeline can be cached using ``memory`` argument.  The purpose of the pipeline is to assemble several steps that can be cross-validated together while setting different parameters. For this, it enables setting parameters of the various steps using their names and the parameter name separated by a '__', as in the example below. A step's estimator may be replaced entirely by setting the parameter with its name to another estimator, or a transformer removed by setting it to 'passthrough' or ``None``.  Read more in the :ref:`User Guide <pipeline>`.  .. versionadded:: 0.5",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.pipeline",
         "properties": {
             "initkargs": {
@@ -15419,8 +15419,8 @@ const sklearn={
         "cls": "Block",
         "typename": "deprecated",
         "desc": "Decorator to mark a function or class as deprecated.  Issue a warning when the function is called/the class is instantiated and adds a warning to the docstring.  The optional extra argument will be appended to the deprecation message and the docstring. Note: to use this with the default value for extra, put in an empty of parentheses:  >>> from sklearn.utils import deprecated >>> deprecated() <sklearn.utils.deprecation.deprecated object at ...>  >>> @deprecated() ... def some_function(): pass",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.pipeline",
         "properties": {
             "initkargs": {
@@ -15456,8 +15456,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Binarizer",
         "desc": "Binarize data (set feature values to 0 or 1) according to a threshold.  Values greater than the threshold map to 1, while values less than or equal to the threshold map to 0. With the default threshold of 0, only positive values map to 1.  Binarization is a common operation on text count data where the analyst can decide to only consider the presence or absence of a feature rather than a quantified number of occurrences for instance.  It can also be used as a pre-processing step for estimators that consider boolean random variables (e.g. modelled using the Bernoulli distribution in a Bayesian setting).  Read more in the :ref:`User Guide <preprocessing_binarization>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15499,8 +15499,8 @@ const sklearn={
         "cls": "Block",
         "typename": "FunctionTransformer",
         "desc": "Constructs a transformer from an arbitrary callable.  A FunctionTransformer forwards its X (and optionally y) arguments to a user-defined function or function object and returns the result of this function. This is useful for stateless transformations such as taking the log of frequencies, doing custom scaling, etc.  Note: If a lambda is used as the function, then the resulting transformer will not be pickleable.  .. versionadded:: 0.17  Read more in the :ref:`User Guide <function_transformer>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15572,8 +15572,8 @@ const sklearn={
         "cls": "Block",
         "typename": "KBinsDiscretizer",
         "desc": "Bin continuous data into intervals.  Read more in the :ref:`User Guide <preprocessing_discretization>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15627,8 +15627,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LabelBinarizer",
         "desc": "Binarize labels in a one-vs-all fashion.  Several regression and binary classification algorithms are available in scikit-learn. A simple way to extend these algorithms to the multi-class classification case is to use the so-called one-vs-all scheme.  At learning time, this simply consists in learning one regressor or binary classifier per class. In doing so, one needs to convert multi-class labels to binary labels (belong or does not belong to the class). LabelBinarizer makes this process easy with the transform method.  At prediction time, one assigns the class for which the corresponding model gave the greatest confidence. LabelBinarizer makes this easy with the inverse_transform method.  Read more in the :ref:`User Guide <preprocessing_targets>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15676,8 +15676,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MaxAbsScaler",
         "desc": "Scale each feature by its maximum absolute value.  This estimator scales and translates each feature individually such that the maximal absolute value of each feature in the training set will be 1.0. It does not shift/center the data, and thus does not destroy any sparsity.  This scaler can also be applied to sparse CSR or CSC matrices.  .. versionadded:: 0.17",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15713,8 +15713,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MinMaxScaler",
         "desc": "Transform features by scaling each feature to a given range.  This estimator scales and translates each feature individually such that it is in the given range on the training set, e.g. between zero and one.  The transformation is given by::      X_std = (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))     X_scaled = X_std * (max - min) + min  where min, max = feature_range.  This transformation is often used as an alternative to zero mean, unit variance scaling.  Read more in the :ref:`User Guide <preprocessing_scaler>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15762,8 +15762,8 @@ const sklearn={
         "cls": "Block",
         "typename": "MultiLabelBinarizer",
         "desc": "Transform between iterable of iterables and a multilabel format.  Although a list of sets or tuples is a very intuitive format for multilabel data, it is unwieldy to process. This transformer converts between this intuitive format and the supported multilabel format: a (samples x classes) binary matrix indicating the presence of a class label.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15805,8 +15805,8 @@ const sklearn={
         "cls": "Block",
         "typename": "Normalizer",
         "desc": "Normalize samples individually to unit norm.  Each sample (i.e. each row of the data matrix) with at least one non zero component is rescaled independently of other samples so that its norm (l1, l2 or inf) equals one.  This transformer is able to work both with dense numpy arrays and scipy.sparse matrix (use CSR format if you want to avoid the burden of a copy / conversion).  Scaling inputs to unit norms is a common operation for text classification or clustering for instance. For instance the dot product of two l2-normalized TF-IDF vectors is the cosine similarity of the vectors and is the base similarity metric for the Vector Space Model commonly used by the Information Retrieval community.  Read more in the :ref:`User Guide <preprocessing_normalization>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15848,8 +15848,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OneHotEncoder",
         "desc": "Encode categorical features as a one-hot numeric array.  The input to this transformer should be an array-like of integers or strings, denoting the values taken on by categorical (discrete) features. The features are encoded using a one-hot (aka 'one-of-K' or 'dummy') encoding scheme. This creates a binary column for each category and returns a sparse matrix or dense array (depending on the ``sparse`` parameter)  By default, the encoder derives the categories based on the unique values in each feature. Alternatively, you can also specify the `categories` manually.  This encoding is needed for feeding categorical data to many scikit-learn estimators, notably linear models and SVMs with the standard kernels.  Note: a one-hot encoding of y labels should use a LabelBinarizer instead.  Read more in the :ref:`User Guide <preprocessing_categorical_features>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15909,8 +15909,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OrdinalEncoder",
         "desc": "Encode categorical features as an integer array.  The input to this transformer should be an array-like of integers or strings, denoting the values taken on by categorical (discrete) features. The features are converted to ordinal integers. This results in a single column of integers (0 to n_categories - 1) per feature.  Read more in the :ref:`User Guide <preprocessing_categorical_features>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -15963,8 +15963,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PolynomialFeatures",
         "desc": "Generate polynomial and interaction features.  Generate a new feature matrix consisting of all polynomial combinations of the features with degree less than or equal to the specified degree. For example, if an input sample is two dimensional and of the form [a, b], the degree-2 polynomial features are [1, a, b, a^2, ab, b^2].",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -16018,8 +16018,8 @@ const sklearn={
         "cls": "Block",
         "typename": "PowerTransformer",
         "desc": "Apply a power transform featurewise to make data more Gaussian-like.  Power transforms are a family of parametric, monotonic transformations that are applied to make data more Gaussian-like. This is useful for modeling issues related to heteroscedasticity (non-constant variance), or other situations where normality is desired.  Currently, PowerTransformer supports the Box-Cox transform and the Yeo-Johnson transform. The optimal parameter for stabilizing variance and minimizing skewness is estimated through maximum likelihood.  Box-Cox requires input data to be strictly positive, while Yeo-Johnson supports both positive or negative data.  By default, zero-mean, unit-variance normalization is applied to the transformed data.  Read more in the :ref:`User Guide <preprocessing_transformer>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -16067,8 +16067,8 @@ const sklearn={
         "cls": "Block",
         "typename": "QuantileTransformer",
         "desc": "Transform features using quantiles information.  This method transforms the features to follow a uniform or a normal distribution. Therefore, for a given feature, this transformation tends to spread out the most frequent values. It also reduces the impact of (marginal) outliers: this is therefore a robust preprocessing scheme.  The transformation is applied on each feature independently. First an estimate of the cumulative distribution function of a feature is used to map the original values to a uniform distribution. The obtained values are then mapped to the desired output distribution using the associated quantile function. Features values of new/unseen data that fall below or above the fitted range will be mapped to the bounds of the output distribution. Note that this transform is non-linear. It may distort linear correlations between variables measured at the same scale but renders variables measured at different scales more directly comparable.  Read more in the :ref:`User Guide <preprocessing_transformer>`.  .. versionadded:: 0.19",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -16134,8 +16134,8 @@ const sklearn={
         "cls": "Block",
         "typename": "RobustScaler",
         "desc": "Scale features using statistics that are robust to outliers.  This Scaler removes the median and scales the data according to the quantile range (defaults to IQR: Interquartile Range). The IQR is the range between the 1st quartile (25th quantile) and the 3rd quartile (75th quantile).  Centering and scaling happen independently on each feature by computing the relevant statistics on the samples in the training set. Median and interquartile range are then stored to be used on later data using the ``transform`` method.  Standardization of a dataset is a common requirement for many machine learning estimators. Typically this is done by removing the mean and scaling to unit variance. However, outliers can often influence the sample mean / variance in a negative way. In such cases, the median and the interquartile range often give better results.  .. versionadded:: 0.17  Read more in the :ref:`User Guide <preprocessing_scaler>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -16195,8 +16195,8 @@ const sklearn={
         "cls": "Block",
         "typename": "StandardScaler",
         "desc": "Standardize features by removing the mean and scaling to unit variance  The standard score of a sample `x` is calculated as:      z = (x - u) / s  where `u` is the mean of the training samples or zero if `with_mean=False`, and `s` is the standard deviation of the training samples or one if `with_std=False`.  Centering and scaling happen independently on each feature by computing the relevant statistics on the samples in the training set. Mean and standard deviation are then stored to be used on later data using :meth:`transform`.  Standardization of a dataset is a common requirement for many machine learning estimators: they might behave badly if the individual features do not more or less look like standard normally distributed data (e.g. Gaussian with 0 mean and unit variance).  For instance many elements used in the objective function of a learning algorithm (such as the RBF kernel of Support Vector Machines or the L1 and L2 regularizers of linear models) assume that all features are centered around 0 and have variance in the same order. If a feature has a variance that is orders of magnitude larger that others, it might dominate the objective function and make the estimator unable to learn from other features correctly as expected.  This scaler can also be applied to sparse CSR or CSC matrices by passing `with_mean=False` to avoid breaking the sparsity structure of the data.  Read more in the :ref:`User Guide <preprocessing_scaler>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.preprocessing",
         "properties": {
             "initkargs": {
@@ -16244,8 +16244,8 @@ const sklearn={
         "cls": "Block",
         "typename": "GaussianRandomProjection",
         "desc": "Reduce dimensionality through Gaussian random projection.  The components of the random matrix are drawn from N(0, 1 / n_components).  Read more in the :ref:`User Guide <gaussian_random_matrix>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.random_projection",
         "properties": {
             "initkargs": {
@@ -16293,8 +16293,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SparseRandomProjection",
         "desc": "Reduce dimensionality through sparse random projection.  Sparse random matrix is an alternative to dense random projection matrix that guarantees similar embedding quality while being much more memory efficient and allowing faster computation of the projected data.  If we note `s = 1 / density` the components of the random matrix are drawn from:    - -sqrt(s) / sqrt(n_components)   with probability 1 / 2s   -  0                              with probability 1 - 1 / s   - +sqrt(s) / sqrt(n_components)   with probability 1 / 2s  Read more in the :ref:`User Guide <sparse_random_matrix>`.  .. versionadded:: 0.13",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.random_projection",
         "properties": {
             "initkargs": {
@@ -16354,8 +16354,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LabelPropagation",
         "desc": "Label Propagation classifier  Read more in the :ref:`User Guide <label_propagation>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.semi_supervised",
         "properties": {
             "initkargs": {
@@ -16420,8 +16420,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LabelSpreading",
         "desc": "LabelSpreading model for semi-supervised learning  This model is similar to the basic Label Propagation algorithm, but uses affinity matrix based on the normalized graph Laplacian and soft clamping across the labels.  Read more in the :ref:`User Guide <label_propagation>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.semi_supervised",
         "properties": {
             "initkargs": {
@@ -16493,8 +16493,8 @@ const sklearn={
         "cls": "Parent",
         "typename": "SelfTrainingClassifier",
         "desc": "Self-training classifier.  This class allows a given supervised classifier to function as a semi-supervised classifier, allowing it to learn from unlabeled data. It does this by iteratively predicting pseudo-labels for the unlabeled data and adding them to the training set.  The classifier will continue iterating until either max_iter is reached, or no pseudo-labels were added to the training set in the previous iteration.  Read more in the :ref:`User Guide <self_training>`.",
-        "childof": "skll.plugin.sklearn.block.SklWrappingClass",
-        "pytype": "skll.plugin.sklearn.block.SklWrappingClass",
+        "childof": "libretto.plugin.sklearn.block.SklWrappingClass",
+        "pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
         "group": "sklearn.semi_supervised",
         "properties": {
             "initkargs": {
@@ -16562,8 +16562,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LinearSVC",
         "desc": "Linear Support Vector Classification.  Similar to SVC with parameter kernel='linear', but implemented in terms of liblinear rather than libsvm, so it has more flexibility in the choice of penalties and loss functions and should scale better to large numbers of samples.  This class supports both dense and sparse input and the multiclass support is handled according to a one-vs-the-rest scheme.  Read more in the :ref:`User Guide <svm_classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -16665,8 +16665,8 @@ const sklearn={
         "cls": "Block",
         "typename": "LinearSVR",
         "desc": "Linear Support Vector Regression.  Similar to SVR with parameter kernel='linear', but implemented in terms of liblinear rather than libsvm, so it has more flexibility in the choice of penalties and loss functions and should scale better to large numbers of samples.  This class supports both dense and sparse input.  Read more in the :ref:`User Guide <svm_regression>`.  .. versionadded:: 0.16",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -16756,8 +16756,8 @@ const sklearn={
         "cls": "Block",
         "typename": "NuSVC",
         "desc": "Nu-Support Vector Classification.  Similar to SVC but uses a parameter to control the number of support vectors.  The implementation is based on libsvm.  Read more in the :ref:`User Guide <svm_classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -16877,8 +16877,8 @@ const sklearn={
         "cls": "Block",
         "typename": "NuSVR",
         "desc": "Nu Support Vector Regression.  Similar to NuSVC, for regression, uses a parameter nu to control the number of support vectors. However, unlike NuSVC, where nu replaces C, here nu replaces the parameter epsilon of epsilon-SVR.  The implementation is based on libsvm.  Read more in the :ref:`User Guide <svm_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -16974,8 +16974,8 @@ const sklearn={
         "cls": "Block",
         "typename": "OneClassSVM",
         "desc": "Unsupervised Outlier Detection.  Estimate the support of a high-dimensional distribution.  The implementation is based on libsvm.  Read more in the :ref:`User Guide <outlier_detection>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -17065,8 +17065,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SVC",
         "desc": "C-Support Vector Classification.  The implementation is based on libsvm. The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples. For large datasets consider using :class:`~sklearn.svm.LinearSVC` or :class:`~sklearn.linear_model.SGDClassifier` instead, possibly after a :class:`~sklearn.kernel_approximation.Nystroem` transformer.  The multiclass support is handled according to a one-vs-one scheme.  For details on the precise mathematical formulation of the provided kernel functions and how `gamma`, `coef0` and `degree` affect each other, see the corresponding section in the narrative documentation: :ref:`svm_kernels`.  Read more in the :ref:`User Guide <svm_classification>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -17186,8 +17186,8 @@ const sklearn={
         "cls": "Block",
         "typename": "SVR",
         "desc": "Epsilon-Support Vector Regression.  The free parameters in the model are C and epsilon.  The implementation is based on libsvm. The fit time complexity is more than quadratic with the number of samples which makes it hard to scale to datasets with more than a couple of 10000 samples. For large datasets consider using :class:`~sklearn.svm.LinearSVR` or :class:`~sklearn.linear_model.SGDRegressor` instead, possibly after a :class:`~sklearn.kernel_approximation.Nystroem` transformer.  Read more in the :ref:`User Guide <svm_regression>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.svm",
         "properties": {
             "initkargs": {
@@ -17283,8 +17283,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DecisionTreeClassifier",
         "desc": "A decision tree classifier.  Read more in the :ref:`User Guide <tree>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.tree",
         "properties": {
             "initkargs": {
@@ -17392,8 +17392,8 @@ const sklearn={
         "cls": "Block",
         "typename": "DecisionTreeRegressor",
         "desc": "A decision tree regressor.  Read more in the :ref:`User Guide <tree>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.tree",
         "properties": {
             "initkargs": {
@@ -17495,8 +17495,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ExtraTreeClassifier",
         "desc": "An extremely randomized tree classifier.  Extra-trees differ from classic decision trees in the way they are built. When looking for the best split to separate the samples of a node into two groups, random splits are drawn for each of the `max_features` randomly selected features and the best split among those is chosen. When `max_features` is set 1, this amounts to building a totally random decision tree.  Warning: Extra-trees should only be used within ensemble methods.  Read more in the :ref:`User Guide <tree>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.tree",
         "properties": {
             "initkargs": {
@@ -17604,8 +17604,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ExtraTreeRegressor",
         "desc": "An extremely randomized tree regressor.  Extra-trees differ from classic decision trees in the way they are built. When looking for the best split to separate the samples of a node into two groups, random splits are drawn for each of the `max_features` randomly selected features and the best split among those is chosen. When `max_features` is set 1, this amounts to building a totally random decision tree.  Warning: Extra-trees should only be used within ensemble methods.  Read more in the :ref:`User Guide <tree>`.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "sklearn.tree",
         "properties": {
             "initkargs": {
@@ -17707,8 +17707,8 @@ const sklearn={
         "cls": "Block",
         "typename": "accuracy_score",
         "desc": "Accuracy classification score.  In multilabel classification, this function computes subset accuracy: the set of labels predicted for a sample must *exactly* match the corresponding set of labels in y_true.  Read more in the :ref:`User Guide <accuracy_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17749,8 +17749,8 @@ const sklearn={
         "cls": "Block",
         "typename": "adjusted_mutual_info_score",
         "desc": "Adjusted Mutual Information between two clusterings.  Adjusted Mutual Information (AMI) is an adjustment of the Mutual Information (MI) score to account for chance. It accounts for the fact that the MI is generally higher for two clusterings with a larger number of clusters, regardless of whether there is actually more information shared. For two clusterings :math:`U` and :math:`V`, the AMI is given as::      AMI(U, V) = [MI(U, V) - E(MI(U, V))] / [avg(H(U), H(V)) - E(MI(U, V))]  This metric is independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score value in any way.  This metric is furthermore symmetric: switching ``label_true`` with ``label_pred`` will return the same score value. This can be useful to measure the agreement of two independent label assignments strategies on the same dataset when the real ground truth is not known.  Be mindful that this function is an order of magnitude slower than other metrics, such as the Adjusted Rand Index.  Read more in the :ref:`User Guide <mutual_info_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17785,8 +17785,8 @@ const sklearn={
         "cls": "Block",
         "typename": "adjusted_rand_score",
         "desc": "Rand index adjusted for chance.  The Rand Index computes a similarity measure between two clusterings by considering all pairs of samples and counting pairs that are assigned in the same or different clusters in the predicted and true clusterings.  The raw RI score is then \"adjusted for chance\" into the ARI score using the following scheme::      ARI = (RI - Expected_RI) / (max(RI) - Expected_RI)  The adjusted Rand index is thus ensured to have a value close to 0.0 for random labeling independently of the number of clusters and samples and exactly 1.0 when the clusterings are identical (up to a permutation).  ARI is a symmetric measure::      adjusted_rand_score(a, b) == adjusted_rand_score(b, a)  Read more in the :ref:`User Guide <adjusted_rand_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17815,8 +17815,8 @@ const sklearn={
         "cls": "Block",
         "typename": "auc",
         "desc": "Compute Area Under the Curve (AUC) using the trapezoidal rule.  This is a general function, given points on a curve.  For computing the area under the ROC-curve, see :func:`roc_auc_score`.  For an alternative way to summarize a precision-recall curve, see :func:`average_precision_score`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17853,8 +17853,8 @@ const sklearn={
         "cls": "Block",
         "typename": "average_precision_score",
         "desc": "Compute average precision (AP) from prediction scores.  AP summarizes a precision-recall curve as the weighted mean of precisions achieved at each threshold, with the increase in recall from the previous threshold used as the weight:  .. math::     \\text{AP} = \\sum_n (R_n - R_{n-1}) P_n  where :math:`P_n` and :math:`R_n` are the precision and recall at the nth threshold [1]_. This implementation is not interpolated and is different from computing the area under the precision-recall curve with the trapezoidal rule, which uses linear interpolation and can be too optimistic.  Note: this implementation is restricted to the binary classification task or multilabel classification task.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17901,8 +17901,8 @@ const sklearn={
         "cls": "Block",
         "typename": "balanced_accuracy_score",
         "desc": "Compute the balanced accuracy.  The balanced accuracy in binary and multiclass classification problems to deal with imbalanced datasets. It is defined as the average of recall obtained on each class.  The best value is 1 and the worst value is 0 when ``adjusted=False``.  Read more in the :ref:`User Guide <balanced_accuracy_score>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17943,8 +17943,8 @@ const sklearn={
         "cls": "Block",
         "typename": "brier_score_loss",
         "desc": "Compute the Brier score loss.  The smaller the Brier score loss, the better, hence the naming with \"loss\". The Brier score measures the mean squared difference between the predicted probability and the actual outcome. The Brier score always takes on a value between zero and one, since this is the largest possible difference between a predicted probability (which must be between zero and one) and the actual outcome (which can take on values of only 0 and 1). It can be decomposed is the sum of refinement loss and calibration loss.  The Brier score is appropriate for binary and categorical outcomes that can be structured as true or false, but is inappropriate for ordinal variables which can take on three or more values (this is because the Brier score assumes that all possible outcomes are equivalently \"distant\" from one another). Which label is considered to be the positive label is controlled via the parameter `pos_label`, which defaults to the greater label unless `y_true` is all 0 or all -1, in which case `pos_label` defaults to 1.  Read more in the :ref:`User Guide <brier_score_loss>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -17989,8 +17989,8 @@ const sklearn={
         "cls": "Block",
         "typename": "calinski_harabasz_score",
         "desc": "Compute the Calinski and Harabasz score.  It is also known as the Variance Ratio Criterion.  The score is defined as ratio between the within-cluster dispersion and the between-cluster dispersion.  Read more in the :ref:`User Guide <calinski_harabasz_index>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18019,8 +18019,8 @@ const sklearn={
         "cls": "Block",
         "typename": "check_scoring",
         "desc": "Determine scorer from user options.  A TypeError will be thrown if the estimator cannot be scored.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18064,8 +18064,8 @@ const sklearn={
         "cls": "Block",
         "typename": "classification_report",
         "desc": "Build a text report showing the main classification metrics.  Read more in the :ref:`User Guide <classification_report>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18124,8 +18124,8 @@ const sklearn={
         "cls": "Block",
         "typename": "cohen_kappa_score",
         "desc": "Cohen's kappa: a statistic that measures inter-annotator agreement.  This function computes Cohen's kappa [1]_, a score that expresses the level of agreement between two annotators on a classification problem. It is defined as  .. math::     \\kappa = (p_o - p_e) / (1 - p_e)  where :math:`p_o` is the empirical probability of agreement on the label assigned to any sample (the observed agreement ratio), and :math:`p_e` is the expected agreement when both annotators assign labels randomly. :math:`p_e` is estimated using a per-annotator empirical prior over the class labels [2]_.  Read more in the :ref:`User Guide <cohen_kappa>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18175,8 +18175,8 @@ const sklearn={
         "cls": "Block",
         "typename": "completeness_score",
         "desc": "Completeness metric of a cluster labeling given a ground truth.  A clustering result satisfies completeness if all the data points that are members of a given class are elements of the same cluster.  This metric is independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score value in any way.  This metric is not symmetric: switching ``label_true`` with ``label_pred`` will return the :func:`homogeneity_score` which will be different in general.  Read more in the :ref:`User Guide <homogeneity_completeness>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18205,8 +18205,8 @@ const sklearn={
         "cls": "Block",
         "typename": "confusion_matrix",
         "desc": "Compute confusion matrix to evaluate the accuracy of a classification.  By definition a confusion matrix :math:`C` is such that :math:`C_{i, j}` is equal to the number of observations known to be in group :math:`i` and predicted to be in group :math:`j`.  Thus in binary classification, the count of true negatives is :math:`C_{0,0}`, false negatives is :math:`C_{1,0}`, true positives is :math:`C_{1,1}` and false positives is :math:`C_{0,1}`.  Read more in the :ref:`User Guide <confusion_matrix>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18247,8 +18247,8 @@ const sklearn={
         "cls": "Block",
         "typename": "consensus_score",
         "desc": "The similarity of two sets of biclusters.  Similarity between individual biclusters is computed. Then the best matching between sets is found using the Hungarian algorithm. The final score is the sum of similarities divided by the size of the larger set.  Read more in the :ref:`User Guide <biclustering>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18291,8 +18291,8 @@ const sklearn={
         "cls": "Block",
         "typename": "coverage_error",
         "desc": "Coverage error measure.  Compute how far we need to go through the ranked scores to cover all true labels. The best value is equal to the average number of labels in ``y_true`` per sample.  Ties in ``y_scores`` are broken by giving maximal rank that would have been assigned to all tied values.  Note: Our implementation's score is 1 greater than the one given in Tsoumakas et al., 2010. This extends it to handle the degenerate case in which an instance has 0 true labels.  Read more in the :ref:`User Guide <coverage_error>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18327,8 +18327,8 @@ const sklearn={
         "cls": "Block",
         "typename": "davies_bouldin_score",
         "desc": "Computes the Davies-Bouldin score.  The score is defined as the average similarity measure of each cluster with its most similar cluster, where similarity is the ratio of within-cluster distances to between-cluster distances. Thus, clusters which are farther apart and less dispersed will result in a better score.  The minimum score is zero, with lower values indicating better clustering.  Read more in the :ref:`User Guide <davies-bouldin_index>`.  .. versionadded:: 0.20",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18357,8 +18357,8 @@ const sklearn={
         "cls": "Block",
         "typename": "dcg_score",
         "desc": "Compute Discounted Cumulative Gain.  Sum the true scores ranked in the order induced by the predicted scores, after applying a logarithmic discount.  This ranking metric yields a high value if true labels are ranked high by ``y_score``.  Usually the Normalized Discounted Cumulative Gain (NDCG, computed by ndcg_score) is preferred.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18411,8 +18411,8 @@ const sklearn={
         "cls": "Block",
         "typename": "det_curve",
         "desc": "Compute error rates for different probability thresholds.  .. note::    This metric is used for evaluation of ranking and error tradeoffs of    a binary classification task.  Read more in the :ref:`User Guide <det_curve>`.  .. versionadded:: 0.24",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18453,8 +18453,8 @@ const sklearn={
         "cls": "Block",
         "typename": "euclidean_distances",
         "desc": "Considering the rows of X (and Y=X) as vectors, compute the distance matrix between each pair of vectors.  For efficiency reasons, the euclidean distance between a pair of row vector x and y is computed as::      dist(x, y) = sqrt(dot(x, x) - 2 * dot(x, y) + dot(y, y))  This formulation has two advantages over other ways of computing distances. First, it is computationally efficient when dealing with sparse data. Second, if one argument varies but the other remains unchanged, then `dot(x, x)` and/or `dot(y, y)` can be pre-computed.  However, this is not the most precise way of doing this computation, because this equation potentially suffers from \"catastrophic cancellation\". Also, the distance matrix returned by this function may not be exactly symmetric as required by, e.g., ``scipy.spatial.distance`` functions.  Read more in the :ref:`User Guide <metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18507,8 +18507,8 @@ const sklearn={
         "cls": "Block",
         "typename": "explained_variance_score",
         "desc": "Explained variance regression score function.  Best possible score is 1.0, lower values are worse.  Read more in the :ref:`User Guide <explained_variance_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18549,8 +18549,8 @@ const sklearn={
         "cls": "Block",
         "typename": "f1_score",
         "desc": "Compute the F1 score, also known as balanced F-score or F-measure.  The F1 score can be interpreted as a weighted average of the precision and recall, where an F1 score reaches its best value at 1 and worst score at 0. The relative contribution of precision and recall to the F1 score are equal. The formula for the F1 score is::      F1 = 2 * (precision * recall) / (precision + recall)  In the multi-class and multi-label case, this is the average of the F1 score of each class with weighting depending on the ``average`` parameter.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18603,8 +18603,8 @@ const sklearn={
         "cls": "Block",
         "typename": "fbeta_score",
         "desc": "Compute the F-beta score.  The F-beta score is the weighted harmonic mean of precision and recall, reaching its optimal value at 1 and its worst value at 0.  The `beta` parameter determines the weight of recall in the combined score. ``beta < 1`` lends more weight to precision, while ``beta > 1`` favors recall (``beta -> 0`` considers only precision, ``beta -> +inf`` only recall).  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18662,8 +18662,8 @@ const sklearn={
         "cls": "Block",
         "typename": "fowlkes_mallows_score",
         "desc": "Measure the similarity of two clusterings of a set of points.  .. versionadded:: 0.18  The Fowlkes-Mallows index (FMI) is defined as the geometric mean between of the precision and recall::      FMI = TP / sqrt((TP + FP) * (TP + FN))  Where ``TP`` is the number of **True Positive** (i.e. the number of pair of points that belongs in the same clusters in both ``labels_true`` and ``labels_pred``), ``FP`` is the number of **False Positive** (i.e. the number of pair of points that belongs in the same clusters in ``labels_true`` and not in ``labels_pred``) and ``FN`` is the number of **False Negative** (i.e the number of pair of points that belongs in the same clusters in ``labels_pred`` and not in ``labels_True``).  The score ranges from 0 to 1. A high value indicates a good similarity between two clusters.  Read more in the :ref:`User Guide <fowlkes_mallows_scores>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18698,8 +18698,8 @@ const sklearn={
         "cls": "Block",
         "typename": "get_scorer",
         "desc": "Get a scorer from string.  Read more in the :ref:`User Guide <scoring_parameter>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18731,8 +18731,8 @@ const sklearn={
         "cls": "Block",
         "typename": "hamming_loss",
         "desc": "Compute the average Hamming loss.  The Hamming loss is the fraction of labels that are incorrectly predicted.  Read more in the :ref:`User Guide <hamming_loss>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18767,8 +18767,8 @@ const sklearn={
         "cls": "Block",
         "typename": "hinge_loss",
         "desc": "Average hinge loss (non-regularized).  In binary class case, assuming labels in y_true are encoded with +1 and -1, when a prediction mistake is made, ``margin = y_true * pred_decision`` is always negative (since the signs disagree), implying ``1 - margin`` is always greater than 1.  The cumulated hinge loss is therefore an upper bound of the number of mistakes made by the classifier.  In multiclass case, the function expects that either all the labels are included in y_true or an optional labels argument is provided which contains all the labels. The multilabel margin is calculated according to Crammer-Singer's method. As in the binary case, the cumulated hinge loss is an upper bound of the number of mistakes made by the classifier.  Read more in the :ref:`User Guide <hinge_loss>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18807,8 +18807,8 @@ const sklearn={
         "cls": "Block",
         "typename": "homogeneity_completeness_v_measure",
         "desc": "Compute the homogeneity and completeness and V-Measure scores at once.  Those metrics are based on normalized conditional entropy measures of the clustering labeling to evaluate given the knowledge of a Ground Truth class labels of the same samples.  A clustering result satisfies homogeneity if all of its clusters contain only data points which are members of a single class.  A clustering result satisfies completeness if all the data points that are members of a given class are elements of the same cluster.  Both scores have positive values between 0.0 and 1.0, larger values being desirable.  Those 3 metrics are independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score values in any way.  V-Measure is furthermore symmetric: swapping ``labels_true`` and ``label_pred`` will give the same score. This does not hold for homogeneity and completeness. V-Measure is identical to :func:`normalized_mutual_info_score` with the arithmetic averaging method.  Read more in the :ref:`User Guide <homogeneity_completeness>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18843,8 +18843,8 @@ const sklearn={
         "cls": "Block",
         "typename": "homogeneity_score",
         "desc": "Homogeneity metric of a cluster labeling given a ground truth.  A clustering result satisfies homogeneity if all of its clusters contain only data points which are members of a single class.  This metric is independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score value in any way.  This metric is not symmetric: switching ``label_true`` with ``label_pred`` will return the :func:`completeness_score` which will be different in general.  Read more in the :ref:`User Guide <homogeneity_completeness>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18873,8 +18873,8 @@ const sklearn={
         "cls": "Block",
         "typename": "jaccard_score",
         "desc": "Jaccard similarity coefficient score.  The Jaccard index [1], or Jaccard similarity coefficient, defined as the size of the intersection divided by the size of the union of two label sets, is used to compare set of predicted labels for a sample to the corresponding set of labels in ``y_true``.  Read more in the :ref:`User Guide <jaccard_similarity_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18927,8 +18927,8 @@ const sklearn={
         "cls": "Block",
         "typename": "label_ranking_average_precision_score",
         "desc": "Compute ranking-based average precision.  Label ranking average precision (LRAP) is the average over each ground truth label assigned to each sample, of the ratio of true vs. total labels with lower score.  This metric is used in multilabel ranking problem, where the goal is to give better rank to the labels associated to each sample.  The obtained score is always strictly greater than 0 and the best value is 1.  Read more in the :ref:`User Guide <label_ranking_average_precision>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18963,8 +18963,8 @@ const sklearn={
         "cls": "Block",
         "typename": "label_ranking_loss",
         "desc": "Compute Ranking loss measure.  Compute the average number of label pairs that are incorrectly ordered given y_score weighted by the size of the label set and the number of labels not in the label set.  This is similar to the error set size, but weighted by the number of relevant and irrelevant labels. The best performance is achieved with a ranking loss of zero.  Read more in the :ref:`User Guide <label_ranking_loss>`.  .. versionadded:: 0.17    A function *label_ranking_loss*",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -18999,8 +18999,8 @@ const sklearn={
         "cls": "Block",
         "typename": "log_loss",
         "desc": "Log loss, aka logistic loss or cross-entropy loss.  This is the loss function used in (multinomial) logistic regression and extensions of it such as neural networks, defined as the negative log-likelihood of a logistic model that returns ``y_pred`` probabilities for its training data ``y_true``. The log loss is only defined for two or more labels. For a single sample with true label :math:`y \\in \\{0,1\\}` and and a probability estimate :math:`p = \\operatorname{Pr}(y = 1)`, the log loss is:  .. math::     L_{\\log}(y, p) = -(y \\log (p) + (1 - y) \\log (1 - p))  Read more in the :ref:`User Guide <log_loss>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19047,8 +19047,8 @@ const sklearn={
         "cls": "Block",
         "typename": "make_scorer",
         "desc": "Make a scorer from a performance metric or loss function.  This factory function wraps scoring functions for use in :class:`~sklearn.model_selection.GridSearchCV` and :func:`~sklearn.model_selection.cross_val_score`. It takes a score function, such as :func:`~sklearn.metrics.accuracy_score`, :func:`~sklearn.metrics.mean_squared_error`, :func:`~sklearn.metrics.adjusted_rand_index` or :func:`~sklearn.metrics.average_precision` and returns a callable that scores an estimator's output. The signature of the call is `(estimator, X, y)` where `estimator` is the model to be evaluated, `X` is the data and `y` is the ground truth labeling (or `None` in the case of unsupervised models).  Read more in the :ref:`User Guide <scoring>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19098,8 +19098,8 @@ const sklearn={
         "cls": "Block",
         "typename": "matthews_corrcoef",
         "desc": "Compute the Matthews correlation coefficient (MCC).  The Matthews correlation coefficient is used in machine learning as a measure of the quality of binary and multiclass classifications. It takes into account true and false positives and negatives and is generally regarded as a balanced measure which can be used even if the classes are of very different sizes. The MCC is in essence a correlation coefficient value between -1 and +1. A coefficient of +1 represents a perfect prediction, 0 an average random prediction and -1 an inverse prediction.  The statistic is also known as the phi coefficient. [source: Wikipedia]  Binary and multiclass labels are supported.  Only in the binary case does this relate to information about true and false positives and negatives. See references below.  Read more in the :ref:`User Guide <matthews_corrcoef>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19134,8 +19134,8 @@ const sklearn={
         "cls": "Block",
         "typename": "max_error",
         "desc": "max_error metric calculates the maximum residual error.  Read more in the :ref:`User Guide <max_error>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19164,8 +19164,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_absolute_error",
         "desc": "Mean absolute error regression loss.  Read more in the :ref:`User Guide <mean_absolute_error>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19206,8 +19206,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_absolute_percentage_error",
         "desc": "Mean absolute percentage error regression loss.  Note here that we do not represent the output as a percentage in range [0, 100]. Instead, we represent it in range [0, 1/eps]. Read more in the :ref:`User Guide <mean_absolute_percentage_error>`.  .. versionadded:: 0.24",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19247,8 +19247,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_gamma_deviance",
         "desc": "Mean Gamma deviance regression loss.  Gamma deviance is equivalent to the Tweedie deviance with the power parameter `power=2`. It is invariant to scaling of the target variable, and measures relative errors.  Read more in the :ref:`User Guide <mean_tweedie_deviance>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19283,8 +19283,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_poisson_deviance",
         "desc": "Mean Poisson deviance regression loss.  Poisson deviance is equivalent to the Tweedie deviance with the power parameter `power=1`.  Read more in the :ref:`User Guide <mean_tweedie_deviance>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19319,8 +19319,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_squared_error",
         "desc": "Mean squared error regression loss.  Read more in the :ref:`User Guide <mean_squared_error>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19367,8 +19367,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_squared_log_error",
         "desc": "Mean squared logarithmic error regression loss.  Read more in the :ref:`User Guide <mean_squared_log_error>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19409,8 +19409,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mean_tweedie_deviance",
         "desc": "Mean Tweedie deviance regression loss.  Read more in the :ref:`User Guide <mean_tweedie_deviance>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19451,8 +19451,8 @@ const sklearn={
         "cls": "Block",
         "typename": "median_absolute_error",
         "desc": "Median absolute error regression loss.  Median absolute error output is non-negative floating point. The best value is 0.0. Read more in the :ref:`User Guide <median_absolute_error>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19493,8 +19493,8 @@ const sklearn={
         "cls": "Block",
         "typename": "multilabel_confusion_matrix",
         "desc": "Compute a confusion matrix for each class or sample.  .. versionadded:: 0.21  Compute class-wise (default) or sample-wise (samplewise=True) multilabel confusion matrix to evaluate the accuracy of a classification, and output confusion matrices for each class or sample.  In multilabel confusion matrix :math:`MCM`, the count of true negatives is :math:`MCM_{:,0,0}`, false negatives is :math:`MCM_{:,1,0}`, true positives is :math:`MCM_{:,1,1}` and false positives is :math:`MCM_{:,0,1}`.  Multiclass data will be treated as if binarized under a one-vs-rest transformation. Returned confusion matrices will be in the order of sorted unique labels in the union of (y_true, y_pred).  Read more in the :ref:`User Guide <multilabel_confusion_matrix>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19535,8 +19535,8 @@ const sklearn={
         "cls": "Block",
         "typename": "mutual_info_score",
         "desc": "Mutual Information between two clusterings.  The Mutual Information is a measure of the similarity between two labels of the same data. Where :math:`|U_i|` is the number of the samples in cluster :math:`U_i` and :math:`|V_j|` is the number of the samples in cluster :math:`V_j`, the Mutual Information between clusterings :math:`U` and :math:`V` is given as:  .. math::      MI(U,V)=\\sum_{i=1}^{|U|} \\sum_{j=1}^{|V|} \\frac{|U_i\\cap V_j|}{N}     \\log\\frac{N|U_i \\cap V_j|}{|U_i||V_j|}  This metric is independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score value in any way.  This metric is furthermore symmetric: switching ``label_true`` with ``label_pred`` will return the same score value. This can be useful to measure the agreement of two independent label assignments strategies on the same dataset when the real ground truth is not known.  Read more in the :ref:`User Guide <mutual_info_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19571,8 +19571,8 @@ const sklearn={
         "cls": "Block",
         "typename": "nan_euclidean_distances",
         "desc": "Calculate the euclidean distances in the presence of missing values.  Compute the euclidean distance between each pair of samples in X and Y, where Y=X is assumed if Y=None. When calculating the distance between a pair of samples, this formulation ignores feature coordinates with a missing value in either sample and scales up the weight of the remaining coordinates:      dist(x,y) = sqrt(weight * sq. distance from present coordinates)     where,     weight = Total # of coordinates / # of present coordinates  For example, the distance between ``[3, na, na, 6]`` and ``[1, na, 4, 5]`` is:      .. math::         \\sqrt{\\frac{4}{2}((3-1)^2 + (6-5)^2)}  If all the coordinates are missing or if there are no common present coordinates then NaN is returned for that pair.  Read more in the :ref:`User Guide <metrics>`.  .. versionadded:: 0.22",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19625,8 +19625,8 @@ const sklearn={
         "cls": "Block",
         "typename": "ndcg_score",
         "desc": "Compute Normalized Discounted Cumulative Gain.  Sum the true scores ranked in the order induced by the predicted scores, after applying a logarithmic discount. Then divide by the best possible score (Ideal DCG, obtained for a perfect ranking) to obtain a score between 0 and 1.  This ranking metric yields a high value if true labels are ranked high by ``y_score``.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19673,8 +19673,8 @@ const sklearn={
         "cls": "Block",
         "typename": "normalized_mutual_info_score",
         "desc": "Normalized Mutual Information between two clusterings.  Normalized Mutual Information (NMI) is a normalization of the Mutual Information (MI) score to scale the results between 0 (no mutual information) and 1 (perfect correlation). In this function, mutual information is normalized by some generalized mean of ``H(labels_true)`` and ``H(labels_pred))``, defined by the `average_method`.  This measure is not adjusted for chance. Therefore :func:`adjusted_mutual_info_score` might be preferred.  This metric is independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score value in any way.  This metric is furthermore symmetric: switching ``label_true`` with ``label_pred`` will return the same score value. This can be useful to measure the agreement of two independent label assignments strategies on the same dataset when the real ground truth is not known.  Read more in the :ref:`User Guide <mutual_info_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19709,8 +19709,8 @@ const sklearn={
         "cls": "Block",
         "typename": "pair_confusion_matrix",
         "desc": "Pair confusion matrix arising from two clusterings.  The pair confusion matrix :math:`C` computes a 2 by 2 similarity matrix between two clusterings by considering all pairs of samples and counting pairs that are assigned into the same or into different clusters under the true and predicted clusterings.  Considering a pair of samples that is clustered together a positive pair, then as in binary classification the count of true negatives is :math:`C_{00}`, false negatives is :math:`C_{10}`, true positives is :math:`C_{11}` and false positives is :math:`C_{01}`.  Read more in the :ref:`User Guide <pair_confusion_matrix>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19739,8 +19739,8 @@ const sklearn={
         "cls": "Block",
         "typename": "pairwise_distances",
         "desc": "Compute the distance matrix from a vector array X and optional Y.  This method takes either a vector array or a distance matrix, and returns a distance matrix. If the input is a vector array, the distances are computed. If the input is a distances matrix, it is returned instead.  This method provides a safe way to take a distance matrix as input, while preserving compatibility with many other algorithms that take a vector array.  If Y is given (default is None), then the returned matrix is the pairwise distance between the arrays from both X and Y.  Valid values for metric are:  - From scikit-learn: ['cityblock', 'cosine', 'euclidean', 'l1', 'l2',   'manhattan']. These metrics support sparse matrix   inputs.   ['nan_euclidean'] but it does not yet support sparse matrices.  - From scipy.spatial.distance: ['braycurtis', 'canberra', 'chebyshev',   'correlation', 'dice', 'hamming', 'jaccard', 'kulsinski', 'mahalanobis',   'minkowski', 'rogerstanimoto', 'russellrao', 'seuclidean',   'sokalmichener', 'sokalsneath', 'sqeuclidean', 'yule']   See the documentation for scipy.spatial.distance for details on these   metrics. These metrics do not support sparse matrix inputs.  Note that in the case of 'cityblock', 'cosine' and 'euclidean' (which are valid scipy.spatial.distance metrics), the scikit-learn implementation will be used, which is faster and has support for sparse matrices (except for 'cityblock'). For a verbose description of the metrics from scikit-learn, see the __doc__ of the sklearn.pairwise.distance_metrics function.  Read more in the :ref:`User Guide <metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19793,8 +19793,8 @@ const sklearn={
         "cls": "Block",
         "typename": "pairwise_distances_argmin",
         "desc": "Compute minimum distances between one point and a set of points.  This function computes for each row in X, the index of the row of Y which is closest (according to the specified distance).  This is mostly equivalent to calling:      pairwise_distances(X, Y=Y, metric=metric).argmin(axis=axis)  but uses much less memory, and is faster for large arrays.  This function works with dense 2D arrays only.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19846,8 +19846,8 @@ const sklearn={
         "cls": "Block",
         "typename": "pairwise_distances_argmin_min",
         "desc": "Compute minimum distances between one point and a set of points.  This function computes for each row in X, the index of the row of Y which is closest (according to the specified distance). The minimal distances are also returned.  This is mostly equivalent to calling:      (pairwise_distances(X, Y=Y, metric=metric).argmin(axis=axis),      pairwise_distances(X, Y=Y, metric=metric).min(axis=axis))  but uses much less memory, and is faster for large arrays.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19899,8 +19899,8 @@ const sklearn={
         "cls": "Block",
         "typename": "pairwise_distances_chunked",
         "desc": "Generate a distance matrix chunk by chunk with optional reduction.  In cases where not all of a pairwise distance matrix needs to be stored at once, this is used to calculate pairwise distances in ``working_memory``-sized chunks.  If ``reduce_func`` is given, it is run on each chunk and its return values are concatenated into lists, arrays or sparse matrices.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -19959,8 +19959,8 @@ const sklearn={
         "cls": "Block",
         "typename": "pairwise_kernels",
         "desc": "Compute the kernel between arrays X and optional array Y.  This method takes either a vector array or a kernel matrix, and returns a kernel matrix. If the input is a vector array, the kernels are computed. If the input is a kernel matrix, it is returned instead.  This method provides a safe way to take a kernel matrix as input, while preserving compatibility with many other algorithms that take a vector array.  If Y is given (default is None), then the returned matrix is the pairwise kernel between the arrays from both X and Y.  Valid values for metric are:     ['additive_chi2', 'chi2', 'linear', 'poly', 'polynomial', 'rbf',     'laplacian', 'sigmoid', 'cosine']  Read more in the :ref:`User Guide <metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20013,8 +20013,8 @@ const sklearn={
         "cls": "Block",
         "typename": "plot_confusion_matrix",
         "desc": "Plot Confusion Matrix.  Read more in the :ref:`User Guide <confusion_matrix>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20102,8 +20102,8 @@ const sklearn={
         "cls": "Block",
         "typename": "plot_det_curve",
         "desc": "Plot detection error tradeoff (DET) curve.  Extra keyword arguments will be passed to matplotlib's `plot`.  Read more in the :ref:`User Guide <visualizations>`.  .. versionadded:: 0.24",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20171,8 +20171,8 @@ const sklearn={
         "cls": "Block",
         "typename": "plot_precision_recall_curve",
         "desc": "Plot Precision Recall Curve for binary classifiers.  Extra keyword arguments will be passed to matplotlib's `plot`.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20240,8 +20240,8 @@ const sklearn={
         "cls": "Block",
         "typename": "plot_roc_curve",
         "desc": "Plot Receiver operating characteristic (ROC) curve.  Extra keyword arguments will be passed to matplotlib's `plot`.  Read more in the :ref:`User Guide <visualizations>`.",
-        "childof": "skll.plugin.sklearn.block.SklMethod",
-        "pytype": "skll.plugin.sklearn.block.SklMethod",
+        "childof": "libretto.plugin.sklearn.block.SklMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20315,8 +20315,8 @@ const sklearn={
         "cls": "Block",
         "typename": "precision_recall_curve",
         "desc": "Compute precision-recall pairs for different probability thresholds.  Note: this implementation is restricted to the binary classification task.  The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number of true positives and ``fp`` the number of false positives. The precision is intuitively the ability of the classifier not to label as positive a sample that is negative.  The recall is the ratio ``tp / (tp + fn)`` where ``tp`` is the number of true positives and ``fn`` the number of false negatives. The recall is intuitively the ability of the classifier to find all the positive samples.  The last precision and recall values are 1. and 0. respectively and do not have a corresponding threshold. This ensures that the graph starts on the y axis.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20361,8 +20361,8 @@ const sklearn={
         "cls": "Block",
         "typename": "precision_recall_fscore_support",
         "desc": "Compute precision, recall, F-measure and support for each class.  The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number of true positives and ``fp`` the number of false positives. The precision is intuitively the ability of the classifier not to label as positive a sample that is negative.  The recall is the ratio ``tp / (tp + fn)`` where ``tp`` is the number of true positives and ``fn`` the number of false negatives. The recall is intuitively the ability of the classifier to find all the positive samples.  The F-beta score can be interpreted as a weighted harmonic mean of the precision and recall, where an F-beta score reaches its best value at 1 and worst score at 0.  The F-beta score weights recall more than precision by a factor of ``beta``. ``beta == 1.0`` means recall and precision are equally important.  The support is the number of occurrences of each class in ``y_true``.  If ``pos_label is None`` and in binary classification, this function returns the average precision, recall and F-measure if ``average`` is one of ``'micro'``, ``'macro'``, ``'weighted'`` or ``'samples'``.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20426,8 +20426,8 @@ const sklearn={
         "cls": "Block",
         "typename": "precision_score",
         "desc": "Compute the precision.  The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number of true positives and ``fp`` the number of false positives. The precision is intuitively the ability of the classifier not to label as positive a sample that is negative.  The best value is 1 and the worst value is 0.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20480,8 +20480,8 @@ const sklearn={
         "cls": "Block",
         "typename": "r2_score",
         "desc": ":math:`R^2` (coefficient of determination) regression score function.  Best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a :math:`R^2` score of 0.0.  Read more in the :ref:`User Guide <r2_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20522,8 +20522,8 @@ const sklearn={
         "cls": "Block",
         "typename": "rand_score",
         "desc": "Rand index.  The Rand Index computes a similarity measure between two clusterings by considering all pairs of samples and counting pairs that are assigned in the same or different clusters in the predicted and true clusterings.  The raw RI score is:      RI = (number of agreeing pairs) / (number of pairs)  Read more in the :ref:`User Guide <rand_score>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20552,8 +20552,8 @@ const sklearn={
         "cls": "Block",
         "typename": "recall_score",
         "desc": "Compute the recall.  The recall is the ratio ``tp / (tp + fn)`` where ``tp`` is the number of true positives and ``fn`` the number of false negatives. The recall is intuitively the ability of the classifier to find all the positive samples.  The best value is 1 and the worst value is 0.  Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20606,8 +20606,8 @@ const sklearn={
         "cls": "Block",
         "typename": "roc_auc_score",
         "desc": "Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC) from prediction scores.  Note: this implementation can be used with binary, multiclass and multilabel classification, but some restrictions apply (see Parameters).  Read more in the :ref:`User Guide <roc_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20660,8 +20660,8 @@ const sklearn={
         "cls": "Block",
         "typename": "roc_curve",
         "desc": "Compute Receiver operating characteristic (ROC).  Note: this implementation is restricted to the binary classification task.  Read more in the :ref:`User Guide <roc_metrics>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20708,8 +20708,8 @@ const sklearn={
         "cls": "Block",
         "typename": "silhouette_samples",
         "desc": "Compute the Silhouette Coefficient for each sample.  The Silhouette Coefficient is a measure of how well samples are clustered with samples that are similar to themselves. Clustering models with a high Silhouette Coefficient are said to be dense, where samples in the same cluster are similar to each other, and well separated, where samples in different clusters are not very similar to each other.  The Silhouette Coefficient is calculated using the mean intra-cluster distance (``a``) and the mean nearest-cluster distance (``b``) for each sample.  The Silhouette Coefficient for a sample is ``(b - a) / max(a, b)``. Note that Silhouette Coefficient is only defined if number of labels is 2 ``<= n_labels <= n_samples - 1``.  This function returns the Silhouette Coefficient for each sample.  The best value is 1 and the worst value is -1. Values near 0 indicate overlapping clusters.  Read more in the :ref:`User Guide <silhouette_coefficient>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20744,8 +20744,8 @@ const sklearn={
         "cls": "Block",
         "typename": "silhouette_score",
         "desc": "Compute the mean Silhouette Coefficient of all samples.  The Silhouette Coefficient is calculated using the mean intra-cluster distance (``a``) and the mean nearest-cluster distance (``b``) for each sample.  The Silhouette Coefficient for a sample is ``(b - a) / max(a, b)``.  To clarify, ``b`` is the distance between a sample and the nearest cluster that the sample is not a part of. Note that Silhouette Coefficient is only defined if number of labels is ``2 <= n_labels <= n_samples - 1``.  This function returns the mean Silhouette Coefficient over all samples. To obtain the values for each sample, use :func:`silhouette_samples`.  The best value is 1 and the worst value is -1. Values near 0 indicate overlapping clusters. Negative values generally indicate that a sample has been assigned to the wrong cluster, as a different cluster is more similar.  Read more in the :ref:`User Guide <silhouette_coefficient>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20792,8 +20792,8 @@ const sklearn={
         "cls": "Block",
         "typename": "top_k_accuracy_score",
         "desc": "Top-k Accuracy classification score.  This metric computes the number of times where the correct label is among the top `k` labels predicted (ranked by predicted scores). Note that the multilabel case isn't covered here.  Read more in the :ref:`User Guide <top_k_accuracy_score>`",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20840,8 +20840,8 @@ const sklearn={
         "cls": "Block",
         "typename": "v_measure_score",
         "desc": "V-measure cluster labeling given a ground truth.  This score is identical to :func:`normalized_mutual_info_score` with the ``'arithmetic'`` option for averaging.  The V-measure is the harmonic mean between homogeneity and completeness::      v = (1 + beta) * homogeneity * completeness          / (beta * homogeneity + completeness)  This metric is independent of the absolute values of the labels: a permutation of the class or cluster label values won't change the score value in any way.  This metric is furthermore symmetric: switching ``label_true`` with ``label_pred`` will return the same score value. This can be useful to measure the agreement of two independent label assignments strategies on the same dataset when the real ground truth is not known.   Read more in the :ref:`User Guide <homogeneity_completeness>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {
@@ -20876,8 +20876,8 @@ const sklearn={
         "cls": "Block",
         "typename": "zero_one_loss",
         "desc": "Zero-one classification loss.  If normalize is ``True``, return the fraction of misclassifications (float), else it returns the number of misclassifications (int). The best performance is 0.  Read more in the :ref:`User Guide <zero_one_loss>`.",
-        "childof": "skll.plugin.sklearn.block.SklScoringMethod",
-        "pytype": "skll.plugin.sklearn.block.SklScoringMethod",
+        "childof": "libretto.plugin.sklearn.block.SklScoringMethod",
+        "pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
         "group": "sklearn.metrics",
         "properties": {
             "args": {

@@ -41,7 +41,7 @@ export class Block {
         this._properties = {};
         this._allowchild = [];
         this._events = {};
-        this._jstype = (args && args._jstype) ? args._jstype : "skll.block.Block";
+        this._jstype = (args && args._jstype) ? args._jstype : "libretto.block.Block";
         const cls = this.getcls();
         if (cls) {
             this.applycls(args, cls);
@@ -70,9 +70,8 @@ export class Block {
                 if (v.dictKeyOf && args[v.dictKeyOf] && (args[v.dictKeyOf][i] !== undefined)) {
                     this[i] = args[v.dictKeyOf][i];
                     delete args[v.dictKeyOf][i];
-                } else if (v.listItemOf && args[v.listItemOf] && (args[v.listItemOf][i] !== undefined)) {
-                    this[i] = args[v.listItemOf][i];
-                    delete args[v.listItemOf][i];
+                } else if (v.listItemOf && args[v.listItemOf] && (args[v.listIndex] !== undefined) && (args[v.listItemOf][v.listIndex] !== undefined)) {
+                    this[i] = args[v.listItemOf][v.listIndex];
                 } else if (args[i] !== undefined) {
                     this[i] = args[i];
                 } 
@@ -214,7 +213,7 @@ export class Block {
             if (v.dictKeyOf) {
                 if (!result[v.dictKeyOf]) result[v.dictKeyOf] = {};
                 result[v.dictKeyOf][i] = this[i];
-            } else if (v.listItemOf) {
+            } else if (v.listItemOf && (v.listIndex !== undefined)) {
                 if (!result[v.dictKeyOf]) result[v.dictKeyOf] = [];
                 result[v.listItemOf][v.listIndex] = this[i];
             } else {
@@ -596,7 +595,7 @@ export class Parent extends Block {
         return copy;
     }
     get desc() {
-        if (this._jstype == "skll.baseblock.Parent")
+        if (this._jstype == "libretto.baseblock.Parent")
             return "";
         return super.desc;
     }
@@ -768,7 +767,7 @@ export class File extends Block {
 }
 
 blockTypes.add({
-    "skll.baseblock.Block": {
+    "libretto.baseblock.Block": {
         cls: Block,
         typename: "Passthrough",
         desc: "A block that simply pass-though data and do nothing",
@@ -805,7 +804,7 @@ blockTypes.add({
             }
         },
     },
-    "skll.baseblock.Placeholder": {
+    "libretto.baseblock.Placeholder": {
         cls: Comment,
         typename: "Comment",
         desc: "Place for comments",
@@ -842,11 +841,11 @@ blockTypes.add({
             },
         },
     },
-    "skll.baseblock.Parent": {
+    "libretto.baseblock.Parent": {
         cls: Parent,
         typename: "Group",
         desc: "Group of blocks",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "isolated": {
                 desc: "whether processing is isolated and result will not be passed further along, useful for interactive analysis",
@@ -854,10 +853,10 @@ blockTypes.add({
             },
         },
     },
-    "skll.baseblock.Loop": {
+    "libretto.baseblock.Loop": {
         cls: Parent,
         hidden: true,
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             output_type: {
                 desc: "Specifies output only last iteration or all iteration",

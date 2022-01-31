@@ -3,8 +3,8 @@ const hdbscan = {
         "cls": "Block",
         "typename": "HDBSCAN",
         "desc": "Perform HDBSCAN clustering from vector array or distance matrix.  HDBSCAN - Hierarchical Density-Based Spatial Clustering of Applications with Noise. Performs DBSCAN over varying epsilon values and integrates the result to find a clustering that gives the best stability over epsilon. This allows HDBSCAN to find clusters of varying densities (unlike DBSCAN), and be more robust to parameter selection.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "hdbscan",
         "properties": {
             "initkargs": {
@@ -112,8 +112,8 @@ const hdbscan = {
         "cls": "Block",
         "typename": "RobustSingleLinkage",
         "desc": "Perform robust single linkage clustering from a vector array or distance matrix.  Robust single linkage is a modified version of single linkage that attempts to be more robust to noise. Specifically the goal is to more accurately approximate the level set tree of the unknown probability density function from which the sample data has been drawn.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "hdbscan",
         "properties": {
             "initkargs": {

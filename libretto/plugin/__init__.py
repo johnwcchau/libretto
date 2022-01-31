@@ -11,16 +11,16 @@ def plugin_disabled(config, path):
 
 def plugin_mjs(config):
     from glob import glob
-    with open("skll/plugin/plugins.mjs", "w") as file:
-        for path in glob("skll/plugin/**/__init__.mjs"):
+    with open("libretto/plugin/plugins.mjs", "w") as file:
+        for path in glob("libretto/plugin/**/__init__.mjs"):
             if plugin_disabled(config, path): continue
-            path = path[4:].replace("\\", "/")
+            path = path[8:].replace("\\", "/")
             name = path.split('/')[-2]
             file.write(f'import {{}} from "{path}";\n');
         file.write("""
 export default function plugin_css() { 
 """)
-        for name in glob("skll/plugin/**/__init__.css"):
+        for name in glob("libretto/plugin/**/__init__.css"):
             name = name[4:].replace("\\", "/")
             file.write(f"""
     $("head").append('<link rel="stylesheet" href="{name}" type="text/css" />');
@@ -36,7 +36,7 @@ def init(config):
 
     global __plugins
 
-    for path in glob("skll/plugin/**/__init__.py"):
+    for path in glob("libretto/plugin/**/__init__.py"):
         name = '.'.join(path.replace('/', '.').replace('\\', '.').split('.')[:-2])
         logging.info(f'Discovered plugin {name}')
         if plugin_disabled(config, path): 

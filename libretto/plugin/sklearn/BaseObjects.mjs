@@ -1,18 +1,18 @@
 const baseObjects = {
-    "skll.plugin.sklearn.block.RunModeSplit": {
+    "libretto.plugin.sklearn.block.RunModeSplit": {
         cls: "Block",
         typename: "RunModeSplit",
         group: "sklearn.(generics)",
         typename: "Train/Test Split",
         desc: "Dataset splitting by run mode",
-        childof: "skll.plugin.sklearn.block.SklSplitter",
+        childof: "libretto.plugin.sklearn.block.SklSplitter",
     },
-    "skll.plugin.sklearn.block.SklClass": {
+    "libretto.plugin.sklearn.block.SklClass": {
         cls: "Block",
         typename: "SklClass",
         group: "sklearn.(generics)",
         desc: "Sklearn transformer or estimator class",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "cls": {
                 desc: "class name",
@@ -44,12 +44,12 @@ const baseObjects = {
             }
         }
     },
-    "skll.plugin.sklearn.block.Method": {
+    "libretto.plugin.sklearn.block.Method": {
         cls: "Block",
         typename: "Method",
         group: "sklearn.(generics)",
         desc: "Any python method applying 1-to-1 transformations",
-        childof: "skll.baseblock.Block",
+        childof: "libretto.baseblock.Block",
         properties: {
             "method": {
                 desc: "method name",
@@ -73,19 +73,19 @@ const baseObjects = {
             }
         }
     },
-    "skll.plugin.sklearn.block.SklScoringMethod": {
+    "libretto.plugin.sklearn.block.SklScoringMethod": {
         cls: "Block",
         typename: "SklScoringMethod",
         group: "sklearn.(generics)",
         desc: "Sklearn method outputting a scalar scores",
-        childof: "skll.plugin.sklearn.block.Method",
+        childof: "libretto.plugin.sklearn.block.Method",
     },
-    "skll.plugin.sklearn.block.SklSplitter": {
+    "libretto.plugin.sklearn.block.SklSplitter": {
         cls: "Parent",
         typename: "SklSplitter",
         group: "sklearn.(generics)",
         desc: "Scoring splitters e.g. Kfold",
-        childof: "skll.baseblock.Loop",
+        childof: "libretto.baseblock.Loop",
         properties: {
             "cls": {
                 desc: "class name",
@@ -101,12 +101,12 @@ const baseObjects = {
             }
         }
     },
-    "skll.plugin.sklearn.block.SklWrappingClass": {
+    "libretto.plugin.sklearn.block.SklWrappingClass": {
         cls: "Parent",
         typename: "SklWrappingClass",
         group: "sklearn.(generics)",
         desc: "Ensemble estimators or Hyper-parameter search class",
-        childof: "skll.plugin.sklearn.block.SklClass",
+        childof: "libretto.plugin.sklearn.block.SklClass",
         properties: {
             "estname": {
                 desc: "argument pos/name for estimators",
@@ -119,8 +119,8 @@ const baseObjects = {
         },
         split_type: "none",
         child_types: [
-            "skll.plugin.sklearn.block.SklClass",
-            "skll.plugin.sklearn.block.SklPipeline",
+            "libretto.plugin.sklearn.block.SklClass",
+            "libretto.plugin.sklearn.block.SklPipeline",
         ]
     },
 };

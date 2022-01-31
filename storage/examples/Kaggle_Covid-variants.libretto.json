@@ -1,21 +1,21 @@
 {
     "name": "Kaggle_Covid-variants",
-    "_pytype": "skll.baseblock.Parent",
-    "_jstype": "skll.baseblock.Parent",
+    "_pytype": "libretto.baseblock.Parent",
+    "_jstype": "libretto.baseblock.Parent",
     "disable_mask": [],
     "column_mask": [],
     "as_new_rows": false,
     "isolated": false,
     "_children": {
         "0": {
-            "_pytype": "skll.baseblock.Placeholder",
-            "_jstype": "skll.baseblock.Placeholder",
-            "comment": "### Covid analysis example\n\nSK-ll demonstration using dataset from [https://www.kaggle.com/yamqwe/omicron-covid19-variant-daily-cases]"
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "### Covid analysis example\n\nLibretto demonstration using dataset from [https://www.kaggle.com/yamqwe/omicron-covid19-variant-daily-cases]"
         },
         "1": {
             "name": "Input from file-2f0a",
-            "_pytype": "skll.plugin.tabular.tabular.FileInput",
-            "_jstype": "skll.plugin.tabular.FileInput",
+            "_pytype": "libretto.plugin.tabular.tabular.FileInput",
+            "_jstype": "libretto.plugin.tabular.FileInput",
             "disable_mask": [
                 "run"
             ],
@@ -23,19 +23,19 @@
             "filename": "/examples/kaggle_covid-variants.csv"
         },
         "2": {
-            "_pytype": "skll.baseblock.Placeholder",
-            "_jstype": "skll.baseblock.Placeholder",
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
             "comment": "_You may want to get some statistics for the dataset by right clicking the block above and select \"Dataset stat\"_"
         },
         "3": {
-            "_pytype": "skll.baseblock.Placeholder",
-            "_jstype": "skll.baseblock.Placeholder",
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
             "comment": "### Cases by country\nRight click the Groupby block and choose \"Train upto block\" to view the result\n\n- _Note: If you click on Aggregate block instead of groupby, aggregation will only run once and only the first result will be output instead_"
         },
         "4": {
             "name": "Groupby-81fd",
-            "_pytype": "skll.plugin.tabular.Subset",
-            "_jstype": "skll.plugin.tabular.groupby",
+            "_pytype": "libretto.plugin.tabular.Subset",
+            "_jstype": "libretto.plugin.tabular.groupby",
             "disable_mask": [],
             "column_mask": [],
             "as_new_rows": false,
@@ -50,8 +50,8 @@
             "_children": {
                 "0": {
                     "name": "Aggregate-3e3f",
-                    "_pytype": "skll.plugin.tabular.Method",
-                    "_jstype": "skll.plugin.tabular.agg",
+                    "_pytype": "libretto.plugin.tabular.Method",
+                    "_jstype": "libretto.plugin.tabular.agg",
                     "disable_mask": [],
                     "column_mask": [],
                     "as_new_rows": false,
@@ -68,14 +68,14 @@
             }
         },
         "5": {
-            "_pytype": "skll.baseblock.Placeholder",
-            "_jstype": "skll.baseblock.Placeholder",
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
             "comment": "### Case by variant\nSame as above but this time we compare each variants"
         },
         "6": {
             "name": "Groupby-2dde",
-            "_pytype": "skll.plugin.tabular.Subset",
-            "_jstype": "skll.plugin.tabular.groupby",
+            "_pytype": "libretto.plugin.tabular.Subset",
+            "_jstype": "libretto.plugin.tabular.groupby",
             "disable_mask": [],
             "column_mask": [],
             "as_new_rows": false,
@@ -90,8 +90,8 @@
             "_children": {
                 "0": {
                     "name": "Aggregate-425e",
-                    "_pytype": "skll.plugin.tabular.Method",
-                    "_jstype": "skll.plugin.tabular.agg",
+                    "_pytype": "libretto.plugin.tabular.Method",
+                    "_jstype": "libretto.plugin.tabular.agg",
                     "disable_mask": [],
                     "column_mask": [],
                     "as_new_rows": false,
@@ -108,14 +108,14 @@
             }
         },
         "7": {
-            "_pytype": "skll.baseblock.Placeholder",
-            "_jstype": "skll.baseblock.Placeholder",
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
             "comment": "### Omicron cases per day\nBefore grouping, this block drops rows where variant != \"Omicron\""
         },
         "8": {
             "name": "Group-abf1",
-            "_pytype": "skll.baseblock.Parent",
-            "_jstype": "skll.baseblock.Parent",
+            "_pytype": "libretto.baseblock.Parent",
+            "_jstype": "libretto.baseblock.Parent",
             "disable_mask": [],
             "column_mask": [],
             "as_new_rows": false,
@@ -123,8 +123,8 @@
             "_children": {
                 "0": {
                     "name": "Drop-36ba",
-                    "_pytype": "skll.plugin.tabular.tabular.Drop",
-                    "_jstype": "skll.plugin.tabular.Drop",
+                    "_pytype": "libretto.plugin.tabular.tabular.Drop",
+                    "_jstype": "libretto.plugin.tabular.Drop",
                     "disable_mask": [],
                     "column_mask": [],
                     "as_new_columns": false,
@@ -133,8 +133,8 @@
                 },
                 "1": {
                     "name": "Groupby-59bd",
-                    "_pytype": "skll.plugin.tabular.Subset",
-                    "_jstype": "skll.plugin.tabular.groupby",
+                    "_pytype": "libretto.plugin.tabular.Subset",
+                    "_jstype": "libretto.plugin.tabular.groupby",
                     "disable_mask": [],
                     "column_mask": [],
                     "as_new_rows": false,
@@ -149,8 +149,8 @@
                     "_children": {
                         "0": {
                             "name": "Aggregate-3b78",
-                            "_pytype": "skll.plugin.tabular.Method",
-                            "_jstype": "skll.plugin.tabular.agg",
+                            "_pytype": "libretto.plugin.tabular.Method",
+                            "_jstype": "libretto.plugin.tabular.agg",
                             "disable_mask": [],
                             "column_mask": [],
                             "as_new_rows": false,

@@ -3,8 +3,8 @@ const lightgbm={
         "cls": "Block",
         "typename": "LGBMModel",
         "desc": "Implementation of the scikit-learn API for LightGBM.",
-        "childof": "skll.plugin.sklearn.block.SklClass",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "childof": "libretto.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "lightgbm",
         "properties": {
             "initkargs": {
@@ -127,7 +127,7 @@ const lightgbm={
         "typename": "LGBMClassifier",
         "desc": "LGBMClassifier",
         "childof": "lightgbm.LGBMModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "lightgbm",
         "defaults": {
             "cls": "lightgbm.LGBMClassifier"
@@ -138,7 +138,7 @@ const lightgbm={
         "typename": "LGBMRegressor",
         "desc": "LGBMRegressor",
         "childof": "lightgbm.LGBMModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "lightgbm",
         "defaults": {
             "cls": "lightgbm.LGBMRegressor"
@@ -149,7 +149,7 @@ const lightgbm={
         "typename": "LGBMRanker",
         "desc": "LGBMRanker",
         "childof": "lightgbm.LGBMModel",
-        "pytype": "skll.plugin.sklearn.block.SklClass",
+        "pytype": "libretto.plugin.sklearn.block.SklClass",
         "group": "lightgbm",
         "defaults": {
             "cls": "lightgbm.LGBMClassifier"
