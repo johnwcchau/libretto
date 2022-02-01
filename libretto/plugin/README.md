@@ -1,9 +1,9 @@
 # Plugins for Libretto
 ## Unstable API
-***Note: Libertto is still in development and plugin API is not stable***
+***Note: libretto is still in development and plugin API is not stable***
 
 ## About plugins
-Libertto support plugins which:
+libretto support plugins which:
 - connects machine learning packages
 - provides extra functions
 - automates processes
@@ -20,7 +20,7 @@ Libertto support plugins which:
   example plugin for demonstration and documentation purpose
 
 ## Installing new plugins
-Simply copy new plugins into this directory and restart Libertto
+Simply copy new plugins into this directory and restart libretto
 ### Disabling plugin
 Create a section named with fqdn of the plugin and set disabled to yes, e.g.
 ```ini
