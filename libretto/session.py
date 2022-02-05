@@ -117,8 +117,17 @@ class Session:
                 orient="list"
             else:
                 orient="records"
-                
-            self.out.finished("Result ready", {"data": result.where(pd.notnull(result), None).to_dict(orient=orient), "score": self.runspec.scores})
+
+            #
+            # limit result to 10000
+            #
+            warning = None
+            if result.shape[0] > 10000:
+                count = result.shape[0]
+                result = result.loc[:10000]
+                warning = f'Limited to 10000 out of {count} records'
+            
+            self.out.finished("Result ready", {"data": result.where(pd.notnull(result), None).to_dict(orient=orient), "score": self.runspec.scores, "warning": warning})
         except Exception as e:
             traceback.print_exc()
             self.out.error(repr(e))

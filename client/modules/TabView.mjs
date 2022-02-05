@@ -69,7 +69,7 @@ export default class TabView {
             PlotDialog.render(table, this);
         }).table);
     }
-    addDataTable(name, data) {
+    addDataTable(name, data, warning) {
         //get columns from dataset
         //assume records orient from pd
         let columns = [];
@@ -88,7 +88,7 @@ export default class TabView {
                 });
             }
         });
-        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, data, columns, (table) => {
+        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, data, warning, columns, (table) => {
             PlotDialog.render(table, this);
         }).table);
     }

@@ -74,4 +74,5 @@
 }
 .tab-view-visible-item {
     display: unset;
+    overflow: auto;
 }

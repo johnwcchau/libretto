@@ -241,7 +241,7 @@ export class Block {
         if (!this.session) return;
         this.session.run(mode, this, "table").then((r)=>{
             if (!r) return;
-            this.session.tabView.addDataTable(`${this.name}_${mode}`, r.data);
+            this.session.tabView.addDataTable(`${this.name}_${mode}`, r.data, r.warning);
         });
     }
     makeContextMenu() {
@@ -529,7 +529,7 @@ export class Block {
             .off("mouseleave")
             .off("contextmenu")
             .on("mousedown", {"thiz": this}, Block.onmousedown)
-            .on("mouseenter", {"thiz": this}, Block.onmouseover)
+            .on("mouseover", {"thiz": this}, Block.onmouseover)
             .on("mouseleave", {"thiz": this}, Block.onmouseout)
             .on("contextmenu", {"thiz": this}, Block.oncontextmenu);
         // if (this.canEdit) {
@@ -860,7 +860,7 @@ blockTypes.add({
         properties: {
             output_type: {
                 desc: "Specifies output only last iteration or all iteration",
-                type: "option(all,last)",
+                type: "option(all,last,inplace)",
                 default: "all",
             },
             "isolated": {

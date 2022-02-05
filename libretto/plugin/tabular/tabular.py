@@ -12,6 +12,8 @@ Blocks for tabular input manipulation
 
 # %%
 from typing import Generator
+
+from httpx import delete
 from libretto.baseblock import Block, Parent, Loop, RunSpec
 import pandas as pd
 from libretto.fileio import FileIO
@@ -58,16 +60,18 @@ class FileInput(Block):
         runspec.out.working(f'{self.name}: has {self.df.shape[0]} rows and {self.df.shape[1]} columns')
         if runspec.mode == runspec.mode == RunSpec.RunMode.COLUMNS:
             runspec.out.working(f'{self.name}: Limiting to 10 rows for column check')
-            return x.iloc[:10], None, None
+            return x.iloc[:10], y, id
         elif runspec.mode == RunSpec.RunMode.PREVIEW or runspec.mode == RunSpec.RunMode.COLUMNS:
             runspec.out.working(f'{self.name}: Limiting to 100 rows for preview')
-            return x.iloc[:100], None, None
+            return x.iloc[:100], y, id
         else:
-            return x, None, None
+            return x, y, id
     
     def dump(self) -> dict:
         r = super().dump()
         r["filename"] = self.filename
+        r["mode"] = self.mode
+        r["on"] = self.on
         return r
 
 class SQLInput(FileInput):
@@ -184,11 +188,15 @@ class Method(Block):
 
     Parameters
     ----------
-    method : string
+    _method : string
         method
     kargs : dict(string, string)
         arguments to method
     """
+
+    #
+    # _method must not be named as method or name crash with function kargs!
+    #
     def __init__(self, _method:str=None, kargs:dict=None, transpose:bool=False, **kwargs):
         super().__init__(**kwargs)
         
@@ -207,55 +215,49 @@ class Method(Block):
         r["_method"] = self.method
         r["kargs"] = self.funckargs
         return r
-
-    def resolveargs(self, x, args:dict):
-        finalargs = {}
-        for name, arg in args.items():
-            if isinstance(arg, dict):
-                arg = self.resolveargs(x, arg)
-            elif isinstance(arg, str):
-                if arg.startswith("="):
-                    arg = eval(arg[1:], globals(), x)
-                elif arg.startswith("@"):
-                    line = arg[1:]
-                    arg = lambda r: eval(line, globals(), {"X": x, "x": r})
-            finalargs[name] = arg
-        return finalargs
         
     def run(self, runspec:RunSpec, x, y=None, id=None):
         func = self.loadmethod(x)
-        args = self.resolveargs(x, self.funckargs)
+        args = Block.resolveargs(x, self.funckargs)
         newx = func(**args)
         if not isinstance(newx, pd.DataFrame): newx = pd.DataFrame(newx)
         if self.transpose: newx = newx.transpose()
         return newx, y, id
-    
-# class RowWise(Block):
-#     """
-#     Apply formula row-wise
-#     """
-    
-#     def __init__(self, to_column="", formula:str="", **kwargs:dict) -> None:
-#         super().__init__(**kwargs)
-#         self.formula = formula
-#         self.to_column = to_column
 
-#     def dump(self) -> dict:
-#         r = super().dump()
-#         r["to_column"] = self.to_column
-#         r["formula"] = self.formula
-#         return r
+class Column(Block):
+    """
+    Create new column by constant or formula
+    """
+    def __init__(self, column_name="", formula:str="", **kwargs:dict) -> None:
+        super().__init__(**kwargs)
+        self.formula = formula
+        self.column_name = column_name
 
-#     def run(self, runspec:RunSpec, X, y=None, id=None)->tuple:
-#         if not isinstance(X, pd.DataFrame):
-#             X = pd.DataFrame(X)
-#         colname = self.to_column if self.to_column else self.name
-#         X[colname] = X.apply(lambda x: eval(self.formula, globals(), {"X": X, "x": x}), axis=1)
-#         return X, y, id
+    def dump(self) -> dict:
+        r = super().dump()
+        r["column_name"] = self.column_name
+        r["formula"] = self.formula
+        return r
+
+    def run(self, runspec:RunSpec, X, y=None, id=None)->tuple:
+        if not isinstance(X, pd.DataFrame):
+            X = pd.DataFrame(X)
+        colname = self.column_name if self.column_name else self.name
+        arg = Block.resolvearg(X, self.formula)
+        if callable(arg):
+            X[colname] = X.apply(arg, axis=1)
+        else:
+            X[colname] = arg
+        return X, y, id
 
 class Drop(Block):
+    def __init__(self, dropy=True, dropid=True, **kwargs: dict) -> None:
+        super().__init__(**kwargs)
+        self.dropy = dropy
+        self.dropid = dropid
+
     def run(self, runspec: RunSpec, x: pd.DataFrame, y, id) -> tuple:
-        return None, None, None
+        return None, None if self.dropy else y, None if self.dropid else id
 
 class XyidSplit(Block):
     """
@@ -345,8 +347,10 @@ class Subset(Loop):
             yield x, y, id
             return
         func = self.loadmethod(x)
-
+        i = 0
         for group in func(**self.funckargs):
+            i += 1
+            if not i % 20: runspec.out.working(f'{self.name}: yielding {i}-th set', {"atblock": self.name})
             if isinstance(group, tuple):
                 thisx = group[1]
             else:
@@ -355,6 +359,34 @@ class Subset(Loop):
             thisy = y.loc[idx] if y is not None else None
             thisid = id.loc[idx] if id is not None else None
             yield thisx, thisy, thisid
+
+class PandaSeriesMethod(Block):
+    """
+    Special case: to_datetime/to_numeric requires pd.Series instead of DataFrame
+    """
+    def __init__(self, _method:str=None, **kwargs: dict) -> None:
+        super().__init__(**kwargs)
+        self.method = _method
+        self.func = None
+
+    def loadmethod(self):
+        self.func = getattr(pd, self.method)
+        if not callable(self.func):
+            raise AttributeError(f'{self.method} is not a method')
+    
+    def run(self, runspec: RunSpec, x: pd.DataFrame, y=None, id=None) -> tuple:
+        if self.func is None:
+            self.loadmethod()
+        result = {}
+        for name in x.columns:
+            result[name] = self.func(x[name])
+        result = pd.DataFrame(result)
+        return result, y, id
+    
+    def dump(self) -> dict:
+        result = super().dump()
+        result["_method"] = self.method
+        return result
 
 # %%
 if __name__ == "__main__":

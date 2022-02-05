@@ -14,10 +14,14 @@ export default class Table {
         }
     }
     
-    constructor(name, data, columns, plotter) {
+    constructor(name, data, warning, columns, plotter) {
         const id=name.replaceAll(/[^0-9a-zA-Z]/g, "_");
         this.name = name;
         this.plotter = plotter;
+        this.container = $("<div>");
+        if (warning) {
+            $(`<p>${warning}</p>`).appendTo(this.container);
+        }
         this._table = $(`<table id="${id}" class="data-table">`).dataTable({
             data: data,
             columns: columns,
@@ -36,13 +40,15 @@ export default class Table {
             const $td = e.data.thiz._table.find("td");
             $td.off("click").on("click", {thiz: this}, Table.toggleColumnSelect);
         });
+        $(this.dt.table().container()).appendTo(this.container);
         this._table.find("td").off("click").on("click", {thiz: this}, Table.toggleColumnSelect);
     }
     get dt() {
         return this._table.api();
     }
     get table() {
-        return $(this.dt.table().container());
+        return this.container;
+        //return $(this.dt.table().container());
     }
     get columns() {
         let cols = {};

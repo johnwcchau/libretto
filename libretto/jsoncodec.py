@@ -1,20 +1,25 @@
 from json.encoder import JSONEncoder
 
 import numpy as np
+import pandas as pd
 from .baseblock import RunSpec
-import numpy as np
+import logging
 
 class Encoder(JSONEncoder):
     def default(self, o):
         if isinstance(o, RunSpec.RunMode):
             return o.value
-        if isinstance(o, np.integer):
+        elif isinstance(o, np.integer):
             return int(o)
-        if isinstance(o, np.floating):
+        elif isinstance(o, np.floating):
             return float(o)
-        if isinstance(o, np.ndarray):
+        elif isinstance(o, np.ndarray):
             return o.tolist()
-        return super().default(o)
+        elif pd.isna(o):
+            return None
+        else:
+            logging.warn(f'JSONEncoder encountered {type(o)}')
+            return str(o)
 
 def json_decode(o):
     if isinstance(o, str):

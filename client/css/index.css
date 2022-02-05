@@ -23,6 +23,7 @@ body {
     display: flex;
     flex-direction: row;
     flex: 1;
+    overflow: auto;
 }
 
 #root {
@@ -139,6 +140,7 @@ body {
     padding: 0.5em;
     border: solid 1px #ddd;
     border-radius: 0.5em;
+    z-index: 199;
 }
 .context-menu-item {
     text-decoration: none;
@@ -175,6 +177,8 @@ body {
     border-radius: 0.3em;
     overflow: auto;
     position: relative;
+    /* space for drag and drop */
+    padding-bottom: 5em;
 }
 .session .receipe-drop-zone {
     position: absolute;
@@ -192,6 +196,8 @@ body {
     opacity: 0.6;
     z-index: 99;
     background: #000;
+    left: 0;
+    top: 0;
 }
 .modal {
     z-index: 100;

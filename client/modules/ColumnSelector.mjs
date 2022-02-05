@@ -50,6 +50,9 @@ export class ColumnSelector {
             this.columns[v[0]] = v[1];
             options.add(v[idx]);
         })
+        if (!this._multiple) {
+            $(`<option value="">(None)</option>`).appendTo(this._list);
+        }
         options.forEach(v => {
             const option = $(`<option value="${v}">`).html(v);
             if (this._init

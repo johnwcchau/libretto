@@ -153,6 +153,30 @@ class Block:
             return True
         return self.next and self.next.containsblock(name)
     
+    @classmethod
+    def resolvearg(cls, x, arg, allowlambda=True):
+        if isinstance(arg, dict):
+            arg = Block.resolveargs(x, arg)
+        elif isinstance(arg, str):
+            if arg.startswith("="):
+                arg = eval(arg[1:], globals(), x)
+            elif arg.startswith("@"):
+                if allowlambda:
+                    line = arg[1:]
+                    arg = lambda r: eval(line, globals(), {"X": x, "x": r})
+                else:
+                    raise AttributeError("@Xx-lambda is not allowed")
+        return arg
+
+    @classmethod
+    def resolveargs(cls, x, args:dict, allowlambda=True):
+        finalargs = {}
+        globals()["X"] = x
+        for name, arg in args.items():
+            finalargs[name] = Block.resolvearg(x, arg, allowlambda)
+        if "X" in globals(): del globals()["X"]
+        return finalargs
+
     def run(self, runspec:RunSpec, x:pd.DataFrame, y=None, id=None)->tuple:
         return x, y, id
 
@@ -378,12 +402,15 @@ class Loop(Parent):
 
     Parameters
     ----------
-    output_type: Option(all, last), default=last
-        select all rows or rows from last iteration for output
+    output_type: Option(all,last,inplace), default=all
+        select how should the output be
+        all: discard input and output all processed set (for aggregation)
+        last: discard input and output only the last set
+        inplace: return input and discard output from children (suitable for in-place data manipulation)
     """
-    def __init__(self, output_type:str='last', **kwargs: dict) -> None:
+    def __init__(self, output_type:str='all', **kwargs: dict) -> None:
         super().__init__(**kwargs)
-        self.output_all = output_type.lower() == 'all'
+        self.output_type = output_type.lower()
 
     def loop(self, runspec:RunSpec, x, y=None, id=None) -> Generator[tuple, None, None]:
         """
@@ -398,7 +425,7 @@ class Loop(Parent):
 
         Yields
         -------
-        val : tuple(RunSpec, x, y)
+        val : tuple(x, y, id)
             one input for the inner block
         """
         yield (x, y, id)
@@ -408,16 +435,16 @@ class Loop(Parent):
         Simply calls loop to yield inputs and feeds into inner block
         returns last block result
         """
-        outx:pd.DataFrame = None
-        outy:pd.DataFrame = None
-        outid:pd.DataFrame = None
+        outx:pd.DataFrame = x if self.output_type == 'inplace' else None
+        outy:pd.DataFrame = y if self.output_type == 'inplace' else None
+        outid:pd.DataFrame = id if self.output_type == 'inplace' else None
         for lx, ly, lid in self.loop(runspec, x, y, id):
             thisx, thisy, thisid = super().run(runspec, lx, ly, lid)
-            if not self.output_all or outx is None:
+            if self.output_type == 'last' or outx is None:
                 outx = thisx
                 outy = thisy
                 outid = thisid
-            else:
+            elif self.output_type == 'all':
                 outx = outx.append(thisx)
                 outy = outy.append(thisy) if outy is not None else thisy
                 outid = outid.append(thisid) if outid is not None else thisid
@@ -426,7 +453,7 @@ class Loop(Parent):
         return outx, outy, outid
     def dump(self) -> dict:
         result = super().dump()
-        result["output_type"] = "all" if self.output_all else "last"
+        result["output_type"] = self.output_type
         return result
 
 class Placeholder(Block):

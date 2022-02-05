@@ -20,7 +20,7 @@ new BlockTypes().add({
             },
             "on": {
                 desc: "Column for join operation",
-                type: "column",
+                type: "list(column)",
             }
         },
         defaults: {
@@ -197,6 +197,27 @@ new BlockTypes().add({
             }
         },
     },
+    "libretto.plugin.tabular.Column": {
+        cls: Block,
+        typename: "NewColumn",
+        group: "tabular data",
+        desc: "Column generation by a constant or a formula",
+        childof: "libretto.baseblock.Block",
+        properties: {
+            as_new_columns: { hidden: true },
+            "formula": {
+                desc: "const or formula (begin with =)",
+                type: "string",
+            },
+            "column_name": {
+                desc: "name of the new column (will overwrite existing)",
+                type: "string",
+            },
+        },
+        defaults: {
+            as_new_columns: false,
+        }
+    },
     "libretto.plugin.tabular.Subset": {
         cls: Parent,
         typename: "Subset Method",
@@ -222,6 +243,16 @@ new BlockTypes().add({
         childof: "libretto.baseblock.Block",
         properties: {
             as_new_columns: { hidden: true },
+            dropy: {
+                desc: "Also drop y columns",
+                type: "boolean",
+                default: "True"
+            },
+            dropid: {
+                desc: "Also drop id columns",
+                type: "boolean",
+                default: "True"
+            }
         },
         defaults: {
             as_new_columns: false,
@@ -251,16 +282,100 @@ new BlockTypes().add({
             }
         }
     },
+    "libretto.plugin.tabular.PandaSeriesMethod": {
+        cls: Block,
+        typename: "PandaSeriesMethod",
+        group: "tabular data.methods",
+        desc: "Panda's method with panda.Series as input",
+        childof: "libretto.baseblock.Block",
+        properties: {
+            "_method": {
+                desc: "Panda method to call",
+                type: "string"
+            }
+        }
+    },
 });
 
 /**
  * Method shortcuts
  */
 new BlockTypes().add({
+    "libretto.plugin.tabular.ToDateTime": {
+        "cls": Block,
+        "typename": "Convert Datetime",
+        "desc": "Convert columns to datetime format",
+        "childof": "libretto.plugin.tabular.PandaSeriesMethod",
+        "pytype": "libretto.plugin.tabular.PandaSeriesMethod",
+        "group": "tabular data.methods",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+        },
+        "defaults": {
+            "_method": "to_datetime",
+        }
+    },
+    "libretto.plugin.tabular.ToNumeric": {
+        "cls": Block,
+        "typename": "Convert Numeric",
+        "desc": "Convert columns to number",
+        "childof": "libretto.plugin.tabular.PandaSeriesMethod",
+        "pytype": "libretto.plugin.tabular.PandaSeriesMethod",
+        "group": "tabular data.methods",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+        },
+        "defaults": {
+            "_method": "to_numeric",
+        }
+    },
+    "libretto.plugin.tabular.ToTimeDelta": {
+        "cls": Block,
+        "typename": "Convert Time Delta",
+        "desc": "Convert columns to time-delta",
+        "childof": "libretto.plugin.tabular.PandaSeriesMethod",
+        "pytype": "libretto.plugin.tabular.PandaSeriesMethod",
+        "group": "tabular data.methods",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+        },
+        "defaults": {
+            "_method": "to_timedelta",
+        }
+    },
+    "libretto.plugin.tabular.interpolate": {
+        "cls": Block,
+        "typename": "Interpolate",
+        "desc": "Fill in missing value by interpolation",
+        "childof": "libretto.plugin.tabular.Method",
+        "pytype": "libretto.plugin.tabular.Method",
+        "group": "tabular data.methods",
+        "properties": {
+            "_method": {
+                "hidden": true
+            },
+            "kargs": {
+                "hidden": true
+            },
+            "transpose": {
+                "hidden": true
+            },
+        },
+        "defaults": {
+            "_method": "interpolate",
+            "transpose": false,
+        }
+    },
     "libretto.plugin.tabular.fillna": {
         "cls": Block,
-        "typename": "Impute missing values",
-        "desc": "Missing value impute",
+        "typename": "Impute",
+        "desc": "Fill in missing value by imputation",
         "childof": "libretto.plugin.tabular.Method",
         "pytype": "libretto.plugin.tabular.Method",
         "group": "tabular data.methods",
