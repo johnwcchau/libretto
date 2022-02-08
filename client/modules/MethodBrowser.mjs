@@ -24,6 +24,7 @@ class MethodBrowser {
         Object.entries(this._blockTypes.groups).forEach(([i, v]) => {
             if (!i.startsWith(prefix)) return;
             const name = i.replace(prefix, "").split(".")[0];
+            if (!name) return;
             if (listed.indexOf(name) != -1) return;
             listed.push(name);
             $('<a href="#">').addClass("method-group")
