@@ -132,6 +132,9 @@ export class Session {
             this.$receipe.find(".blockage").remove();
         });
     }
+    readLastResult(query, usage) {
+        return this.WsClient.send("result", {usage: usage, query: query});
+    }
     static encode(s) {
         var out = [];
         for ( var i = 0; i < s.length; i++ ) {

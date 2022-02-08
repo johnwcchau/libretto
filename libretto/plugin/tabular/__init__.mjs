@@ -390,7 +390,7 @@ new BlockTypes().add({
                 "hidden": true
             },
             "value": {
-                "type": "formula",
+                "type": "string",
                 "desc": "Values for missing fields, can be any string/number or a formula(starting with a '=Prices.mean()')",
                 "dictKeyOf": "kargs"
             },
@@ -460,6 +460,30 @@ new BlockTypes().add({
                 "axis": 0,
             },
             "transpose": true,
+        }
+    },
+    "libretto.plugin.tabular.get_dummies": {
+        "cls": Block,
+        "typename": "Get Dummies",
+        "desc": "Convert column to OneHot columns",
+        "childof": "libretto.baseblock.GenericClassMethod",
+        "pytype": "libretto.baseblock.GenericClassMethod",
+        "group": "tabular data.methods",
+        "properties": {
+            "_method": {"hidden": true},
+            "xname": {"hidden": true},
+            "yname": {"hidden": true},
+            "args": {"hidden": true},
+            "kargs": {"hidden": true},
+            "drop_first": {
+                "type": "boolean",
+                "desc": "Whether to get k-1 dummies out of k categorical levels by removing the first level",
+                "dictKeyOf": "kargs"
+            },
+        },
+        "defaults": {
+            "_method": "pandas.get_dummies",
+            "xname": 0,
         }
     },
     "libretto.plugin.tabular.groupby": {

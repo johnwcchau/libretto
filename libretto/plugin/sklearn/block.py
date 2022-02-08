@@ -232,6 +232,7 @@ class SklSplitter(Loop):
         
     def loop(self, runspec:RunSpec, x, y=None, id=None) -> Generator[tuple, None, None]:
         if runspec.mode != RunSpec.RunMode.TEST:
+            runspec.out.working(f'{self.name}: Not in TEST mode and straight in')
             yield x, y, id
             return
             
@@ -244,7 +245,6 @@ class SklSplitter(Loop):
             x = pd.DataFrame(x)
 
         origmode = runspec.mode
-        print(f"Begin Split")
         i = 1
         for train, test in self.obj.split(x):
             thisx = x.loc[train]

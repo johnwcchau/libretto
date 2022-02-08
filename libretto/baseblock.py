@@ -8,6 +8,7 @@ from uuid import uuid4
 from enum import Enum
 import numpy as np
 import pandas as pd
+import re
 
 from libretto.inout import Output
 
@@ -468,6 +469,116 @@ class Placeholder(Block):
         
     def __call__(self, runspec: RunSpec, x, y, id) -> tuple:
         return x, y, id
+
+
+class GenericClassMethod(Block):
+    """
+    Calls any class methods, e.g. sklearn.metrics.pairwise_distances or pandas.get_dummies
+    This block expects transforming output
+    instead.
+
+    Parameters
+    ----------
+    method : str
+        name of method
+    xname : str
+        name or pos of x-param
+    yname : str
+        name or pos of y-param
+    """
+    def __init__(self, _method:str=None, xname=None, yname=None, keepcolnames=True, args:list=None, kargs:dict=None, **kwargs):
+        super().__init__(**kwargs)
+        if "name" in kwargs: del kwargs["name"]
+        if "disable_mask" in kwargs: del kwargs["disable_mask"]
+        #if not method.startswith("sklearn"):
+        #    raise KeyError(f'{method} is not from sklearn')
+
+        try:
+            if xname == "": 
+                xname = None
+            else:
+                xname = int(xname)
+        except Exception:
+            pass
+        try:
+            if yname == "":
+                yname = None
+            else:
+                yname = int(yname)
+        except Exception:
+            pass
+        
+        self.method = _method
+        self.func = None
+        self.xname = xname
+        self.yname = yname
+        self.funcargs = args if args else []
+        self.funckargs = kargs if kargs else {}
+        self.keepcolnames = keepcolnames
+        if isinstance(xname, int) and len(self.funcargs) <= xname:
+            self.funcargs += [None] * (1 + xname - len(self.funcargs))
+        if isinstance(yname, int) and len(self.funcargs) <= yname:
+            self.funcargs += [None] * (1 + yname - len(self.funcargs))
+    
+    def loadmethod(self):
+        func = self.method.split(".")
+        package = ".".join(func[:-1])
+        func = func[-1]
+        package = import_module(package)
+        func = getattr(package, func)
+        if not callable(func):
+            raise AttributeError(f'{self.method} is not a method')
+        self.func = func
+
+    def dump(self) -> dict:
+        r = super().dump()
+        r["_method"] = self.method
+        r["xname"] = self.xname
+        r["yname"] = self.yname
+        r["args"] = self.funcargs
+        r["kargs"] = self.funckargs
+        r["keepcolnames"] = self.keepcolnames
+        
+        if isinstance(self.xname, int):
+            r["args"][self.xname] = None
+        elif self.xname is not None:
+            r["kargs"][self.xname] = None
+        if isinstance(self.yname, int):
+            r["args"][self.yname] = None
+        elif self.yname is not None:
+            r["kargs"][self.yname] = None
+        
+        return r
+    
+    def resolvexyargs(self, x, y):
+        if self.xname is not None:
+            if isinstance(self.xname, int):
+                self.funcargs[self.xname] = x
+            else:
+                self.funckargs[self.xname] = x
+        if self.yname is not None:
+            if isinstance(self.yname, int):
+                self.funcargs[self.yname] = y
+            else:
+                self.funckargs[self.yname] = y
+    
+    def run(self, runspec:RunSpec, x, y=None, id=None):
+        if self.func is None:
+            self.loadmethod()
+        self.resolvexyargs(x, y)
+        newx = self.func(*self.funcargs, **self.funckargs)
+        #
+        # get rid of sparse matrix
+        try:
+            getattr(newx, "todense")  # checks if todense exists and calls
+            newx = newx.todense()
+        except Exception:
+            pass
+        if not isinstance(newx, pd.DataFrame):
+            newx = pd.DataFrame(newx)
+        if self.keepcolnames and len(newx.columns) == len(x.columns):
+            newx.columns = x.columns
+        return newx, y, id
 
 # %%
 if __name__ == "__main__":

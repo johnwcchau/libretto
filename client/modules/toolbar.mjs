@@ -1,4 +1,4 @@
-import getCurrentSession from "./Session.mjs";
+import getCurrentSession, { Session } from "./Session.mjs";
 
 export class Toolbar {
     constructor() {
@@ -72,17 +72,39 @@ class MainToolbar extends Toolbar{
             icon: "/static/img/play_arrow_black_24dp.svg",
             click: () => {
                 const runMode = $("#runmode").val();
+                const Session = getCurrentSession();
                 Session.run(runMode, null, "table").then(r=>{
                     if (!r) return;
-                    const Session = getCurrentSession();
                     const data = r.data;
                     const score = r.score;
-                    Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data);
-                    if (score) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
+                    if (!data || !data.length) {
+                        alert("No results")
+                        return;
+                    }
+                    Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data, r.warning);
+                    if (score && score.length) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
                 });
             }
         });
         
+        this.addbtn({
+            title: "Filter",
+            icon: "/static/img/table_rows_black_24dp.svg",
+            click: () => {
+                const query = prompt("Query string?", null);
+                if (!query) return;
+                const Session = getCurrentSession();
+                Session.readLastResult(query, "table").then(r=>{
+                    if (!r) return;
+                    const data = r.data;
+                    if (!data || !data.length) {
+                        alert("No results")
+                        return;
+                    }
+                    Session.tabView.addDataTable(`${query}`, data, r.warning);
+                })
+            }
+        })
         this.addbtn({
             title: "Publish",
             icon: "/static/img/local_shipping_black_24dp.svg",

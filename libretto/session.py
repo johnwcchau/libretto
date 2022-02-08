@@ -96,7 +96,7 @@ class Session:
             }).transpose().reset_index().rename(columns={"index": "column"})
         return result.where(pd.notnull(result), None).to_dict(orient="records")
 
-    def result(self, usage:str="table", **kwargs)->None:
+    def result(self, usage:str="table", query:str=None, **kwargs)->None:
         try:
             if usage=='stat':
                 self.out.finished("Listed stats", {"stat": self.__genstat()})
@@ -118,14 +118,17 @@ class Session:
             else:
                 orient="records"
 
+            if query is not None:
+                result = result.query(query)
+            
             #
-            # limit result to 10000
+            # limit result to 1000
             #
             warning = None
             if result.shape[0] > 10000:
                 count = result.shape[0]
-                result = result.loc[:10000]
-                warning = f'Limited to 10000 out of {count} records'
+                result = result.sample(n=1000)
+                warning = f'Limited to 1000 out of {count} records, or use filtering to find desired records'
             
             self.out.finished("Result ready", {"data": result.where(pd.notnull(result), None).to_dict(orient=orient), "score": self.runspec.scores, "warning": warning})
         except Exception as e:

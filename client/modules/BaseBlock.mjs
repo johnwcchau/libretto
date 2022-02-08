@@ -869,6 +869,34 @@ blockTypes.add({
             },
         },
     },
+    "libretto.baseblock.GenericClassMethod": {
+        cls: "Block",
+        typename: "Generic Class Method",
+        desc: "Any python class method which outputs a Series or Dataframe",
+        childof: "libretto.baseblock.Block",
+        properties: {
+            "_method": {
+                desc: "method name",
+                type: "text",
+            },
+            "xname": {
+                desc: "argument pos/name for x",
+                type: "text",
+            },
+            "yname": {
+                desc: "argument pos/name for y",
+                type: "text",
+            },
+            "args": {
+                desc: "fixed positional arguments",
+                type: "list(string)",
+            },
+            "kargs": {
+                desc: "fixed named arguments",
+                type: "dict(string,string)",
+            }
+        }
+    },
 });
 
 export default function pyimport(py) {

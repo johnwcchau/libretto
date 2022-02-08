@@ -1,0 +1,195 @@
+{
+    "name": "kaggle_titanic",
+    "_pytype": "libretto.baseblock.Parent",
+    "_jstype": "libretto.baseblock.Parent",
+    "disable_mask": [],
+    "column_mask": [],
+    "_children": {
+        "0": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "## Example based on Kaggle Titanic dataset\n\nThis sample demonstrate basic classification using Libretto\n\nThis sample is set to run as **TRAIN** mode, to do prediction, simply drag the test set CSV file to the center of the Input block below and run in **RUN** mode.\n\n### Data preparation\n1. Read in dataset\n2. Seperate dataset from target label and row ID"
+        },
+        "1": {
+            "name": "File Input",
+            "_pytype": "libretto.plugin.tabular.FileInput",
+            "_jstype": "libretto.plugin.tabular.FileInput",
+            "disable_mask": [
+                "run"
+            ],
+            "column_mask": [],
+            "filename": "/examples/kaggle_titanic_train.csv",
+            "on": []
+        },
+        "2": {
+            "name": "Extract Y/ID Column-e985",
+            "_pytype": "libretto.plugin.tabular.XyidSplit",
+            "_jstype": "libretto.plugin.tabular.XyidSplit",
+            "disable_mask": [],
+            "column_mask": [],
+            "ycol": "Survived",
+            "idcol": "PassengerId"
+        },
+        "3": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "### Data manipulation / engineering\n1. Impute missing _**Age**_ by _**PClass**_ and _**Sex**_\n2. Create _**WomChi**_ columan to identify Woman and Children\n3. Convert **_Sex_** into a numeric column\n4. Create a _**FamilySize**_ column"
+        },
+        "4": {
+            "name": "Groupby Pclass Sex",
+            "_pytype": "libretto.plugin.tabular.Subset",
+            "_jstype": "libretto.plugin.tabular.groupby",
+            "disable_mask": [],
+            "column_mask": [
+                "Pclass",
+                "Sex",
+                "Age"
+            ],
+            "_method": "groupby",
+            "kargs": {
+                "by": [
+                    "Pclass",
+                    "Sex"
+                ]
+            },
+            "_children": {
+                "0": {
+                    "name": "Impute Age",
+                    "_pytype": "libretto.plugin.tabular.Method",
+                    "_jstype": "libretto.plugin.tabular.fillna",
+                    "disable_mask": [],
+                    "column_mask": [
+                        "Age"
+                    ],
+                    "_method": "fillna",
+                    "kargs": {
+                        "value": "=Age.median()"
+                    },
+                    "transpose": false
+                }
+            }
+        },
+        "5": {
+            "name": "NewColumn-WomChi",
+            "_pytype": "libretto.plugin.tabular.Column",
+            "_jstype": "libretto.plugin.tabular.Column",
+            "disable_mask": [],
+            "column_mask": [],
+            "as_new_columns": false,
+            "formula": "@(x.Age<14) | (x.Sex=='female')",
+            "column_name": "WomChi"
+        },
+        "6": {
+            "name": "Get Dummies-Sex",
+            "_pytype": "libretto.baseblock.GenericClassMethod",
+            "_jstype": "libretto.plugin.tabular.get_dummies",
+            "disable_mask": [],
+            "column_mask": [
+                "Sex"
+            ],
+            "_method": "pandas.get_dummies",
+            "xname": 0,
+            "kargs": {
+                "drop_first": true
+            }
+        },
+        "7": {
+            "name": "NewColumn-FamilySize",
+            "_pytype": "libretto.plugin.tabular.Column",
+            "_jstype": "libretto.plugin.tabular.Column",
+            "disable_mask": [],
+            "column_mask": [],
+            "as_new_columns": false,
+            "formula": "@x.SibSp+x.Parch+1",
+            "column_name": "FamilySize"
+        },
+        "8": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "_This blocks extract LastName from the Name column, but is only a demonstration and is not used in our ML model_"
+        },
+        "9": {
+            "name": "NewColumn-LastName",
+            "_pytype": "libretto.plugin.tabular.Column",
+            "_jstype": "libretto.plugin.tabular.Column",
+            "disable_mask": [],
+            "column_mask": [],
+            "as_new_columns": false,
+            "formula": "@re.match('^(.+?),', x.Name)[1]",
+            "column_name": "LastName"
+        },
+        "10": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "_Drop unused columns_"
+        },
+        "11": {
+            "name": "Drop-92c8",
+            "_pytype": "libretto.plugin.tabular.Drop",
+            "_jstype": "libretto.plugin.tabular.Drop",
+            "disable_mask": [],
+            "column_mask": [
+                "Name",
+                "SibSp",
+                "Parch",
+                "Ticket",
+                "Fare",
+                "Cabin",
+                "Embarked",
+                "Pclass",
+                "Age",
+                "LastName"
+            ],
+            "as_new_columns": false,
+            "dropy": false,
+            "dropid": false
+        },
+        "12": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "### Machine learning part\n\nWe do voting classifier with 3 different models\n- LogisticRegression\n- LightGBM\n- RandomForest\n\nAnd we wrap them in a **KFold** block for scoring purpose"
+        },
+        "13": {
+            "name": "KFold-6d12",
+            "_pytype": "libretto.plugin.sklearn.block.SklSplitter",
+            "_jstype": "sklearn.model_selection.KFold",
+            "disable_mask": [],
+            "column_mask": [],
+            "output_type": "last",
+            "cls": "sklearn.model_selection.KFold",
+            "_children": {
+                "0": {
+                    "name": "VotingClassifier-bb06",
+                    "_pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
+                    "_jstype": "sklearn.ensemble.VotingClassifier",
+                    "disable_mask": [],
+                    "column_mask": [],
+                    "cls": "sklearn.ensemble.VotingClassifier",
+                    "keepcolnames": false,
+                    "estname": "estimators",
+                    "multiple": true,
+                    "_children": {
+                        "0": {
+                            "name": "LogisticRegression-a49f",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "sklearn.linear_model.LogisticRegression",
+                            "cls": "sklearn.linear_model.LogisticRegression"
+                        },
+                        "1": {
+                            "name": "LGBMClassifier-4037",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "lightgbm.LGBMClassifier",
+                            "cls": "lightgbm.LGBMClassifier"
+                        },
+                        "2": {
+                            "name": "RandomForestClassifier-5691",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "sklearn.ensemble.RandomForestClassifier",
+                            "cls": "sklearn.ensemble.RandomForestClassifier"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
