@@ -13,7 +13,6 @@ Blocks for tabular input manipulation
 # %%
 from typing import Generator
 
-from httpx import delete
 from libretto.baseblock import Block, Parent, Loop, RunSpec
 import pandas as pd
 from libretto.fileio import FileIO
