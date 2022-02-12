@@ -83,7 +83,7 @@ class MainToolbar extends Toolbar{
                         return;
                     }
                     Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data, r.warning);
-                    if (variables && variables.length) Session.tabView.addVariableTable(`${Session.model.name}_Score`, variables);
+                    if (variables && Object.keys(variables).length) Session.tabView.addVariablesTable(`${Session.model.name}_Score`, variables);
                 });
             }
         });

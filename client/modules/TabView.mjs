@@ -61,11 +61,15 @@ export default class TabView {
                 title: "name",
                 data: 0,
             }, {
-                title: "score",
+                title: "value",
                 data: 1,
             }
         ];
-        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, variables, columns, (table) => {
+        let data = [];
+        Object.keys(variables).forEach(v => {
+            data.push({0: v , 1:variables[v]});
+        });
+        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, data, null, columns, (table) => {
             QuickPlotPanel.render(table, this);
         }).table);
     }

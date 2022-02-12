@@ -70,7 +70,7 @@ class SklClass(Block):
         if runspec.mode in [RunSpec.RunMode.TEST, RunSpec.RunMode.RUN]:
             res = self.testmethod(x)
             if runspec.mode == RunSpec.RunMode.TEST and hasattr(self, "scoremethod"):
-                runspec.variables.append((self.name, self.scoremethod(x, y)))
+                runspec.set_variable(self.name, self.scoremethod(x, y))
         else:
             if self.testaftertrain:
                 self.trainmethod(x, y)

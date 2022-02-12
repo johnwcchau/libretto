@@ -64,7 +64,7 @@ class RunSpec:
     out:Output = field(default_factory=Output)
 
     def set_variable(self, name:str, value):
-        if isinstance(value, [list, dict]):
+        if isinstance(value, (list, dict)):
             raise AttributeError("Only scalar values for runspec.variable")
 
         if not name in self.variables:
