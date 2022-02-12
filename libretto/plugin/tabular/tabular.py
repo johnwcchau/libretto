@@ -57,10 +57,7 @@ class FileInput(Block):
         else:
             x = x.merge(self.df, how=self.mode, on=self.on)
         runspec.out.working(f'{self.name}: has {self.df.shape[0]} rows and {self.df.shape[1]} columns')
-        if runspec.mode == runspec.mode == RunSpec.RunMode.COLUMNS:
-            runspec.out.working(f'{self.name}: Limiting to 10 rows for column check')
-            return x.iloc[:10], y, id
-        elif runspec.mode == RunSpec.RunMode.PREVIEW or runspec.mode == RunSpec.RunMode.COLUMNS:
+        if runspec.mode == RunSpec.RunMode.PREVIEW or runspec.mode == RunSpec.RunMode.COLUMNS:
             runspec.out.working(f'{self.name}: Limiting to 100 rows for preview')
             return x.iloc[:100], y, id
         else:

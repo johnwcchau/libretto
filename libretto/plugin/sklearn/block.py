@@ -72,6 +72,7 @@ class SklClass(Block):
             if runspec.mode == RunSpec.RunMode.TEST and hasattr(self, "scoremethod"):
                 runspec.set_variable(self.name, self.scoremethod(x, y))
         else:
+            logging.debug(y)
             if self.testaftertrain:
                 self.trainmethod(x, y)
                 res = self.testmethod(x)
@@ -381,18 +382,6 @@ if __name__ == "__main__":
 
 # %%
 if __name__ == "__main__":
-    from libretto.block.input import Input
-    input = Input("kaggle_hpp_train.csv")
-    from libretto.block.baseblock import Split
-    from libretto.block.splitter import XyidSplit
-    input[0] = Split([["MSSubClass", "LotArea", "YrSold", "SalePrice"]], out_y=1)
-    input[0][1] = XyidSplit("SalePrice")
-    input[0][1][0] = SklClass("sklearn.linear_model.LinearRegression", trainmethod="fit+test", testmethod="predict", scoremethod="score")
-    out = input(RunSpec(), None, None)
-    print(out[0])
-
-# %%
-if __name__ == "__main__":
     from sklearn import datasets
     iris = datasets.load_iris()
     block = SklWrappingClass(cls="sklearn.model_selection.GridSearchCV", initkargs={"param_grid": {'kernel':('linear', 'rbf'), 'C':[1, 10]}})
@@ -401,9 +390,22 @@ if __name__ == "__main__":
 
 # %%    
 if __name__ == "__main__":
-    from libretto.block import FileInput
-    input = FileInput("kaggle_titanic_train.csv")
-    input[0] = RunModeSplit()
-    print(input(RunSpec(), None))
+    from libretto.plugin.tabular import FileInput
+    from libretto.baseblock import Parent
+    root = Parent()
+    root[0] = FileInput("examples/kaggle_titanic_train.csv")
+    root[1] = RunModeSplit()
+    print(root(RunSpec(), None))
     
+# %%
+if __name__ == "__main__":
+    from libretto.plugin.tabular import FileInput, XyidSplit
+    from libretto.baseblock import Parent
+    root = Parent()
+    root[0] = XyidSplit(ycol="diagnosis", idcol="id")
+    root[1] = SklSplitter(cls="sklearn.model_selection.KFold")
+    root[1][0] = SklClass(cls="xgboost.XGBClassifier")
+    x = pd.DataFrame({"a": [0,1,2,3,4,5,6,7,8,9], "b": [1,1,1,0,1,0,1,0,1,0]})
+    y = pd.DataFrame({"Y": [0,1,0,1,0,1,0,1,0,1]})
+    print(root(RunSpec(RunSpec.RunMode.COLUMNS), x, y))
 # %%

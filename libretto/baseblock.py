@@ -3,6 +3,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from importlib import import_module
+import json
 from typing import Generator
 from uuid import uuid4
 from enum import Enum
@@ -660,5 +661,15 @@ if __name__ == "__main__":
     runspec = RunSpec(RunSpec.RunMode.RUN)
     print(testloopblock(runspec, [[1,2,3],[4,5,6]], [7, 8]))
     print(runspec)
+
+# %%
+if __name__ == "__main__":
+    #
+    # test receipe load
+    #
+    import json
+    with open("storage/examples/kaggle_breast_cancer.libretto.json", "rb") as f:
+        rec = json.load(f)
+    root = Block.load(rec)
 
 # %%
