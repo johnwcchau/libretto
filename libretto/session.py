@@ -96,11 +96,68 @@ class Session:
             }).transpose().reset_index().rename(columns={"index": "column"})
         return result.where(pd.notnull(result), None).to_dict(orient="records")
 
+    def formatforplotly(self, result:pd.DataFrame, plotspec:list):
+        traces = []
+        for spec in plotspec:
+            datapts = result
+            if "filter" in spec:
+                if spec["filter"]:
+                    datapts = datapts.query(spec["filter"])
+                del spec["filter"]
+            if "groupby" in spec and len(spec["groupby"]):
+                datagroups = datapts.groupby(spec["groupby"])
+            else:
+                if "groupby" in spec:
+                    del spec["groupby"]
+                def v():
+                    yield "", datapts
+                datagroups = v()
+            #
+            # seperate const, aggr and cols
+            #
+            cols = []
+            aggr = {}
+            dims = spec['dims']
+            def setfor(obj, name:str, val):
+                names:list = name.split('.')
+                while len(names) > 1:
+                    n = names.pop(0)
+                    if not n in obj:
+                        obj[n] = {}
+                    obj = obj[n]
+                obj[names[0]] = val
+            for dim in dims:
+                if dim["type"] == "constant":
+                    setfor(spec, dim["name"], dim["val"])
+                elif dim["type"] == "column":
+                    cols.append(dim["val"])
+                elif dim["type"] == "sum":
+                    aggr[dim["val"]] = "sum"
+            del spec["dims"]
+            for v in datagroups:
+                group:pd.DataFrame = v[1]
+                trace = {i:v for i,v in spec.items()}
+                if v[0]:
+                    trace["name"] = f'{trace["name"]}#{v[0]}'
+                if len(aggr) > 0:
+                    group = group.groupby(cols).aggregate(aggr).reset_index()
+                else:
+                    group = group[cols]
+                for dim in dims:
+                    if dim["type"] in ["column", "sum"]:
+                        setfor(trace, dim["name"], group[dim["val"]].to_list())
+                traces.append(trace)
+        self.out.finished("Result ready", {
+            "traces": traces
+        })
+
     def result(self, usage:str="table", query:str=None, **kwargs)->None:
         try:
             if usage=='stat':
                 self.out.finished("Listed stats", {"stat": self.__genstat()})
                 return
+            elif usage=='variables':
+                self.out.finished("Listed variables", {"variables": self.runspec.variables})
             if self._result is None:
                 raise RuntimeError('No result, run first')
             result = self._result[0]
@@ -113,24 +170,29 @@ class Session:
                 result["__Y__"] = self._result[1].values
             if self._result[2] is not None:
                 result["__ID__"] = self._result[2].values
-            if usage=="plotly":
-                orient="list"
-            else:
-                orient="records"
+            if usage=="plotly" and 'plotspec' in kwargs:
+                #
+                # go return data for plotting
+                #
+                return self.formatforplotly(result, kwargs['plotspec'])
 
-            if query is not None:
+            if query is not None and query != '':
                 result = result.query(query)
             
             #
-            # limit result to 1000
+            # limit result to 1000 for table
             #
             warning = None
-            if result.shape[0] > 10000:
+            if result.shape[0] > 1000 and usage == "table":
                 count = result.shape[0]
                 result = result.sample(n=1000)
                 warning = f'Limited to 1000 out of {count} records, or use filtering to find desired records'
             
-            self.out.finished("Result ready", {"data": result.where(pd.notnull(result), None).to_dict(orient=orient), "score": self.runspec.scores, "warning": warning})
+            self.out.finished("Result ready", {
+                "data": result.where(pd.notnull(result), None).to_dict(orient="records"), 
+                "variables": self.runspec.variables, 
+                "warning": warning
+            })
         except Exception as e:
             traceback.print_exc()
             self.out.error(repr(e))

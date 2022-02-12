@@ -1,4 +1,5 @@
 import getCurrentSession, { Session } from "./Session.mjs";
+import PlotPanel from "./PlotPanel.mjs";
 
 export class Toolbar {
     constructor() {
@@ -76,23 +77,30 @@ class MainToolbar extends Toolbar{
                 Session.run(runMode, null, "table").then(r=>{
                     if (!r) return;
                     const data = r.data;
-                    const score = r.score;
+                    const variables = r.variables;
                     if (!data || !data.length) {
                         alert("No results")
                         return;
                     }
                     Session.tabView.addDataTable(`${Session.model.name}_${runMode}`, data, r.warning);
-                    if (score && score.length) Session.tabView.addScoreTable(`${Session.model.name}_Score`, score);
+                    if (variables && variables.length) Session.tabView.addVariableTable(`${Session.model.name}_Score`, variables);
                 });
             }
         });
         
         this.addbtn({
+            title: "Plot",
+            icon: "/static/img/show_chart_black_24dp.svg",
+            click: () => {
+                PlotPanel.render(getCurrentSession().tabView);
+            }
+        })
+        this.addbtn({
             title: "Filter",
             icon: "/static/img/table_rows_black_24dp.svg",
             click: () => {
-                const query = prompt("Query string?", null);
-                if (!query) return;
+                const query = prompt("Query string?", "");
+                if (query === null) return;
                 const Session = getCurrentSession();
                 Session.readLastResult(query, "table").then(r=>{
                     if (!r) return;

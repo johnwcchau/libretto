@@ -28,12 +28,12 @@ export default class Table {
             buttons: [
                 "copy", 
                 "csv", 
-                {
-                    text: "plot",
-                    action: () => {
-                        plotter(this);
-                    }
-                }
+                // {
+                //     text: "plot",
+                //     action: () => {
+                //         plotter(this);
+                //     }
+                // }
             ],
             dom: 'Blfrtip',
         }).on("draw.dt", {thiz: this}, (e) => {

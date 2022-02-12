@@ -70,7 +70,7 @@ class SklClass(Block):
         if runspec.mode in [RunSpec.RunMode.TEST, RunSpec.RunMode.RUN]:
             res = self.testmethod(x)
             if runspec.mode == RunSpec.RunMode.TEST and hasattr(self, "scoremethod"):
-                runspec.scores.append((self.name, self.scoremethod(x, y)))
+                runspec.variables.append((self.name, self.scoremethod(x, y)))
         else:
             if self.testaftertrain:
                 self.trainmethod(x, y)
@@ -204,7 +204,8 @@ class SklScoringMethod(Method):
         if self.func is None:
             self.loadmethod()
         self.resolvexyargs(x, y)
-        runspec.scores.append((self.name, self.func(*self.funcargs, **self.funckargs)))
+        score = self.func(*self.funcargs, **self.funckargs)
+        runspec.set_variable(self.name, score)
         return x, y, id
 
 class SklSplitter(Loop):
@@ -363,7 +364,7 @@ if __name__ == "__main__":
     print(sklmethod(RunSpec(), [[0], [2], [1], [3]], [[0], [1], [2], [3]]))
     runspec = RunSpec(mode=RunSpec.RunMode.RUN)
     sklmethod(runspec, [[0], [2], [1], [3]], [[0], [1], [2], [3]])
-    print(runspec.scores)
+    print(runspec.variables)
 # %%
 if __name__ == "__main__":
     from sklearn.datasets import make_classification
@@ -376,7 +377,7 @@ if __name__ == "__main__":
     print(out[0])
     rs.mode = RunSpec.RunMode.TEST
     pipe(rs, X, y)
-    print(rs.scores)
+    print(rs.variables)
 
 # %%
 if __name__ == "__main__":

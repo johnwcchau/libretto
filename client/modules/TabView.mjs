@@ -1,6 +1,6 @@
 import UUID from "./UUID.mjs";
 import Table from "./Table.mjs";
-import PlotDialog from "./PlotDialog.mjs";
+import QuickPlotPanel from "./QuickPlotPanel.mjs";
 
 export default class TabView {
 
@@ -55,7 +55,7 @@ export default class TabView {
         return this._view;
     }
 
-    addScoreTable(name, scores) {
+    addVariablesTable(name, variables) {
         const columns = [
             {
                 title: "name",
@@ -65,8 +65,8 @@ export default class TabView {
                 data: 1,
             }
         ];
-        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, scores, columns, (table) => {
-            PlotDialog.render(table, this);
+        this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, variables, columns, (table) => {
+            QuickPlotPanel.render(table, this);
         }).table);
     }
     addDataTable(name, data, warning) {
@@ -89,7 +89,7 @@ export default class TabView {
             }
         });
         this.addTab(name, "/static/img/table_rows_black_24dp.svg", new Table(name, data, warning, columns, (table) => {
-            PlotDialog.render(table, this);
+            QuickPlotPanel.render(table, this);
         }).table);
     }
 }

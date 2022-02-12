@@ -16,3 +16,7 @@
     transition: color 0.1s, background 0.1s, border 0.1s;
     text-align: center;
 }
+.plot-dialog span {
+    display: flex;
+    flex-direction: column;
+}

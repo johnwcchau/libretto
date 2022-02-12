@@ -869,8 +869,20 @@ blockTypes.add({
             },
         },
     },
+    "libretto.baseblock.SetVariable": {
+        cls: Block,
+        typename: "Memory",
+        desc: "Create a variable to retrieve at later time",
+        childof: "libretto.baseblock.Block",
+        properties: {
+            formula: {
+                desc: "Specifies the value of the variable, could be a constant or a formula (e.g. =Price.mean())",
+                type: "string",
+            },
+        },
+    },
     "libretto.baseblock.GenericClassMethod": {
-        cls: "Block",
+        cls: Block,
         typename: "Generic Class Method",
         desc: "Any python class method which outputs a Series or Dataframe",
         childof: "libretto.baseblock.Block",

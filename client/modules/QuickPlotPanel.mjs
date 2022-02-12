@@ -1,4 +1,4 @@
-class PlotDialog {
+class QuickPlotPanel {
     static plottype = {
         "Scatter": ["x", "y", "marker.size"],
         "bar": ["x", "y"],
@@ -10,9 +10,7 @@ class PlotDialog {
         "histogram2d": ["x", "y"],
         "violin": ["y"],
     }
-    // static plottype = ["scatter", "line", "bar", "pie", "box", 
-    //     "histogram", "histogram2d"];
-    
+
     static dialog_html = `
 <div id="plot_dialog" class="plot-dialog">
     <div class="toolbar">
@@ -52,7 +50,7 @@ class PlotDialog {
         let tracecnt = 0;
         thiz._traces.find(".plot-traceline").each((i, v) => {
             const typename = $(v).find(".plot-trace-type-selector").val();
-            const type = PlotDialog.plottype[typename];
+            const type = QuickPlotPanel.plottype[typename];
             if (!type || !type.length) return;
             let datum = {
                 type: typename,
@@ -93,7 +91,7 @@ class PlotDialog {
     }
     static onPlotTypeChanged(e) {
         const val = $(e.delegateTarget).val();
-        const type = PlotDialog.plottype[val];
+        const type = QuickPlotPanel.plottype[val];
         const cnt = type ? type.length: 0;
         const thiz = e.data.thiz;
         let exist = e.data.row.find(".plot-trace-selector").length;
@@ -121,14 +119,15 @@ class PlotDialog {
     }
     addtraceline() {
         const traceline = $('<span class="plot-traceline">').appendTo(this._traces);
-        $('<a href="#" class="plot-trace-rm">remove trace</a>')
+        //$('<span class="plot-trace-selector"><label class="plot-trace-selector-label">Name</label><input class="plot-trace-name"/></span>').appendTo(traceline);
+        $('<a href="#" class="plot-trace-rm">Remove</a>')
             .on("click", {thiz: this, row: traceline}, (e)=>{
                 e.data.thiz.removetraceline(e.data.row);
             })
             .appendTo(traceline);
-        const selector = $(PlotDialog._plottype_selector_html);
+        const selector = $(QuickPlotPanel._plottype_selector_html);
         selector.addClass("plot-trace-type-selector")
-            .on("change", {thiz: this, row: traceline}, PlotDialog.onPlotTypeChanged)
+            .on("change", {thiz: this, row: traceline}, QuickPlotPanel.onPlotTypeChanged)
             .appendTo(traceline);
         selector.trigger("change");
         return traceline;
@@ -178,17 +177,17 @@ class PlotDialog {
     }
     
     constructor() {
-        if (PlotDialog.instance) {
-            return PlotDialog.instance;
+        if (QuickPlotPanel.instance) {
+            return QuickPlotPanel.instance;
         }
         this.container = null;
-        this._dialog = $(PlotDialog.dialog_html);
+        this._dialog = $(QuickPlotPanel.dialog_html);
         this._traces = this._dialog.find(".plot-traces");
-        this._dialog.find("#plot_plot").on("click", {thiz:this}, PlotDialog.onPlotClicked);
-        this._dialog.find("#plot_reset").on("click", {thiz:this}, PlotDialog.onResetClicked);
-        this._dialog.find("#plot_add_trace").on("click", {thiz:this}, PlotDialog.onAddTraceClicked);
-        this._dialog.find("#plot_cancel").on("click", {thiz:this}, PlotDialog.onCancel);
-        PlotDialog.instance = this;
+        this._dialog.find("#plot_plot").on("click", {thiz:this}, QuickPlotPanel.onPlotClicked);
+        this._dialog.find("#plot_reset").on("click", {thiz:this}, QuickPlotPanel.onResetClicked);
+        this._dialog.find("#plot_add_trace").on("click", {thiz:this}, QuickPlotPanel.onAddTraceClicked);
+        this._dialog.find("#plot_cancel").on("click", {thiz:this}, QuickPlotPanel.onCancel);
+        QuickPlotPanel.instance = this;
     }
     get dialog() {
         return this._dialog;
@@ -196,10 +195,10 @@ class PlotDialog {
 }
 
 let types = [];
-Object.keys(PlotDialog.plottype).forEach(v => {
+Object.keys(QuickPlotPanel.plottype).forEach(v => {
     types.push(`<option value="${v}">${v}</option>`);
 });
-PlotDialog._plottype_selector_html = "<select>" + types.join() + "</select>";
+QuickPlotPanel._plottype_selector_html = "<select>" + types.join() + "</select>";
 
-const instance = new PlotDialog();
+const instance = new QuickPlotPanel();
 export default instance;

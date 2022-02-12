@@ -5,7 +5,8 @@ import FileBrowser from "./modules/FileBrowser.mjs";
 import MethodBrowser from "./modules/MethodBrowser.mjs";
 import getCurrentSession from "./modules/Session.mjs";
 import MainToolbar from './modules/Toolbar.mjs';
-import PlotDialog from "./modules/PlotDialog.mjs";
+import PlotPanel from "./modules/PlotPanel.mjs";
+import QuickPlotPanel from "./modules/QuickPlotPanel.mjs";
 import plugin_css from "/plugin/plugins.mjs";
 
 const init = () => {
@@ -25,7 +26,8 @@ const init = () => {
     const container = $('<div id="option-container" class="option-container">').data("tabView", toolbox);
     toolbox.addTab("Options", "/static/img/settings_black_24dp.svg", container, false);
     EditDialog.container = container;
-    PlotDialog.container = container;
+    QuickPlotPanel.container = container;
+    PlotPanel.container = container;
     toolbox.showTab(FileBrowser.panel.attr("id"));
 
     getCurrentSession().panel.appendTo(".flex-row");

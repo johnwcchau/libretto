@@ -55,15 +55,25 @@ class RunSpec:
     """
     cleanrun:bool = False
     """
-    Only for test, append (block_name, score) into this list
-    Can have multiple scores in case of kfolds / ensembled methods
+    Scalars (name->value)
     """
-    scores:list[float] = field(default_factory=list)
+    variables:dict = field(default_factory=dict)
     """
     logs and progress to write to
     """
     out:Output = field(default_factory=Output)
 
+    def set_variable(self, name:str, value):
+        if isinstance(value, [list, dict]):
+            raise AttributeError("Only scalar values for runspec.variable")
+
+        if not name in self.variables:
+            self.variables[name] = value
+            return
+        i = 2
+        while f'{name}_{i}' in self.variables:
+            i+=1
+        self.variables[f'{name}_{i}'] = value
 @dataclass
 class ErrorAtRun(Exception):
     exception:Exception
@@ -470,6 +480,22 @@ class Placeholder(Block):
     def __call__(self, runspec: RunSpec, x, y, id) -> tuple:
         return x, y, id
 
+class SetVariable(Block):
+    """
+    Create a variable and retrieve later
+
+    Parameters
+    ----------
+    formula : string
+        value of the variable, could be constant or formula
+    """
+    def __init__(self, formula:str, **kwargs: dict) -> None:
+        super(**kwargs)
+        self.formula = formula
+    
+    def run(self, runspec: RunSpec, x: pd.DataFrame, y, id) -> tuple:
+        runspec.set_variable(self.name, Block.resolvearg(x, self.formula, False))
+        return x, y, id
 
 class GenericClassMethod(Block):
     """

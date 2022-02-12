@@ -135,6 +135,9 @@ export class Session {
     readLastResult(query, usage) {
         return this.WsClient.send("result", {usage: usage, query: query});
     }
+    readPlotResult(plot) {
+        return this.WsClient.send("result", {usage: "plotly", plotspec: plot});
+    }
     static encode(s) {
         var out = [];
         for ( var i = 0; i < s.length; i++ ) {

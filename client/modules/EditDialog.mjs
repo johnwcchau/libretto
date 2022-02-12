@@ -270,6 +270,7 @@ class EditDialog {
         if (this.colsels.length) {
             this.#resolveColumnNames(layer);
         }
+        this.container.html("");
         $dialog.appendTo(this.container);
         this.container.data("tabView").showTab(this.container.attr("id"));
         return $dialog;
