@@ -1,5 +1,11 @@
 """
 Example plugin
+
+
+NOTE 
+----
+You better not putting any block magic here to reduce startup time,
+let the block dynamically import as long as user first use it
 """
 import logging
 from libretto.inout import Output

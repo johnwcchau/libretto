@@ -221,6 +221,7 @@ class EditDialog {
     }
     createEditDialog(layer) {
         if (!this.container) return;
+        this.container.html("");
         const $dialog = this._dialog.html("").data("layer", layer);
         const $toolbar = this.createToolbar().appendTo($dialog);
         this.colsels = [];
@@ -270,7 +271,6 @@ class EditDialog {
         if (this.colsels.length) {
             this.#resolveColumnNames(layer);
         }
-        this.container.html("");
         $dialog.appendTo(this.container);
         this.container.data("tabView").showTab(this.container.attr("id"));
         return $dialog;

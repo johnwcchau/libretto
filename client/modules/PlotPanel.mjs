@@ -226,9 +226,9 @@ class PlotPanel {
     }
     render(tabView) {
         if (!this.container) return;
+        this.container.html("");
         this.tabView = tabView;
         this.reset();
-        this.container.html("");
         this.dialog.appendTo(this.container);
         this.container.data("tabView").showTab(this.container.attr("id"));
         return this.dialog;

@@ -27,14 +27,16 @@ class Output:
         self.msg(-998, msg, param)
     def invalid(self, msg:str='Invalid request')->None:
         self.msg(-999, msg)
-    def stream(self, stream:int, msg:str)->None:
-        self.msg(stream, msg)
+    def stream(self, stream:int, msg:str, param:dict=None)->None:
+        self.msg(stream, msg, param)
 
 class StreamOut(object):
-    def __init__(self, id:int, out:Output, old):
+    def __init__(self, id:int, out:Output, old, atblock=None):
         self.id = id
         self.out = out
         self.old = old
+        self.atblock = atblock
+
     def tqnum(s:str)->float:
         if not s: return 1
         num = 1
@@ -73,7 +75,8 @@ class StreamOut(object):
                 'progress': progress,
                 'ellipsed': ellipsed,
                 'remain': remain,
-                'speed': speed
+                'speed': speed,
+                'atblock': self.atblock.name if self.atblock else None,
             })
         else:
             tq = re.search(r'(([^:]+): ?)?([0-9]+)%\|[^\|]+\| ?([0-9GKMT]+)\/([0-9GKMT]+) ?\[([0-9:]+)', data.replace('\r', ''))
@@ -86,19 +89,22 @@ class StreamOut(object):
                 self.out.progress(msg, {
                     'progress': progress,
                     'ellipsed': ellipsed,
+                'atblock': self.atblock.name if self.atblock else None,
                 })
             else:
-                self.out.stream(self.id, repr(data))
+                self.out.stream(self.id, repr(data), {
+                    'atblock': self.atblock.name if self.atblock else None,
+                })
     def flush(self):
         self.old.flush()
 
 class StdRedirect:
     #out_redirected = False
-    def __init__(self, log:Output):
+    def __init__(self, log:Output, atblock=None):
         # self.log = log
         import sys
-        self.stdout = redirect_stdout(StreamOut(2, log, sys.stdout))
-        self.stderr = redirect_stderr(StreamOut(3, log, sys.stderr))
+        self.stdout = redirect_stdout(StreamOut(2, log, sys.stdout, atblock=atblock))
+        self.stderr = redirect_stderr(StreamOut(3, log, sys.stderr, atblock=atblock))
     def __enter__(self):
         StdRedirect.out_redirected += 1
         self.stderr.__enter__()
