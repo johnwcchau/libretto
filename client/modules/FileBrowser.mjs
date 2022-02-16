@@ -115,9 +115,12 @@ class FileBrowser {
                 a.addClass("fileobj_dir");
             })
             files.forEach(v => {
-                $('<a href="#">').html(v[0])
+                const obj = $('<a href="#">').html(v[0])
                     .addClass("fileobj_file")
                     .appendTo(this._filelist);
+                if (v[0].endsWith(".libretto.json")) {
+                    obj.addClass("filetype_ljson");
+                }
             })
             // r.objs.forEach(v => {
             //     const a = $('<a href="#">').html(v[0]);

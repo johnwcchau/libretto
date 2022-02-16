@@ -24,6 +24,7 @@ export class Toolbar {
 class MainToolbar extends Toolbar{
     
     init() {
+        this.addObj($('<img src="/static/img/libretto.svg" style="height:32px">'));
         this.addObj($("<h3>Libretto Editor</h3>"));
         this.addbtn({
             title: "New model",

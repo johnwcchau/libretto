@@ -1,3 +1,4 @@
+![Logo Here](/client/img/libretto.svg)
 # Libretto
 A drag-and-drop visual designer for data analysis and machine learning. The goal of this project is to create an environment for non-programmers to focus on data rathar than coding and debugging.
 
