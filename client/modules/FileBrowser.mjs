@@ -112,7 +112,7 @@ class FileBrowser {
                 const a = $('<a href="#">').html(v[0])
                     .appendTo(this._filelist);
                 if (v[0] == "..") a.addClass("fileobj_parentdir");
-                else a.addClass("fileobj_dir");
+                a.addClass("fileobj_dir");
             })
             files.forEach(v => {
                 $('<a href="#">').html(v[0])
