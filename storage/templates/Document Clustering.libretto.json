@@ -1,0 +1,36 @@
+{
+    "name": "Document Clustering",
+    "_pytype": "libretto.baseblock.Parent",
+    "_jstype": "libretto.baseblock.Parent",
+    "disable_mask": [],
+    "column_mask": [],
+    "as_new_columns": true,
+    "_children": {
+        "0": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "### Document clustering template using Huggingface Transformer\n\nWorkflow:\n1. Transform documents into embedding\n2. Dimension reduction with UMAP\n3. Clustering using HDBSCAN\n\n####Input\nA single column of doucment body for each row of input\n\n####Output\nA single column of topic ID for each input"
+        },
+        "1": {
+            "name": "Transformer",
+            "_pytype": "libretto.plugin.transformer.block.TransformerBlock",
+            "_jstype": "libretto.plugin.transformer.block.TransformerBlock",
+            "disable_mask": [],
+            "column_mask": []
+        },
+        "2": {
+            "name": "UMAP",
+            "_pytype": "libretto.plugin.transformer.block.UMAPBlock",
+            "_jstype": "libretto.plugin.transformer.block.UMAPBlock",
+            "disable_mask": [],
+            "column_mask": []
+        },
+        "3": {
+            "name": "HDBSCAN",
+            "_pytype": "libretto.plugin.transformer.block.HDBSCANBlock",
+            "_jstype": "libretto.plugin.transformer.block.HDBSCANBlock",
+            "disable_mask": [],
+            "column_mask": []
+        }
+    }
+}

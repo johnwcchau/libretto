@@ -1,0 +1,83 @@
+{
+    "name": "Baseline Classifier",
+    "_pytype": "libretto.baseblock.Parent",
+    "_jstype": "libretto.baseblock.Parent",
+    "disable_mask": [],
+    "column_mask": [],
+    "_children": {
+        "0": {
+            "_pytype": "libretto.baseblock.Placeholder",
+            "_jstype": "libretto.baseblock.Placeholder",
+            "comment": "### Template for baseline classifier\nProvides a bag of classifiers for creating a baseline, wrapped in a KFold-block for testing purpose\n\n#### Input\nRows of numerical/categorical columns with no NA values\n\n#### Output\nOne column (in TEST/RUN, or 1 column for each classifier in TRAIN) of prediction for each input, together with accuracy score during TEST"
+        },
+        "1": {
+            "name": "KFold-6d12",
+            "_pytype": "libretto.plugin.sklearn.block.SklSplitter",
+            "_jstype": "sklearn.model_selection.KFold",
+            "disable_mask": [],
+            "column_mask": [],
+            "as_new_columns": true,
+            "output_type": "last",
+            "cls": "sklearn.model_selection.KFold",
+            "_children": {
+                "0": {
+                    "name": "VotingClassifier-bb06",
+                    "_pytype": "libretto.plugin.sklearn.block.SklWrappingClass",
+                    "_jstype": "sklearn.ensemble.VotingClassifier",
+                    "disable_mask": [],
+                    "column_mask": [],
+                    "cls": "sklearn.ensemble.VotingClassifier",
+                    "keepcolnames": false,
+                    "estname": "estimators",
+                    "multiple": true,
+                    "_children": {
+                        "0": {
+                            "name": "LogisticRegression-a49f",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "sklearn.linear_model.LogisticRegression",
+                            "cls": "sklearn.linear_model.LogisticRegression"
+                        },
+                        "1": {
+                            "name": "KNeighborsClassifier-92ff",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "sklearn.neighbors.KNeighborsClassifier",
+                            "cls": "sklearn.neighbors.KNeighborsClassifier"
+                        },
+                        "2": {
+                            "name": "LGBMClassifier-4037",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "lightgbm.LGBMClassifier",
+                            "cls": "lightgbm.LGBMClassifier"
+                        },
+                        "3": {
+                            "name": "XGBClassifier-ded9",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "xgboost.XGBClassifier",
+                            "cls": "xgboost.XGBClassifier"
+                        },
+                        "4": {
+                            "name": "RandomForestClassifier-5691",
+                            "_pytype": "libretto.plugin.sklearn.block.SklClass",
+                            "_jstype": "sklearn.ensemble.RandomForestClassifier",
+                            "cls": "sklearn.ensemble.RandomForestClassifier"
+                        }
+                    }
+                },
+                "1": {
+                    "name": "accuracy_score-2a7e",
+                    "_pytype": "libretto.plugin.sklearn.block.SklScoringMethod",
+                    "_jstype": "sklearn.metrics.accuracy_score",
+                    "disable_mask": [
+                        "preview",
+                        "train",
+                        "run"
+                    ],
+                    "column_mask": [],
+                    "method": "sklearn.metrics.accuracy_score",
+                    "xname": "y_pred",
+                    "yname": "y_true"
+                }
+            }
+        }
+    }
+}
