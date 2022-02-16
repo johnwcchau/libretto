@@ -23,6 +23,29 @@ def import_load(cls:str):
         raise AttributeError(f'{cls} is not a method')
     return obj
 
+class EvalLocals:
+    def __init__(self, X=None, x=None, y=None, id=None, v=None):
+        self.X = X
+        self.x = x
+        self.v = v
+        self.y = y
+        self.id = id
+
+    def __getitem__(self, key:str):
+        print(key)
+        if key == "x": return self.x
+        if key == "X": return self.X
+        if key == "v": return self.v
+        if key == "y": return self.y
+        if key == "id": return self.id
+        if self.x is not None and key in self.x:
+            return self.x[key]
+        if self.X is not None and key in self.X:
+            return self.X[key]
+        if self.v is not None and key in self.v:
+            return self.v[key]
+        return None
+
 @dataclass
 class RunSpec:
     """
@@ -230,12 +253,18 @@ class Block:
                         if thisx is not None and self.as_new_columns:
                             newcolname = {}
                             for colname in thisx.columns:
-                                newcolname[colname] = f'{colname}_{self.name}'
+                                newcolname[colname] = colname if colname not in x.columns else f'{colname}_{self.name}'
                             x = pd.concat([x, thisx.rename(columns=newcolname)], axis='columns')
                         else:
                             x = x.drop(self.column_mask, axis='columns')
                             if thisx is not None:
                                 x = pd.concat([x, thisx], axis='columns')
+                    elif self.as_new_columns:
+                        thisx, y, id = self.run(runspec, x, y, id)
+                        newcolname = {}
+                        for colname in thisx.columns:
+                            newcolname[colname] = colname if colname not in x.columns else f'{colname}_{self.name}'
+                        x = pd.concat([x, thisx.rename(columns=newcolname)], axis='columns')
                     else:
                         x, y, id = self.run(runspec, x, y, id)
                     #3. append back rows

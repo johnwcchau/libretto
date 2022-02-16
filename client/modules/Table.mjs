@@ -39,7 +39,7 @@ export default class Table {
         }).on("draw.dt", {thiz: this}, (e) => {
             const $td = e.data.thiz._table.find("td");
             $td.off("click").on("click", {thiz: this}, Table.toggleColumnSelect);
-        });
+        }).css("width", "");
         $(this.dt.table().container()).appendTo(this.container);
         this._table.find("td").off("click").on("click", {thiz: this}, Table.toggleColumnSelect);
     }

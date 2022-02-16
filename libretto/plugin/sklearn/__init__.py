@@ -13,8 +13,7 @@ Add name here to scan for additional frameworks
 (provided that client-side definitions exist)
 """
 VALID_PACKAGES = [
-    "sklearn", 
-    "hdbscan", 
+    "sklearn",
     "lightgbm", 
     "xgboost", 
     "gtda"

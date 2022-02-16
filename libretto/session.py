@@ -1,11 +1,11 @@
 import traceback
-from .baseblock import Block, ErrorAtRun, RunSpec
+from .baseblock import Block, ErrorAtRun, RunSpec, EvalLocals
 from .inout import Output
 from .plugin import dispatch, find_plugin
 import pandas as pd
 import numpy as np
 import logging
-
+import re
 
 class Session:
 
@@ -177,7 +177,9 @@ class Session:
                 return self.formatforplotly(result, kwargs['plotspec'])
 
             if query is not None and query != '':
-                result = result.query(query)
+                mask = result.apply(lambda x: eval(query, globals(), EvalLocals(x=x, X=result, v=self.runspec.variables)), axis=1)
+                result = result[mask]
+                #result = result.query(query)
             
             #
             # limit result to 1000 for table
