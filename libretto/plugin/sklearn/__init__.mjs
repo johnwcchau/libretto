@@ -1,5 +1,5 @@
 import { Parent, Block, BlockTypes } from "/static/modules/BaseBlock.mjs";
-import baseObjects from "./baseObjects.mjs";
+import baseObjects from "./BaseObjects.mjs";
 import sklearn from "./sklearn.mjs";
 import lightgbm from "./lightgbm.mjs";
 import xgboost from "./xgboost.mjs";

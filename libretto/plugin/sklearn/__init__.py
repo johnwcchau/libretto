@@ -62,7 +62,7 @@ def __init_plugin(config):
 #         return
 #     with open("./libretto/plugin/sklearn/__init__.mjs", "w") as f:
 #         f.write("""import { Parent, Block, BlockTypes } from "/static/modules/BaseBlock.mjs";
-# import baseObjects from "./baseObjects.mjs";
+# import baseObjects from "./BaseObjects.mjs";
 # """)
 #         for package in available:
 #             f.write(f"""import {package} from "./{package}.mjs";
