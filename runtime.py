@@ -21,7 +21,7 @@ from libretto import plugin
 from libretto.inout import Output
 from libretto.baseblock import Block, Parent, RunSpec
 from libretto.jsoncodec import Encoder, json_decode
-
+from libretto.venv import Venv
 from libretto.tpe import TPE
 
 ioloop:tornado.ioloop.IOLoop
@@ -164,6 +164,9 @@ def __main():
     from configparser import ConfigParser
     config = ConfigParser()
     config.read("config.ini")
+
+    # venv
+    Venv(__file__, config)
 
     norest = config.getboolean(instance_name, "rest", fallback=False)
     nows = config.getboolean(instance_name, "websocket", fallback=False)

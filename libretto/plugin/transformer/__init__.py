@@ -1,8 +1,11 @@
 """
 This is the plugin for text processing libaries
-
-NOTE 
-----
-You better not putting any block magic here to reduce startup time,
-let the block dynamically import as long as user first use it
 """
+
+from libretto.venv import Venv
+
+def __init_plugin(config):
+    venv = Venv()
+    venv.pip_install("transformers")
+    venv.pip_install("hdbscan")
+    venv.pip_install("umap")

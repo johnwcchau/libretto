@@ -1,6 +1,6 @@
 ![Logo Here](/client/img/libretto.svg)
 # Libretto
-A drag-and-drop visual designer for data analysis and machine learning. The goal of this project is to create an environment for non-programmers to focus on data rathar than coding and debugging.
+A drag-and-drop visual designer for data analysis and machine learning, using popular Scikit-learn and other related packages. The goal of this project is to create an environment for non-programmers to easily create baseline models, focus on data rathar than coding and debugging.
 
 ## Features
 - Intergrated with well-known Scikit-learn framework, and supports related libraries
@@ -11,15 +11,16 @@ A drag-and-drop visual designer for data analysis and machine learning. The goal
 - Support plugins for more sophisticated machine learning algorithm
 
 ## Installation
-- clone this repo 
-- `pip install -r requirements.txt`
-- depending on your requirements, install also the following machine learning packages
-  - scikit-learn
-  - giotto-tda
-  - xgboost
-  - lightgbm
-  - hdbscan
-- `python main.py`
+### Prerequists
+- Python 3
+    
+    _Libretto develops with **Python 3.9**, other versions may work_
+
+### Steps
+1. clone/download this repo 
+2. `python main.py`
+    
+    Main script will automatically create a virtual environment and install required packages at first run.
 
 ## Getting started
 Examples are provided, launch Libretto, browse to example folder, drag-and-drop the _json_ file to the center panel _(or right-click -> load as receipe)_

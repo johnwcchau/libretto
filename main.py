@@ -18,6 +18,7 @@ from libretto.fileio import FileIO
 from libretto.session import Session
 from libretto.jsoncodec import Encoder, json_decode
 from libretto.tpe import TPE
+from libretto.venv import Venv
 
 from libretto import plugin
 
@@ -192,6 +193,9 @@ def __main():
     config = ConfigParser()
     config.read("config.ini")
 
+    # venv
+    Venv(__file__, config)
+    
     debug = config.getboolean("Interactive", "debug", fallback=False)
     if debug:
         logging.basicConfig(level=logging.DEBUG)
