@@ -4,6 +4,17 @@ Entry point for Libretto runtime mode
 Runtime mode is unattended mode for "one-click" model deployment
 """
 from __future__ import annotations
+
+#
+# 220221 early venv detection
+#
+if __name__ == "__main__":
+    from configparser import ConfigParser
+    from libretto.venv import Venv
+    config = ConfigParser()
+    config.read("config.ini")
+    Venv(__file__, config)
+
 from typing import Union
 
 from dataclasses import dataclass
@@ -160,13 +171,6 @@ def __main():
     args = parser.parse_args()
     instance_name = args.name if "name" in args else None
     instance_name = f'Runtime.{instance_name}' if instance_name else 'Runtime'
-
-    from configparser import ConfigParser
-    config = ConfigParser()
-    config.read("config.ini")
-
-    # venv
-    Venv(__file__, config)
 
     norest = config.getboolean(instance_name, "rest", fallback=False)
     nows = config.getboolean(instance_name, "websocket", fallback=False)

@@ -2,6 +2,17 @@
 Entry point of Libretto interactive mode (Libretto Editor)
 """
 from __future__ import annotations
+
+#
+# 220221 early venv detection
+#
+if __name__ == "__main__":
+    from configparser import ConfigParser
+    from libretto.venv import Venv
+    config = ConfigParser()
+    config.read("config.ini")
+    Venv(__file__, config)
+
 from datetime import timedelta
 
 import tornado.ioloop
@@ -18,7 +29,6 @@ from libretto.fileio import FileIO
 from libretto.session import Session
 from libretto.jsoncodec import Encoder, json_decode
 from libretto.tpe import TPE
-from libretto.venv import Venv
 
 from libretto import plugin
 
@@ -177,24 +187,6 @@ def __main():
     #
     from os import makedirs
     makedirs("./storage", exist_ok=True)
-
-    # #
-    # # regular argparse
-    # # TODO read config file instead of using arguments
-    # #
-    # import argparse
-    # parser = argparse.ArgumentParser(description="Libretto")
-    # parser.add_argument("-port", type=int, default=6789, help="Port to listen to")
-    # parser.add_argument("-debug", nargs='?', const=True, default=False, help="Debug flag")
-    # args = parser.parse_args()
-
-    # config parser
-    from configparser import ConfigParser
-    config = ConfigParser()
-    config.read("config.ini")
-
-    # venv
-    Venv(__file__, config)
     
     debug = config.getboolean("Interactive", "debug", fallback=False)
     if debug:
