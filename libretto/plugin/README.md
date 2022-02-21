@@ -15,6 +15,9 @@ libretto support plugins which:
 - __sklearn__
   
   core machine learning toolkit via _Scikit-learn_ and other API-compatible libraries
+- __transformer__
+
+  Wrapper for Huggingface's transformer and together relevant packages for sementic clustering
 - __example__
   
   example plugin for demonstration and documentation purpose
