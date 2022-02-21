@@ -11,14 +11,22 @@ A drag-and-drop visual designer for data analysis and machine learning, using po
 - Support plugins for more sophisticated machine learning algorithm
 
 ## Installation
-### Docker
+### Docker route
 Use [Dockerfile](docker/editor/Dockerfile) to build and run docker image
+```bash
+#build docker image
+docker build -t libretto/editor .
+#start docker container
+docker run -p 6789:6789 -d --name libretto-editor libretto/editor
+```
 
-### Bare metal
+Connect to libretto editor with any browser to http://localhost:6789
+
+### Bare metal route
 #### Prerequists
 - Python 3
     
-    _Libretto develops with **Python 3.9**, other versions may work_
+    _Libretto is developed with **Python 3.9**, other versions may work_
 
 #### Steps
 1. clone/download this repo 

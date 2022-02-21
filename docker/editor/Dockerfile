@@ -6,4 +6,5 @@ RUN apt update; \
     git clone https://github.com/johnwcchau/libretto.git .; \
     mv docker/editor/config.ini ./config.ini; \
     pip install -r requirements.txt
+EXPOSE 6789
 ENTRYPOINT ["python3","main.py"]

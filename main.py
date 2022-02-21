@@ -210,7 +210,8 @@ def __main():
 
     port = config.getint("Interactive", "port", fallback=6789)
     app.listen(port)
-    tpe.submit(open_browser, port)
+    if config.getboolean("Interactive", "open_browser", fallback=True):
+        tpe.submit(open_browser, port)
 
     ioloop = tornado.ioloop.IOLoop.instance()
     set_ping(ioloop, timedelta(seconds=2))
