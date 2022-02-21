@@ -11,12 +11,16 @@ A drag-and-drop visual designer for data analysis and machine learning, using po
 - Support plugins for more sophisticated machine learning algorithm
 
 ## Installation
-### Prerequists
+### Docker
+Use [Dockerfile](docker/editor/Dockerfile) to build and run docker image
+
+### Bare metal
+#### Prerequists
 - Python 3
     
     _Libretto develops with **Python 3.9**, other versions may work_
 
-### Steps
+#### Steps
 1. clone/download this repo 
 2. `python main.py`
     
