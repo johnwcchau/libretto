@@ -19,6 +19,10 @@ docker build -t libretto/editor .
 #start docker container
 docker run -p 6789:6789 -d --name libretto-editor libretto/editor
 ```
+**NOTE:** First run takes time because required packages are being installed in first run, to check installation progress, simply attach to docker container with:
+```bash
+docker attach libretto-editor
+```
 
 Connect to libretto editor with any browser to http://localhost:6789
 
